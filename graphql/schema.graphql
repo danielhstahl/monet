@@ -1,0 +1,100 @@
+enum JobStatusEnum {
+  FAILED
+  PENDING
+  IN_PROGRESS
+  SUCCESS
+}
+type Project {
+    id: ID!
+    name: String!
+    company: String!
+}
+
+type PaginatedProject {
+    nextToken: String
+    projects: [Project!]!
+}
+
+type Job{
+    id: ID!
+    name: String!
+    project_id: String! 
+    company: String!
+    last_time_job_completed: String!
+    last_time_job_completed_successfully: String!
+    total_successes: Int! 
+    total_failures: Int!
+    jobs_currently_running: Int!
+    average_job_length_in_seconds: Float!
+}
+type PaginatedJob {
+    nextToken: String 
+    jobs: [Job!]!
+}
+
+type JobRun{ # idea, use last "n" jobs to create histogram
+    id: ID!
+    job_id: String!
+    company: String!
+    start_time: AWSDateTime!
+    end_time: AWSDateTime 
+    status: JobStatusEnum!
+}
+
+type PaginatedJobRun {
+    nextToken: String 
+    jobs_runs: [JobRun!]!
+}
+
+
+type Query {
+    getProjects(company: String!): PaginatedProject!
+    getProjectsByName(name: String!): Project!
+    getJobsByProject(company: String!, project_id: String!): PaginatedJob!
+    getJobs(company: String!): PaginatedJob!
+    getJobRuns(job_id: String!): PaginatedJobRun!
+    getLastNJobRuns(job_id: String!, n: Int!): JobRun!
+}
+
+type Subscription {
+    addedProjects(company: String!): Project
+    @aws_subscribe(mutations: ["addProject"])
+    addedJob(company: String!): Job
+    @aws_subscribe(mutations: ["addJob", "updateJob"])
+    addedJobByProject(company: String!, project_id: String!): Job
+    @aws_subscribe(mutations: ["addJob", "updateJob"])
+    addedJobRuns(job_id: String!): JobRun 
+    @aws_subscribe(mutations: ["addJobRun", "updateJobRun"])
+}
+
+type Mutation {
+    addProject(id: ID!, name: String!, company: String!): Project!
+    addJob(id: ID!, name: String!, company: String!, project_id: String!): Job!
+    addJobRun(id: ID!, company: String!, job_id: String!, status: JobStatusEnum!): JobRun!
+    updateJob(
+        id: ID!, 
+        name: String!, 
+        company: String!, 
+        project_id: String!, 
+        last_time_job_completed: String!, 
+        last_time_job_completed_successfully:String!
+        total_successes: Int!
+        total_failures: Int!
+        jobs_currently_running: Int!
+        average_job_length_in_seconds: Float!
+    ): JobRun!
+    updateJobRun(
+        id: ID!, 
+        company: String!, 
+        job_id: String!, 
+        status: JobStatusEnum!,
+        start_time: AWSDateTime!,
+        end_time: AWSDateTime
+    ): JobRun!
+}
+
+schema {
+    query: Query
+    subscription: Subscription
+    mutation: Mutation
+}

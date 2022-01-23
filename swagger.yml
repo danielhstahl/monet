@@ -1,0 +1,347 @@
+---
+swagger: '2.0'
+info:
+  description: 'API for Job Coordinator'
+  version: 1.0.0
+  title: Job Coordinator API
+
+host: dummyhost
+basePath: "/"
+schemes:
+- https
+    
+paths:
+  "/project/{company}":
+    post:
+      security:
+        - NONE: []
+      x-amazon-apigateway-auth: 
+        type: NONE
+      x-amazon-apigateway-integration:
+        responses:
+          default:
+            statusCode: "200"
+            responseParameters:
+              method.response.header.Access-Control-Allow-Origin: "'*'"
+        uri: arn:aws:apigateway:${region}:lambda:path/2015-03-31/functions/${arn_create_project}/invocations
+        passthroughBehavior: "when_no_match"
+        httpMethod: "POST"
+        type: "aws_proxy"
+      summary: create a project
+      description: ''
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      parameters:
+      - name: company
+        in: path
+        type: string
+        example: mycompany
+      - name: body
+        in: body
+        required: true
+        schema:
+          Create:
+            type: object
+            required:
+            - name
+            properties:
+              name:
+                type: string
+                example: projectname
+      responses:
+        '200':
+          headers:
+            Access-Control-Allow-Origin:
+              type: "string"
+          description: successful operation
+          schema:
+            type: object
+            properties:
+              project_id: 
+                type: string
+                example: "someprojectid"
+    get:
+      security:
+        - NONE: []
+      x-amazon-apigateway-auth: 
+        type: NONE
+      x-amazon-apigateway-integration:
+        responses:
+          default:
+            statusCode: "200"
+            responseParameters:
+              method.response.header.Access-Control-Allow-Origin: "'*'"
+        uri: arn:aws:apigateway:${region}:lambda:path/2015-03-31/functions/${arg_get_projects}/invocations
+        passthroughBehavior: "when_no_match"
+        httpMethod: "GET"
+        type: "aws_proxy"
+      summary: returns all projects for company
+      description: ''
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      parameters:
+      - name: company
+        in: path
+        type: string
+        example: mycompany
+      responses:
+        '200':
+          description: successful operation
+          headers:
+            Access-Control-Allow-Origin:
+              type: "string"
+          schema:
+            type: array
+            items: 
+              type: object
+              properties:
+                company: 
+                  type: string
+                  example: somecommpany
+                name:
+                  type: string
+                  example: someproject
+                id:
+                  type: string
+                  example: someid
+  "/job/{project_id}":
+    post:
+      security:
+        - NONE: []
+      x-amazon-apigateway-auth: 
+        type: NONE
+      x-amazon-apigateway-integration:
+        responses:
+          default:
+            statusCode: "200"
+            responseParameters:
+              method.response.header.Access-Control-Allow-Origin: "'*'"
+        uri: arn:aws:apigateway:${region}:lambda:path/2015-03-31/functions/${arn_create_job}/invocations
+        passthroughBehavior: "when_no_match"
+        httpMethod: "POST"
+        type: "aws_proxy"
+      summary: create a job
+      description: ''
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      parameters:
+      - name: project_id
+        in: path
+        type: string
+        example: myproject
+      - name: body
+        in: body
+        required: true
+        schema:
+          Create:
+            type: object
+            required:
+            - name
+            - company
+            properties:
+              name:
+                type: string
+                example: projectname
+              company:
+                type: string
+                example: companyname
+      responses:
+        '200':
+          headers:
+            Access-Control-Allow-Origin:
+              type: "string"
+          description: successful operation
+          schema:
+            type: object
+            properties:
+              job_id: 
+                type: string
+                example: "somejobid"
+            
+    get:
+      security:
+        - NONE: []
+      x-amazon-apigateway-auth: 
+        type: NONE
+      x-amazon-apigateway-integration:
+        responses:
+          default:
+            statusCode: "200"
+            responseParameters:
+              method.response.header.Access-Control-Allow-Origin: "'*'"
+        uri: arn:aws:apigateway:${region}:lambda:path/2015-03-31/functions/${arn_get_jobs}/invocations
+        passthroughBehavior: "when_no_match"
+        httpMethod: "GET"
+        type: "aws_proxy"
+      summary: returns all jobs for a project
+      description: ''
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      parameters:
+      - name: project_id
+        in: path
+        type: string
+        example: myproject
+      responses:
+        '200':
+          description: successful operation
+          headers:
+            Access-Control-Allow-Origin:
+              type: "string"
+          schema:
+            type: array
+            items: 
+              type: object
+              properties:
+                company: 
+                  type: string
+                  example: somecommpany
+                name:
+                  type: string
+                  example: someproject
+                id:
+                  type: string
+                  example: someid
+                project_id:
+                  type: string
+                  example: someprojectid
+  "/job/{job_id}/start":
+    post:
+      security:
+        - NONE: []
+      x-amazon-apigateway-auth: 
+        type: NONE
+      x-amazon-apigateway-integration:
+        responses:
+          default:
+            statusCode: "200"
+            responseParameters:
+              method.response.header.Access-Control-Allow-Origin: "'*'"
+        uri: arn:aws:apigateway:${region}:lambda:path/2015-03-31/functions/${arn_start_job}/invocations
+        passthroughBehavior: "when_no_match"
+        httpMethod: "POST"
+        type: "aws_proxy"
+      summary: updates job status
+      description: ''
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      parameters:
+      - name: project_id
+        in: path
+        type: string
+        example: myproject
+      responses:
+        '200':
+          headers:
+            Access-Control-Allow-Origin:
+              type: "string"
+          description: successful operation
+          schema:
+            type: object
+            properties:
+              job_run_id: 
+                type: string
+                example: "somejobrunid"
+
+  "/job/{job_run_id}":
+    delete:
+      security:
+        - NONE: []
+      x-amazon-apigateway-auth: 
+        type: NONE
+      x-amazon-apigateway-integration:
+        responses:
+          default:
+            statusCode: "200"
+            responseParameters:
+              method.response.header.Access-Control-Allow-Origin: "'*'"
+        uri: arn:aws:apigateway:${region}:lambda:path/2015-03-31/functions/${arn_stop_job}/invocations
+        passthroughBehavior: "when_no_match"
+        httpMethod: "POST"
+        type: "aws_proxy"
+      summary: stops job status
+      description: ''
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      parameters:
+      - name: project_id
+        in: path
+        type: string
+        example: myproject
+      responses:
+        '200':
+          headers:
+            Access-Control-Allow-Origin:
+              type: "string"
+          description: successful operation
+          schema:
+            type: object
+            properties:
+              job_run_id: 
+                type: string
+                example: "somejobrunid"       
+    get:
+      security:
+        - NONE: []
+      x-amazon-apigateway-auth: 
+        type: NONE
+      x-amazon-apigateway-integration:
+        responses:
+          default:
+            statusCode: "200"
+            responseParameters:
+              method.response.header.Access-Control-Allow-Origin: "'*'"
+        uri: arn:aws:apigateway:${region}:lambda:path/2015-03-31/functions/${arn_get_job_status}/invocations
+        passthroughBehavior: "when_no_match"
+        httpMethod: "GET"
+        type: "aws_proxy"
+      summary: returns status for job run
+      description: ''
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      parameters:
+      - name: job_run_id
+        in: path
+        type: string
+        example: somejobrunid
+      responses:
+        '200':
+          description: successful operation
+          headers:
+            Access-Control-Allow-Origin:
+              type: "string"
+          schema:
+            type: object
+            properties:
+              company: 
+                type: string
+                example: somecommpany
+              id:
+                type: string
+                example: someid
+              job_id:
+                type: string
+                example: somejobid
+              start_time:
+                type: int # I think this is how AWSDateTime?
+              end_time:
+                type: int
+              status:
+                type: string
+                example: IN_PROGRESS
+
+              
