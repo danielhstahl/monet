@@ -1,6 +1,5 @@
 enum JobStatusEnum {
   FAILED
-  PENDING
   IN_PROGRESS
   SUCCESS
 }
@@ -20,12 +19,13 @@ type Job{
     name: String!
     project_id: String! 
     company: String!
-    last_time_job_completed: String!
-    last_time_job_completed_successfully: String!
+    last_time_job_completed: String
+    last_time_job_completed_successfully: String
     total_successes: Int! 
     total_failures: Int!
-    jobs_currently_running: Int!
-    average_job_length_in_seconds: Float!
+    jobs_currently_running: Int
+    average_job_length_in_seconds: Float
+    total_jobs: Int!
 }
 type PaginatedJob {
     nextToken: String 
@@ -35,7 +35,6 @@ type PaginatedJob {
 type JobRun{ # idea, use last "n" jobs to create histogram
     id: ID!
     job_id: String!
-    company: String!
     start_time: AWSDateTime!
     end_time: AWSDateTime 
     status: JobStatusEnum!
@@ -48,11 +47,11 @@ type PaginatedJobRun {
 
 
 type Query {
-    getProjects(company: String!): PaginatedProject!
+    getProjects(company: String!, nextToken: String): PaginatedProject!
     getProjectsByName(name: String!): Project!
-    getJobsByProject(company: String!, project_id: String!): PaginatedJob!
-    getJobs(company: String!): PaginatedJob!
-    getJobRuns(job_id: String!): PaginatedJobRun!
+    getJobsByProject(company: String!, project_id: String!, nextToken: String): PaginatedJob!
+    getJobs(company: String!, nextToken: String): PaginatedJob!
+    getJobRuns(job_id: String!, nextToken: String): PaginatedJobRun!
     getLastNJobRuns(job_id: String!, n: Int!): JobRun!
 }
 
@@ -70,17 +69,17 @@ type Subscription {
 type Mutation {
     addProject(id: ID!, name: String!, company: String!): Project!
     addJob(id: ID!, name: String!, company: String!, project_id: String!): Job!
-    addJobRun(id: ID!, company: String!, job_id: String!, status: JobStatusEnum!): JobRun!
+    addJobRun(id: ID!, company: String!, job_id: String!, status: JobStatusEnum!, start_time: AWSDateTime!): JobRun!
     updateJob(
         id: ID!, 
         name: String!, 
         company: String!, 
         project_id: String!, 
         last_time_job_completed: String!, 
-        last_time_job_completed_successfully:String!
-        total_successes: Int!
-        total_failures: Int!
-        jobs_currently_running: Int!
+        last_time_job_completed_successfully:String!,
+        total_successes: Int!,
+        total_failures: Int!,
+        jobs_currently_running: Int!,
         average_job_length_in_seconds: Float!
     ): JobRun!
     updateJobRun(

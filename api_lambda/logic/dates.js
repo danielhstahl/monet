@@ -7,6 +7,12 @@ const unixToParquetFormat = (unixDate) => {
 const getNow = () => {
     return unixToParquetFormat(Date.now())
 }
+
+const getNowAWSDateTime = (unixDate) => {
+    return new Date(unixDate).toISOString()
+}
+
+
 const NUM_MS_IN_DAY = 86400000
 //converts to end of day (UTC)
 const convertDateToTimestamp = (dateAsStr) => {
@@ -17,3 +23,4 @@ const convertDateToTimestamp = (dateAsStr) => {
 exports.getNow = getNow
 exports.convertDateToTimestamp = convertDateToTimestamp
 exports.unixToParquetFormat = unixToParquetFormat
+exports.getNowAWSDateTime = getNowAWSDateTime

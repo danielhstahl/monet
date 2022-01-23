@@ -1,0 +1,10 @@
+{
+    "version" : "2018-05-29",
+	"operation" : "Query",
+	"query" : {
+		"expression": "name = :name",
+			"expressionValues" : {
+				":name" : $util.dynamodb.toDynamoDBJson($ctx.args.name)
+			}
+	}
+}

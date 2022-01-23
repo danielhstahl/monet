@@ -11,7 +11,7 @@ schemes:
 - https
     
 paths:
-  "/project/{company}":
+  "/project/create":
     post:
       security:
         - NONE: []
@@ -34,10 +34,10 @@ paths:
       produces:
       - application/json
       parameters:
-      - name: company
-        in: path
-        type: string
-        example: mycompany
+      #- name: company
+      #  in: path
+      #  type: string
+      #  example: mycompany
       - name: body
         in: body
         required: true
@@ -46,10 +46,14 @@ paths:
             type: object
             required:
             - name
+            - company
             properties:
               name:
                 type: string
                 example: projectname
+              company:
+                type: string
+                example: mycompany
       responses:
         '200':
           headers:
@@ -62,53 +66,8 @@ paths:
               project_id: 
                 type: string
                 example: "someprojectid"
-    get:
-      security:
-        - NONE: []
-      x-amazon-apigateway-auth: 
-        type: NONE
-      x-amazon-apigateway-integration:
-        responses:
-          default:
-            statusCode: "200"
-            responseParameters:
-              method.response.header.Access-Control-Allow-Origin: "'*'"
-        uri: arn:aws:apigateway:${region}:lambda:path/2015-03-31/functions/${arg_get_projects}/invocations
-        passthroughBehavior: "when_no_match"
-        httpMethod: "GET"
-        type: "aws_proxy"
-      summary: returns all projects for company
-      description: ''
-      consumes:
-      - application/json
-      produces:
-      - application/json
-      parameters:
-      - name: company
-        in: path
-        type: string
-        example: mycompany
-      responses:
-        '200':
-          description: successful operation
-          headers:
-            Access-Control-Allow-Origin:
-              type: "string"
-          schema:
-            type: array
-            items: 
-              type: object
-              properties:
-                company: 
-                  type: string
-                  example: somecommpany
-                name:
-                  type: string
-                  example: someproject
-                id:
-                  type: string
-                  example: someid
-  "/job/{project_id}":
+
+  "/project/{project_id}/job/create":
     post:
       security:
         - NONE: []
@@ -163,7 +122,7 @@ paths:
               job_id: 
                 type: string
                 example: "somejobid"
-            
+  "/project/{project_id}/job":          
     get:
       security:
         - NONE: []
@@ -185,11 +144,6 @@ paths:
       - application/json
       produces:
       - application/json
-      parameters:
-      - name: project_id
-        in: path
-        type: string
-        example: myproject
       responses:
         '200':
           description: successful operation
@@ -213,6 +167,7 @@ paths:
                 project_id:
                   type: string
                   example: someprojectid
+  
   "/job/{job_id}/start":
     post:
       security:
@@ -253,8 +208,8 @@ paths:
                 type: string
                 example: "somejobrunid"
 
-  "/job/{job_run_id}":
-    delete:
+  "/job/{job_id}/run/{job_run_id}/finish":
+    post:
       security:
         - NONE: []
       x-amazon-apigateway-auth: 
@@ -275,11 +230,30 @@ paths:
       - application/json
       produces:
       - application/json
-      parameters:
-      - name: project_id
+      parameters: 
+      - name: job_run_id
         in: path
         type: string
-        example: myproject
+        example: myjobrun
+      - name: job_id
+        in: path
+        type: string
+        example: myjob
+      
+      - name: body
+        in: body
+        required: true
+        schema:
+          Create:
+            type: object
+            required:
+              - status
+            type: object
+            parameters:
+              status:
+                type: string
+                example: SUCCESS
+                
       responses:
         '200':
           headers:
@@ -292,6 +266,7 @@ paths:
               job_run_id: 
                 type: string
                 example: "somejobrunid"       
+  "/job/{job_id}/run/{job_run_id}":  
     get:
       security:
         - NONE: []
@@ -318,6 +293,10 @@ paths:
         in: path
         type: string
         example: somejobrunid
+      - name: job_id
+        in: path
+        type: string
+        example: myjob
       responses:
         '200':
           description: successful operation
@@ -337,9 +316,9 @@ paths:
                 type: string
                 example: somejobid
               start_time:
-                type: int # I think this is how AWSDateTime?
+                type: string
               end_time:
-                type: int
+                type: string
               status:
                 type: string
                 example: IN_PROGRESS
