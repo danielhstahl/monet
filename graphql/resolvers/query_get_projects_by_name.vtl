@@ -3,8 +3,8 @@
 	"operation" : "Query",
 	"query" : {
 		"expression": "name = :name",
-			"expressionValues" : {
-				":name" : $util.dynamodb.toDynamoDBJson($ctx.args.name)
-			}
+        "expressionValues" : {
+            ":name" : $util.dynamodb.toDynamoDBJson($ctx.args.name)
+        }
 	}
 }

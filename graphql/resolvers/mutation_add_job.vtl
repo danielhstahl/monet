@@ -1,0 +1,17 @@
+{
+  "version" : "2018-05-29",
+  "operation": "PutItem",
+  "key": {
+    "id": $util.dynamodb.toDynamoDBJson($util.autoId())
+  },
+  "attributeValues": {
+    "name":  $util.dynamodb.toDynamoDBJson($ctx.arguments.name),
+    "company":  $util.dynamodb.toDynamoDBJson($ctx.arguments.company),
+    "project_id":  $util.dynamodb.toDynamoDBJson($ctx.arguments.project_id),
+    "total_successes": $util.dynamodb.toDynamoDBJson(0),
+    "total_failures": $util.dynamodb.toDynamoDBJson(0),
+    "jobs_currently_running": $util.dynamodb.toDynamoDBJson(0),
+    "total_jobs": $util.dynamodb.toDynamoDBJson(0),
+    "created_date": $util.dynamodb.toDynamoDBJson($util.time.nowISO8601())
+  }
+}

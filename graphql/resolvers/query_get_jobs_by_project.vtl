@@ -3,10 +3,10 @@
 	"operation" : "Query",
 	"query" : {
 		"expression": "company = :company and project_id = :project_id",
-			"expressionValues" : {
-				":company" : $util.dynamodb.toDynamoDBJson($ctx.args.company),
-                ":project_id" : $util.dynamodb.toDynamoDBJson($ctx.args.project_id)
-			}
+        "expressionValues" : {
+            ":company" : $util.dynamodb.toDynamoDBJson($ctx.args.company),
+            ":project_id" : $util.dynamodb.toDynamoDBJson($ctx.args.project_id)
+        }
 	}
 	#if($ctx.args.nextToken)
 			,"nextToken": $util.toJson($ctx.args.nextToken)

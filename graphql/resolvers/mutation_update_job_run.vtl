@@ -1,0 +1,14 @@
+{
+  "version" : "2018-05-29",
+  "operation": "UpdateItem",
+  "key": {
+    "id": $util.dynamodb.toDynamoDBJson($ctx.arguments.id)
+  },
+  "update":{
+        "expression": "SET status = :status, end_time = :end_time",
+        "expressionValues": {
+            "status": $util.dynamodb.toDynamoDBJson($ctx.arguments.status),
+            "end_time": $util.dynamodb.toDynamoDBJson($ctx.arguments.end_time),
+        }
+  }
+}

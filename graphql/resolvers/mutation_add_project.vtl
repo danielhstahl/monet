@@ -1,0 +1,12 @@
+{
+  "version" : "2018-05-29",
+  "operation": "PutItem",
+  "key": {
+    "id": $util.dynamodb.toDynamoDBJson($util.autoId())
+  },
+  "attributeValues": {
+    "name":  $util.dynamodb.toDynamoDBJson($ctx.arguments.name),
+    "company":  $util.dynamodb.toDynamoDBJson($ctx.arguments.company),
+    "created_date":  $util.dynamodb.toDynamoDBJson($util.time.nowISO8601())
+  }
+}

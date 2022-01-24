@@ -7,6 +7,7 @@ type Project {
     id: ID!
     name: String!
     company: String!
+    created_date: AWSDateTime
 }
 
 type PaginatedProject {
@@ -26,6 +27,7 @@ type Job{
     jobs_currently_running: Int
     average_job_length_in_seconds: Float
     total_jobs: Int!
+    created_date: AWSDateTime!
 }
 type PaginatedJob {
     nextToken: String 
@@ -67,27 +69,22 @@ type Subscription {
 }
 
 type Mutation {
-    addProject(id: ID!, name: String!, company: String!): Project!
-    addJob(id: ID!, name: String!, company: String!, project_id: String!): Job!
-    addJobRun(id: ID!, company: String!, job_id: String!, status: JobStatusEnum!, start_time: AWSDateTime!): JobRun!
+    addProject(name: String!, company: String!): Project!
+    addJob(name: String!, company: String!, project_id: String!): Job!
+    addJobRun(company: String!, job_id: String!, status: JobStatusEnum!, start_time: AWSDateTime!): JobRun!
     updateJob(
         id: ID!, 
-        name: String!, 
-        company: String!, 
-        project_id: String!, 
         last_time_job_completed: String!, 
         last_time_job_completed_successfully:String!,
         total_successes: Int!,
         total_failures: Int!,
         jobs_currently_running: Int!,
         average_job_length_in_seconds: Float!
+        total_jobs: Int!
     ): JobRun!
     updateJobRun(
         id: ID!, 
-        company: String!, 
-        job_id: String!, 
         status: JobStatusEnum!,
-        start_time: AWSDateTime!,
         end_time: AWSDateTime
     ): JobRun!
 }

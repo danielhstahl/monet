@@ -3,9 +3,9 @@
 	"operation" : "Query",
 	"query" : {
 		"expression": "job_id = :job_id",
-			"expressionValues" : {
-				":job_id" : $util.dynamodb.toDynamoDBJson($ctx.args.job_id)
-			}
+        "expressionValues" : {
+            ":job_id" : $util.dynamodb.toDynamoDBJson($ctx.args.job_id)
+        }
 	}
 	#if($ctx.args.nextToken)
 			,"nextToken": $util.toJson($ctx.args.nextToken)
