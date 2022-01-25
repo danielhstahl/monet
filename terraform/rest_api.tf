@@ -2,13 +2,13 @@
 data "template_file" "swagger" {
   template = file("../swagger.yml")
   vars = {
-    region                  = var.region
+    region             = var.region
     arn_create_project = aws_lambda_function.create_project.arn
-    arn_create_job  = aws_lambda_function.create_job.arn
-    arn_get_jobs    = aws_lambda_function.get_jobs.arn
-    arn_start_job   = aws_lambda_function.start_job.arn
-    arn_stop_job = aws_lambda_function.stop_job.arn
-    arn_get_job_status    = aws_lambda_function.get_job_status.arn
+    arn_create_job     = aws_lambda_function.create_job.arn
+    arn_get_jobs       = aws_lambda_function.get_jobs.arn
+    arn_start_job      = aws_lambda_function.start_job.arn
+    arn_stop_job       = aws_lambda_function.stop_job.arn
+    arn_get_job_status = aws_lambda_function.get_job_status.arn
 
   }
 }
@@ -54,5 +54,5 @@ output "endpointdeploy" {
 
 resource "local_file" "envforreact" {
   content  = "REACT_APP_HOST=${aws_api_gateway_stage.api.invoke_url}"
-  filename = "../jobcoordinator/.env" 
+  filename = "../jobcoordinator/.env"
 }

@@ -29,12 +29,12 @@ resource "aws_glue_catalog_table" "project_info_table" {
 
     }
     columns {
-      name="name"
-      type="string"
+      name = "name"
+      type = "string"
     }
     columns {
-      name="company"
-      type="string"
+      name = "company"
+      type = "string"
     }
 
     columns {
@@ -74,12 +74,12 @@ resource "aws_glue_catalog_table" "job_info_table" {
       type = "string"
     }
     columns {
-      name="name"
-      type="string"
+      name = "name"
+      type = "string"
     }
     columns {
-      name="company"
-      type="string"
+      name = "company"
+      type = "string"
     }
     columns {
       name = "logDate"
@@ -119,8 +119,8 @@ resource "aws_glue_catalog_table" "job_run_info_table" {
       type = "string"
     }
     columns {
-      name="company"
-      type="string"
+      name = "company"
+      type = "string"
     }
     columns {
       name = "startTime"
@@ -172,8 +172,8 @@ resource "aws_glue_catalog_table" "job_run_events_table" {
       type = "string"
     }
     columns {
-      name="company"
-      type="string"
+      name = "company"
+      type = "string"
     }
     columns {
       name = "startTime"

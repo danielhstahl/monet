@@ -6,10 +6,10 @@ resource "aws_appsync_graphql_api" "coordinator" {
   additional_authentication_provider {
     authentication_type = "AWS_IAM"
   }
-  name                = "jobinfo"
-  schema=file("../graphql/schema.graphql")
+  name   = "jobinfo"
+  schema = file("../graphql/schema.graphql")
   openid_connect_config {
-    issuer = var.issuer 
+    issuer    = var.issuer
     client_id = var.client_id
   }
 }
@@ -21,30 +21,30 @@ resource "aws_appsync_graphql_api" "coordinator" {
 }*/
 
 resource "aws_appsync_datasource" "project" {
-  api_id           = aws_appsync_graphql_api.coordinator.id
-  name             = "project_${var.stage}"
+  api_id = aws_appsync_graphql_api.coordinator.id
+  name   = "project_${var.stage}"
   #service_role_arn = aws_iam_role.example.arn # TODO add this role
-  type             = "AMAZON_DYNAMODB"
+  type = "AMAZON_DYNAMODB"
   dynamodb_config {
     table_name = aws_dynamodb_table.project.name
   }
 }
 
 resource "aws_appsync_datasource" "job" {
-  api_id           = aws_appsync_graphql_api.coordinator.id
-  name             = "job_${var.stage}"
+  api_id = aws_appsync_graphql_api.coordinator.id
+  name   = "job_${var.stage}"
   #service_role_arn = aws_iam_role.example.arn # TODO add this role
-  type             = "AMAZON_DYNAMODB"
+  type = "AMAZON_DYNAMODB"
   dynamodb_config {
     table_name = aws_dynamodb_table.job.name
   }
 }
 
 resource "aws_appsync_datasource" "jobrun" {
-  api_id           = aws_appsync_graphql_api.coordinator.id
-  name             = "job_run_${var.stage}"
+  api_id = aws_appsync_graphql_api.coordinator.id
+  name   = "job_run_${var.stage}"
   # .example.arn # TODO add this role
-  type             = "AMAZON_DYNAMODB"
+  type = "AMAZON_DYNAMODB"
   dynamodb_config {
     table_name = aws_dynamodb_table.jobname.name
   }
@@ -88,12 +88,12 @@ data "aws_iam_policy_document" "appsync" {
     actions = [
       "dynamodb:GetItem",
       "dynamodb:PutItem",
-        "dynamodb:Query",
+      "dynamodb:Query",
     ]
     resources = [
-        aws_dynamodb_table.project.arn,
-        aws_dynamodb_table.job.arn,
-        aws_dynamodb_table.job_run.arn,
+      aws_dynamodb_table.project.arn,
+      aws_dynamodb_table.job.arn,
+      aws_dynamodb_table.job_run.arn,
     ]
   }
 }
