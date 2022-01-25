@@ -1,7 +1,6 @@
 const {
     executeMutation
 } = require('./helperFunctions')
-const gql = require("graphql-tag");
 const {
     createProject: createProjectMutation,
     createJob: createJobMutation,
@@ -9,8 +8,7 @@ const {
     createJobRun: createJobRunMutation,
     updateJobRun: updateJobRunMutation
 } = require("../graphql/mutations")
-const { v4: uuidv4 } = require('uuid');
-const { getNowAWSDateTime } = require('./dates');
+const { dateToAws } = require('./dates');
 const createProject = async (client, { body, pathParameters }) => {
     const { company } = pathParameters
     const { name } = body
@@ -18,7 +16,7 @@ const createProject = async (client, { body, pathParameters }) => {
         client,
         createProjectMutation,
         "createProject",
-        { id: uuidv4(), company, name }
+        { company, name }
     ) //id, name, company
 }
 
@@ -30,14 +28,9 @@ const createJob = async (client, { body, pathParameters }) => {
         createJobMutation,
         "createJob",
         {
-            id: uuidv4(),
             company,
             name,
-            project_id,
-            total_successes: 0,
-            total_failures: 0,
-            jobs_currently_running: 0,
-            total_jobs: 0
+            project_id
         }
     ) //id, name, company, project_id
 }
@@ -53,11 +46,10 @@ const startJob = async (client, dynamoClient, { body, pathParameters }) => {
             createJobRunMutation,
             "createJobRun",
             {
-                id: uuidv4(),
                 project_id,
                 job_id,
                 status: "IN_PROGRESS",
-                start_time: getNowAWSDateTime(Date.now())
+                start_time: dateToAws(Date.now())
             }
         ), //id, name, company, project_id, job_id, status, start_time
         executeMutation(
@@ -68,29 +60,32 @@ const startJob = async (client, dynamoClient, { body, pathParameters }) => {
         )
     ])
 }
-
+const MS_IN_SECONDS = 1000
 const timeDiff = (time1, time2) => {
-    return Math.abs((new Date(time2)).getTime() - (new Date(time1)).getTime());
+    return Math.abs(((new Date(time2)).getTime() - (new Date(time1)).getTime()) / MS_IN_SECONDS);
 }
+
+//export for testing
 const _evolveJobFinish = ({
     id, company, project_id, total_failures,
-    total_successes,
-    average_job_in_seconds, total_jobs
+    total_successes, last_time_job_completed_successfully,
+    average_job_in_seconds, total_jobs, jobs_currently_running
 }, { start_time, end_time, status }) => {
     const timeToRunJob = timeDiff(start_time, end_time)
     const didSucceed = status === "SUCCESS"
     const newTotalJobs = total_jobs + 1
+    const avg_job_in_seconds = average_job_in_seconds || 0
     return {
         id,
         company,
         project_id,
-        total_successes: total_successes + didSucceed ? 1 : 0,
-        total_failures: total_failures + didSucceed ? 0 : 1,
-        average_job_in_seconds: (timeToRunJob + average_job_in_seconds * total_jobs) / newTotalJobs,
+        total_successes: total_successes + (didSucceed ? 1 : 0),
+        total_failures: total_failures + (didSucceed ? 0 : 1),
+        average_job_in_seconds: (timeToRunJob + avg_job_in_seconds * total_jobs) / newTotalJobs,
         total_jobs: newTotalJobs,
-        last_time_job_completed_successfully: didSucceed ? end_time : last_time_job_completed,
+        last_time_job_completed_successfully: didSucceed ? end_time : last_time_job_completed_successfully,
         last_time_job_completed: end_time,
-        jobs_currently_running: 0
+        jobs_currently_running: Math.max(jobs_currently_running - 1, 0)
     }
 }
 
@@ -125,7 +120,7 @@ const finishJob = async (client, dynamoClient, { body, pathParameters }) => {
     const { job_run_id, job_id } = pathParameters
     const { status } = body
     const { start_time } = await _getJobRun(dynamoClient, job_run_id)
-    const end_time = getNowAWSDateTime(Date.now())
+    const end_time = dateToAws(Date.now())
     const job = await _getJob(dynamoClient, job_id) // need to get all the parameters 
     const newJob = _evolveJobFinish(job, { start_time, end_time, status })
     return Promise.all([
@@ -168,5 +163,6 @@ module.exports = {
     startJob,
     createJob,
     getJobs,
-    getJobRun
+    getJobRun,
+    _evolveJobFinish //exported for testing
 }

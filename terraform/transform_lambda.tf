@@ -11,7 +11,7 @@ resource "aws_lambda_function" "transform_project_payload" {
   filename         = data.archive_file.transform_lambdas.output_path
   function_name    = "transform_project_payload_${var.stage}"
   role             = aws_iam_role.transform_lambda.arn
-  handler          = "index.getJobStatus" #CHANGEME
+  handler          = "index.transformProject" 
   runtime          = "nodejs14.x"
   source_code_hash = filebase64sha256(data.archive_file.transform_lambdas.output_path)
 }
@@ -20,18 +20,25 @@ resource "aws_lambda_function" "transform_job_payload" {
   filename         = data.archive_file.transform_lambdas.output_path
   function_name    = "transform_job_payload_${var.stage}"
   role             = aws_iam_role.transform_lambda.arn
-  handler          = "index.getJobStatus" #CHANGEME
+  handler          = "index.transformJob" 
   runtime          = "nodejs14.x"
   source_code_hash = filebase64sha256(data.archive_file.transform_lambdas.output_path)
 }
 
-
-# handles writing to "complete jobs" table and "events" table
 resource "aws_lambda_function" "transform_job_runs_payload" {
   filename         = data.archive_file.transform_lambdas.output_path
   function_name    = "transform_job_runs_payload_${var.stage}"
   role             = aws_iam_role.transform_lambda.arn
-  handler          = "index.getJobStatus" #CHANGEME
+  handler          = "index.transformCompletedJob" 
+  runtime          = "nodejs14.x"
+  source_code_hash = filebase64sha256(data.archive_file.transform_lambdas.output_path)
+}
+
+resource "aws_lambda_function" "transform_job_runs_payload" {
+  filename         = data.archive_file.transform_lambdas.output_path
+  function_name    = "transform_job_runs_payload_${var.stage}"
+  role             = aws_iam_role.transform_lambda.arn
+  handler          = "index.transformEventsJob" 
   runtime          = "nodejs14.x"
   source_code_hash = filebase64sha256(data.archive_file.transform_lambdas.output_path)
 }

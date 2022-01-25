@@ -1,7 +1,4 @@
-const { diff } = require('deep-diff')
-const { unixToParquetFormat, convertDateToTimestamp } = require('./dates')
-
-async const executeMutation = (client, mutation, operationName, variables) => {
+const executeMutation = async (client, mutation, operationName, variables) => {
     try {
         const response = await client.mutate({
             mutation: gql(mutation),
@@ -15,6 +12,9 @@ async const executeMutation = (client, mutation, operationName, variables) => {
     }
 }
 
+module.exports = {
+    executeMutation
+}
 
 
 

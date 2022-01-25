@@ -24,7 +24,7 @@ resource "aws_glue_catalog_table" "project_info_table" {
       }
     }
     columns {
-      name = "projectId"
+      name = "project_id"
       type = "string"
 
     }
@@ -36,9 +36,13 @@ resource "aws_glue_catalog_table" "project_info_table" {
       name = "company"
       type = "string"
     }
+    columns {
+      name = "created_date"
+      type = "timestamp"
+    }
 
     columns {
-      name = "logDate"
+      name = "log_date"
       type = "timestamp"
     }
 
@@ -66,11 +70,11 @@ resource "aws_glue_catalog_table" "job_info_table" {
       }
     }
     columns {
-      name = "jobId"
+      name = "job_id"
       type = "string"
     }
     columns {
-      name = "projectId"
+      name = "project_id"
       type = "string"
     }
     columns {
@@ -82,7 +86,7 @@ resource "aws_glue_catalog_table" "job_info_table" {
       type = "string"
     }
     columns {
-      name = "logDate"
+      name = "log_date"
       type = "timestamp"
     }
 
@@ -111,11 +115,11 @@ resource "aws_glue_catalog_table" "job_run_info_table" {
       }
     }
     columns {
-      name = "jobRunId" # this is primary key in this table
+      name = "job_run_id" # this is primary key in this table
       type = "string"
     }
     columns {
-      name = "jobId"
+      name = "job_id"
       type = "string"
     }
     columns {
@@ -123,11 +127,11 @@ resource "aws_glue_catalog_table" "job_run_info_table" {
       type = "string"
     }
     columns {
-      name = "startTime"
+      name = "start_time"
       type = "timestamp"
     }
     columns {
-      name = "endTime"
+      name = "end_time"
       type = "timestamp"
     }
     columns {
@@ -135,7 +139,7 @@ resource "aws_glue_catalog_table" "job_run_info_table" {
       type = "string"
     }
     columns {
-      name = "logDate"
+      name = "log_date"
       type = "timestamp"
     }
 
@@ -164,11 +168,11 @@ resource "aws_glue_catalog_table" "job_run_events_table" {
       }
     }
     columns {
-      name = "jobRunId" # not primary key, this table takes the raw events
+      name = "job_run_id" # not primary key, this table takes raw events
       type = "string"
     }
     columns {
-      name = "jobId"
+      name = "job_id"
       type = "string"
     }
     columns {
@@ -176,11 +180,11 @@ resource "aws_glue_catalog_table" "job_run_events_table" {
       type = "string"
     }
     columns {
-      name = "startTime"
+      name = "start_time"
       type = "timestamp"
     }
     columns {
-      name = "endTime"
+      name = "end_time"
       type = "timestamp"
     }
     columns {
@@ -188,7 +192,7 @@ resource "aws_glue_catalog_table" "job_run_events_table" {
       type = "string"
     }
     columns {
-      name = "logDate"
+      name = "log_date"
       type = "timestamp"
     }
 

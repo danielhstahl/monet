@@ -1,7 +1,7 @@
 {
-  "name": "lambdas",
+  "name": "api",
   "version": "1.0.0",
-  "description": "lambdas for job coordinator",
+  "description": "api lambdas for job coordinator",
   "main": "index.js",
   "scripts": {
     "test": "jest"
@@ -12,9 +12,7 @@
     "@aws-sdk/client-appsync": "^3.48.0",
     "aws-appsync": "^4.1.4",
     "aws-sdk": "^2.987.0",
-    "deep-diff": "^1.0.2",
-    "graphql-tag": "^2.12.6",
-    "uuid": "^3.3.2"
+    "graphql-tag": "^2.12.6"
   },
   "devDependencies": {
     "docker-lambda": "^0.15.3",

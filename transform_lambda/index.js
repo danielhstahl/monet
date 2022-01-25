@@ -1,4 +1,4 @@
-
+const { projectInfo, jobInfo, completedJobInfo, eventsJobInfo } = require("./transforms")
 
 const transformWrapper = (records, fn) => {
     const results = records.map(({ recordId, data }) => {
@@ -33,11 +33,27 @@ const transformWrapper = (records, fn) => {
         records: results
     }
 }
-//I need multiple transformData per event to persist
-//the right things...is there a way to tell which field was updated?
-//I may need to get both the previous and new records and do a (deep) diff on them
-exports.transformDynamo = async function (event, context) {
+
+exports.transformProject = async function (event, context) {
     console.log("EVENT:", JSON.stringify(event, null, 2))
     const { records } = event
-    return transformWrapper(records, transformDynamoFunction)
+    return transformWrapper(records, projectInfo)
+}
+
+exports.transformJob = async function (event, context) {
+    console.log("EVENT:", JSON.stringify(event, null, 2))
+    const { records } = event
+    return transformWrapper(records, jobInfo)
+}
+
+exports.transformCompletedJob = async function (event, context) {
+    console.log("EVENT:", JSON.stringify(event, null, 2))
+    const { records } = event
+    return transformWrapper(records, completedJobInfo)
+}
+
+exports.transformEventsJob = async function (event, context) {
+    console.log("EVENT:", JSON.stringify(event, null, 2))
+    const { records } = event
+    return transformWrapper(records, eventsJobInfo)
 }

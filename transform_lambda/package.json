@@ -1,0 +1,17 @@
+{
+    "name": "transform",
+    "version": "1.0.0",
+    "description": "transform lambdas for job coordinator",
+    "main": "index.js",
+    "scripts": {
+        "test": "jest"
+    },
+    "author": "",
+    "license": "ISC",
+    "dependencies": {
+        "deep-diff": "^1.0.2"
+    },
+    "devDependencies": {
+        "jest": "^27.2.0"
+    }
+}
