@@ -63,102 +63,102 @@ resource "aws_appsync_datasource" "jobrun" {
 }*/
 
 resource "aws_appsync_resolver" "mutation_add_job_run" {
-  api_id      = aws_appsync_graphql_api.coordinator.id
-  type        = "Mutation"
-  field       = "addJobRun"
-  data_source = aws_appsync_datasource.jobrun.name
+  api_id            = aws_appsync_graphql_api.coordinator.id
+  type              = "Mutation"
+  field             = "addJobRun"
+  data_source       = aws_appsync_datasource.jobrun.name
   request_template  = file("../graphql/resolvers/mutation_add_job_run.vtl")
   response_template = file("../graphql/resolvers/mutation_response.vtl")
 }
 
 
 resource "aws_appsync_resolver" "mutation_add_job" {
-  api_id      = aws_appsync_graphql_api.coordinator.id
-  type        = "Mutation"
-  field       = "addJob"
-  data_source = aws_appsync_datasource.job.name
+  api_id            = aws_appsync_graphql_api.coordinator.id
+  type              = "Mutation"
+  field             = "addJob"
+  data_source       = aws_appsync_datasource.job.name
   request_template  = file("../graphql/resolvers/mutation_add_job.vtl")
   response_template = file("../graphql/resolvers/mutation_response.vtl")
 }
 
 resource "aws_appsync_resolver" "mutation_add_project" {
-  api_id      = aws_appsync_graphql_api.coordinator.id
-  type        = "Mutation"
-  field       = "addProject"
-  data_source = aws_appsync_datasource.project.name
+  api_id            = aws_appsync_graphql_api.coordinator.id
+  type              = "Mutation"
+  field             = "addProject"
+  data_source       = aws_appsync_datasource.project.name
   request_template  = file("../graphql/resolvers/mutation_add_project.vtl")
   response_template = file("../graphql/resolvers/mutation_response.vtl")
 }
 
 resource "aws_appsync_resolver" "mutation_update_job_run" {
-  api_id      = aws_appsync_graphql_api.coordinator.id
-  type        = "Mutation"
-  field       = "updateJobRun"
-  data_source = aws_appsync_datasource.jobrun.name
+  api_id            = aws_appsync_graphql_api.coordinator.id
+  type              = "Mutation"
+  field             = "updateJobRun"
+  data_source       = aws_appsync_datasource.jobrun.name
   request_template  = file("../graphql/resolvers/mutation_update_job_run.vtl")
   response_template = file("../graphql/resolvers/mutation_response.vtl")
 }
 
 resource "aws_appsync_resolver" "mutation_update_job" {
-  api_id      = aws_appsync_graphql_api.coordinator.id
-  type        = "Mutation"
-  field       = "updateJob"
-  data_source = aws_appsync_datasource.job.name
+  api_id            = aws_appsync_graphql_api.coordinator.id
+  type              = "Mutation"
+  field             = "updateJob"
+  data_source       = aws_appsync_datasource.job.name
   request_template  = file("../graphql/resolvers/mutation_update_job.vtl")
   response_template = file("../graphql/resolvers/mutation_response.vtl")
 }
 
 resource "aws_appsync_resolver" "query_get_job_runs" {
-  api_id      = aws_appsync_graphql_api.coordinator.id
-  type        = "Query"
-  field       = "getJobRuns"
-  data_source = aws_appsync_datasource.jobrun.name
+  api_id            = aws_appsync_graphql_api.coordinator.id
+  type              = "Query"
+  field             = "getJobRuns"
+  data_source       = aws_appsync_datasource.jobrun.name
   request_template  = file("../graphql/resolvers/query_get_job_runs.vtl")
   response_template = file("../graphql/resolvers/query_response.vtl")
 }
 
 resource "aws_appsync_resolver" "query_get_jobs_by_project" {
-  api_id      = aws_appsync_graphql_api.coordinator.id
-  type        = "Query"
-  field       = "getJobsByProject"
-  data_source = aws_appsync_datasource.job.name
+  api_id            = aws_appsync_graphql_api.coordinator.id
+  type              = "Query"
+  field             = "getJobsByProject"
+  data_source       = aws_appsync_datasource.job.name
   request_template  = file("../graphql/resolvers/query_get_jobs_by_project.vtl")
   response_template = file("../graphql/resolvers/query_response.vtl")
 }
 
 resource "aws_appsync_resolver" "query_get_jobs" {
-  api_id      = aws_appsync_graphql_api.coordinator.id
-  type        = "Query"
-  field       = "getJobs"
-  data_source = aws_appsync_datasource.job.name
+  api_id            = aws_appsync_graphql_api.coordinator.id
+  type              = "Query"
+  field             = "getJobs"
+  data_source       = aws_appsync_datasource.job.name
   request_template  = file("../graphql/resolvers/query_get_jobs.vtl")
   response_template = file("../graphql/resolvers/query_response.vtl")
 }
 
 resource "aws_appsync_resolver" "query_get_last_n_job_runs" {
-  api_id      = aws_appsync_graphql_api.coordinator.id
-  type        = "Query"
-  field       = "getLastNJobRuns"
-  data_source = aws_appsync_datasource.jobrun.name
+  api_id            = aws_appsync_graphql_api.coordinator.id
+  type              = "Query"
+  field             = "getLastNJobRuns"
+  data_source       = aws_appsync_datasource.jobrun.name
   request_template  = file("../graphql/resolvers/query_get_last_n_job_runs.vtl")
   response_template = file("../graphql/resolvers/query_response.vtl")
 }
 
 
 resource "aws_appsync_resolver" "get_projects_by_name" {
-  api_id      = aws_appsync_graphql_api.coordinator.id
-  type        = "Query"
-  field       = "getProjectsByName"
-  data_source = aws_appsync_datasource.project.name
+  api_id            = aws_appsync_graphql_api.coordinator.id
+  type              = "Query"
+  field             = "getProjectsByName"
+  data_source       = aws_appsync_datasource.project.name
   request_template  = file("../graphql/resolvers/query_get_projects_by_name.vtl")
   response_template = file("../graphql/resolvers/query_response.vtl")
 }
 
 resource "aws_appsync_resolver" "get_projects" {
-  api_id      = aws_appsync_graphql_api.coordinator.id
-  type        = "Query"
-  field       = "getProjects"
-  data_source = aws_appsync_datasource.project.name
+  api_id            = aws_appsync_graphql_api.coordinator.id
+  type              = "Query"
+  field             = "getProjects"
+  data_source       = aws_appsync_datasource.project.name
   request_template  = file("../graphql/resolvers/query_get_projects.vtl")
   response_template = file("../graphql/resolvers/query_response.vtl")
 }

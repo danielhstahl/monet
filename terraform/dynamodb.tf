@@ -18,14 +18,14 @@ resource "aws_dynamodb_table" "project" {
     type = "S"
   }
   global_secondary_index {
-    name     = "company_index"
-    hash_key = "company"
-    projection_type= "KEYS_ONLY"
+    name            = "company_index"
+    hash_key        = "company"
+    projection_type = "KEYS_ONLY"
   }
   global_secondary_index {
-    name     = "name_index"
-    hash_key = "name"
-    projection_type= "KEYS_ONLY"
+    name            = "name_index"
+    hash_key        = "name"
+    projection_type = "KEYS_ONLY"
   }
   tags = {
     Name        = "project"
@@ -78,14 +78,14 @@ resource "aws_dynamodb_table" "job" {
     type = "N"
   }
   global_secondary_index {
-    name     = "company_index"
-    hash_key = "company"
-    projection_type= "KEYS_ONLY"
+    name            = "company_index"
+    hash_key        = "company"
+    projection_type = "KEYS_ONLY"
   }
   global_secondary_index {
-    name     = "project_index"
-    hash_key = "project_id"
-    projection_type= "KEYS_ONLY"
+    name            = "project_index"
+    hash_key        = "project_id"
+    projection_type = "KEYS_ONLY"
   }
   tags = {
     Name        = "job"
@@ -119,9 +119,9 @@ resource "aws_dynamodb_table" "job_run" {
     type = "S"
   }
   global_secondary_index {
-    name     = "project_index"
-    hash_key = "job_id"
-    projection_type= "KEYS_ONLY"
+    name            = "project_index"
+    hash_key        = "job_id"
+    projection_type = "KEYS_ONLY"
   }
   tags = {
     Name        = "job_run"

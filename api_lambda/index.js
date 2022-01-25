@@ -5,8 +5,6 @@ AWS.config.update({ region })
 const AWSAppSyncClient = require("aws-appsync").default;
 const { AUTH_TYPE } = require("aws-appsync");
 
-
-
 let dynamoDbClient
 const makeDynamoClient = () => {
     dynamoDbClient = new AWS.DynamoDB.DocumentClient({

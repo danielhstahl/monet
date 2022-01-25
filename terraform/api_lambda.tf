@@ -193,6 +193,19 @@ data "aws_iam_policy_document" "api_lambda_assume_role" {
     }
   }
 }
+
+data "aws_iam_policy_document" "api_lambda_to_graphql_policy" {
+  statement {
+    effect = "Allow"
+    actions = [
+      "appsync:GraphQL"
+    ]
+    resources = [
+      aws_appsync_graphql_api.coordinator.arn
+    ]
+  }
+}
+
 data "aws_iam_policy_document" "api_lambda_to_dynamodb_assume_policy" {
   statement {
     effect = "Allow"
@@ -202,7 +215,9 @@ data "aws_iam_policy_document" "api_lambda_to_dynamodb_assume_policy" {
       "dynamodb:GetItem",
     ]
     resources = [
-      "*"
+      aws_dynamodb_table.project.arn,
+      aws_dynamodb_table.job.arn,
+      aws_dynamodb_table.job_run.arn,
     ]
   }
 }
