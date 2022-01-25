@@ -7,7 +7,7 @@ resource "aws_kinesis_firehose_delivery_stream" "persist_projects" {
   destination = "extended_s3"
 
   kinesis_source_configuration {
-    kinesis_stream_arn = aws_kinesis_stream.persist_projects.arn
+    kinesis_stream_arn = aws_kinesis_stream.persist_project.arn
     role_arn           = aws_iam_role.kinesis_firehose_stream_role.arn
   }
   extended_s3_configuration {
@@ -23,7 +23,7 @@ resource "aws_kinesis_firehose_delivery_stream" "persist_projects" {
         type = "Lambda"
         parameters {
           parameter_name  = "LambdaArn"
-          parameter_value = "${aws_lambda_function.transform_projects.arn}:$LATEST"
+          parameter_value = "${aws_lambda_function.transform_project_payload.arn}:$LATEST"
         }
       }
     }
@@ -56,7 +56,7 @@ resource "aws_kinesis_firehose_delivery_stream" "persist_jobs" {
   destination = "extended_s3"
 
   kinesis_source_configuration {
-    kinesis_stream_arn = aws_kinesis_stream.persist_jobs.arn
+    kinesis_stream_arn = aws_kinesis_stream.persist_job.arn
     role_arn           = aws_iam_role.kinesis_firehose_stream_role.arn
   }
   extended_s3_configuration {
@@ -72,7 +72,7 @@ resource "aws_kinesis_firehose_delivery_stream" "persist_jobs" {
         type = "Lambda"
         parameters {
           parameter_name  = "LambdaArn"
-          parameter_value = "${aws_lambda_function.transform_jobs.arn}:$LATEST"
+          parameter_value = "${aws_lambda_function.transform_job_payload.arn}:$LATEST"
         }
       }
     }
@@ -101,12 +101,13 @@ resource "aws_kinesis_firehose_delivery_stream" "persist_jobs" {
 }
 
 
+//completed jobs
 resource "aws_kinesis_firehose_delivery_stream" "persist_job_runs" {
-  name        = "persist_job_runs_${var.stage}"
+  name        = "completed_job_runs_${var.stage}"
   destination = "extended_s3"
 
   kinesis_source_configuration {
-    kinesis_stream_arn = aws_kinesis_stream.persist_job_runs.arn
+    kinesis_stream_arn = aws_kinesis_stream.persist_job_run.arn
     role_arn           = aws_iam_role.kinesis_firehose_stream_role.arn
   }
   extended_s3_configuration {
@@ -122,7 +123,58 @@ resource "aws_kinesis_firehose_delivery_stream" "persist_job_runs" {
         type = "Lambda"
         parameters {
           parameter_name  = "LambdaArn"
-          parameter_value = "${aws_lambda_function.transform_job_runs.arn}:$LATEST"
+          parameter_value = "${aws_lambda_function.transform_job_runs_payload.arn}:$LATEST"
+        }
+      }
+    }
+    data_format_conversion_configuration {
+      input_format_configuration {
+        deserializer {
+          open_x_json_ser_de {
+            # column_to_json_key_mappings = { ts = "timestamp" } # we have a timestamp column
+          }
+        }
+      }
+
+      output_format_configuration {
+        serializer {
+          parquet_ser_de { compression = "SNAPPY" }
+        }
+      }
+
+      schema_configuration {
+        database_name = aws_glue_catalog_database.glue_catalog_database.name
+        table_name    = aws_glue_catalog_table.job_run_info_table.name
+        role_arn      = aws_iam_role.kinesis_firehose_stream_role.arn
+      }
+    }
+  }
+}
+
+
+//raw events
+resource "aws_kinesis_firehose_delivery_stream" "persist_job_events" {
+  name        = "persist_job_events_${var.stage}"
+  destination = "extended_s3"
+
+  kinesis_source_configuration {
+    kinesis_stream_arn = aws_kinesis_stream.persist_job_run.arn
+    role_arn           = aws_iam_role.kinesis_firehose_stream_role.arn
+  }
+  extended_s3_configuration {
+    buffer_size         = 128
+    role_arn            = aws_iam_role.kinesis_firehose_stream_role.arn
+    bucket_arn          = aws_s3_bucket.kinesis_firehose_stream_bucket.arn
+    prefix              = "persist_basic/year=!{timestamp:yyyy}/month=!{timestamp:MM}/day=!{timestamp:dd}/"
+    error_output_prefix = "!{firehose:error-output-type}/year=!{timestamp:yyyy}/month=!{timestamp:MM}/day=!{timestamp:dd}/"
+    processing_configuration {
+      enabled = true
+
+      processors {
+        type = "Lambda"
+        parameters {
+          parameter_name  = "LambdaArn"
+          parameter_value = "${aws_lambda_function.transform_job_runs_payload.arn}:$LATEST"
         }
       }
     }
@@ -203,7 +255,9 @@ data "aws_iam_policy_document" "kinesis_firehose_kinesis_data_stream_policy" {
     ]
 
     resources = [
-      aws_kinesis_stream.persist_subscription.arn
+      aws_kinesis_stream.persist_project.arn,
+      aws_kinesis_stream.persist_job.arn,
+      aws_kinesis_stream.persist_job_run.arn
     ]
   }
 }
@@ -223,12 +277,12 @@ data "aws_iam_policy_document" "lambda_assume_policy" {
     ]
 
     resources = [
-      aws_lambda_function.transform_contract_basic_info.arn,
-      "${aws_lambda_function.transform_contract_basic_info.arn}:*",
-      aws_lambda_function.transform_payment_info.arn,
-      "${aws_lambda_function.transform_payment_info.arn}:*",
-      aws_lambda_function.transform_charge_info.arn,
-      "${aws_lambda_function.transform_charge_info.arn}:*",
+      aws_lambda_function.transform_project_payload.arn,
+      "${aws_lambda_function.transform_project_payload.arn}:*",
+      aws_lambda_function.transform_job_payload.arn,
+      "${aws_lambda_function.transform_job_payload.arn}:*",
+      aws_lambda_function.transform_job_runs_payload.arn,
+      "${aws_lambda_function.transform_job_runs_payload.arn}:*",
     ]
   }
 }

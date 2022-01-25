@@ -53,14 +53,14 @@ resource "aws_appsync_datasource" "jobrun" {
 # Create resolver using the velocity templates.
 
 ### TODO create more of these
-resource "aws_appsync_resolver" "query" {
+/*resource "aws_appsync_resolver" "query" {
   api_id      = aws_appsync_graphql_api.coordinator.id
   type        = "Query"
   field       = "listPeople"
   data_source = aws_appsync_datasource.coordinator.name
   request_template  = file("../lambda/resolvers/request.vtl")
   response_template = file("../lambda/resolvers/response.vtl")
-}
+}*/
 
 
 
@@ -68,7 +68,7 @@ resource "aws_appsync_resolver" "query" {
 
 
 resource "aws_iam_role" "appsync" {
-  assume_role_policy = aws_iam_policy_document.appsync_assume_role.json
+  assume_role_policy = data.aws_iam_policy_document.appsync_assume_role.json
 }
 
 data "aws_iam_policy_document" "appsync_assume_role" {

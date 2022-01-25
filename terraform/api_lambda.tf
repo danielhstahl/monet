@@ -31,7 +31,7 @@ resource "aws_lambda_function" "create_project" {
       TABLE_NAME           = aws_dynamodb_table.project.name
       REGION               = var.region
       GRAPHQL_API_ENDPOINT = aws_appsync_graphql_api.coordinator.uris["GRAPHQL"]
-      GRAPHQL_API_KEY      = aws_appsync_api_key.appsync_api_key.key
+      #GRAPHQL_API_KEY      = aws_appsync_api_key.appsync_api_key.key
     }
   }
 }
@@ -59,7 +59,7 @@ resource "aws_lambda_function" "create_job" {
       TABLE_NAME           = aws_dynamodb_table.job.name
       REGION               = var.region
       GRAPHQL_API_ENDPOINT = aws_appsync_graphql_api.coordinator.uris["GRAPHQL"]
-      GRAPHQL_API_KEY      = aws_appsync_api_key.appsync_api_key.key
+      #GRAPHQL_API_KEY      = aws_appsync_api_key.appsync_api_key.key
     }
   }
 }
@@ -87,7 +87,7 @@ resource "aws_lambda_function" "get_jobs" {
       TABLE_NAME           = aws_dynamodb_table.job.name
       REGION               = var.region
       GRAPHQL_API_ENDPOINT = aws_appsync_graphql_api.coordinator.uris["GRAPHQL"]
-      GRAPHQL_API_KEY      = aws_appsync_api_key.appsync_api_key.key
+      #GRAPHQL_API_KEY      = aws_appsync_api_key.appsync_api_key.key
     }
   }
 }
