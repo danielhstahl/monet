@@ -10,8 +10,7 @@ const {
 } = require("../graphql/mutations")
 const { dateToAws } = require('./dates');
 const createProject = async (client, { body, pathParameters }) => {
-    const { company } = pathParameters
-    const { name } = body
+    const { name, company } = body
     return await executeMutation(
         client,
         createProjectMutation,
@@ -36,9 +35,8 @@ const createJob = async (client, { body, pathParameters }) => {
 }
 
 
-const startJob = async (client, dynamoClient, { body, pathParameters }) => {
+const startJob = async (client, dynamoClient, { pathParameters }) => {
     const { job_id } = pathParameters
-    const { project_id } = body
     const job = await _getJob(dynamoClient, job_id)
     return Promise.all([
         executeMutation(
@@ -46,7 +44,6 @@ const startJob = async (client, dynamoClient, { body, pathParameters }) => {
             createJobRunMutation,
             "createJobRun",
             {
-                project_id,
                 job_id,
                 status: "IN_PROGRESS",
                 start_time: dateToAws(Date.now())
@@ -130,11 +127,7 @@ const finishJob = async (client, dynamoClient, { body, pathParameters }) => {
             "updateJobRun",
             {
                 id: job_run_id,
-                company,
-                project_id,
-                job_id,
                 status,
-                start_time,
                 end_time
             }
         ),

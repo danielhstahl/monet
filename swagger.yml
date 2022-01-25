@@ -191,7 +191,7 @@ paths:
       produces:
       - application/json
       parameters:
-      - name: project_id
+      - name: job_id
         in: path
         type: string
         example: myproject

@@ -1,6 +1,10 @@
 // Load the AWS SDK for Node.js
 const AWS = require('aws-sdk')
+global.fetch = require('node-fetch')
+const { createJob, createProject, startJob, finishJob, getJobRun, getJobs } = require('./logic/api_lambdas')
 const region = process.env.REGION;
+const appsyncUrl = process.env.GRAPHQL_API_ENDPOINT;
+
 AWS.config.update({ region })
 const AWSAppSyncClient = require("aws-appsync").default;
 const { AUTH_TYPE } = require("aws-appsync");
@@ -13,7 +17,7 @@ const makeDynamoClient = () => {
     return dynamoDbClient
 }
 
-const appsyncUrl = process.env.GRAPHQL_API_ENDPOINT;
+
 let appSyncClient
 const makeAppSyncClient = () => {
     appSyncClient = new AWSAppSyncClient({
@@ -27,14 +31,14 @@ const makeAppSyncClient = () => {
     });
 }
 const handleError = error => {
-    console.error(e)
+    console.error(error)
     return {
         statusCode: 500,
         headers: {
             "Access-Control-Allow-Origin": "*",
             "Access-Control-Allow-Methods": "DELETE,POST,GET"
         },
-        body: JSON.stringify({ error: e.message })
+        body: JSON.stringify({ error: error.message })
     }
 }
 exports.createProject = async (event, context) => {
