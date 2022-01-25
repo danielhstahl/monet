@@ -46,7 +46,7 @@ resource "aws_appsync_datasource" "jobrun" {
   # .example.arn # TODO add this role
   type = "AMAZON_DYNAMODB"
   dynamodb_config {
-    table_name = aws_dynamodb_table.jobname.name
+    table_name = aws_dynamodb_table.job_run.name
   }
 }
 
@@ -54,11 +54,10 @@ resource "aws_appsync_datasource" "jobrun" {
 
 ### TODO create more of these
 resource "aws_appsync_resolver" "query" {
-  api_id      = aws_appsync_graphql_api.appsync.id
+  api_id      = aws_appsync_graphql_api.coordinator.id
   type        = "Query"
   field       = "listPeople"
   data_source = aws_appsync_datasource.coordinator.name
-
   request_template  = file("../lambda/resolvers/request.vtl")
   response_template = file("../lambda/resolvers/response.vtl")
 }

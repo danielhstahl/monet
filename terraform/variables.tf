@@ -3,10 +3,6 @@ variable "region" {
   default = "us-east-1"
 }
 
-#variable "accountId" {
-#  type    = string
-#  default = "029524284009"
-#}
 variable "stage" {
   type = string
 }
