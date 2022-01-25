@@ -54,5 +54,5 @@ output "endpointdeploy" {
 
 resource "local_file" "envforreact" {
   content  = "REACT_APP_HOST=${aws_api_gateway_stage.api.invoke_url}"
-  filename = "../jobcoordinator/.env"
+  filename = "../client/.env"
 }

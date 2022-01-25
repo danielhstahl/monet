@@ -57,16 +57,7 @@ type Query {
     getLastNJobRuns(job_id: String!, n: Int!): JobRun!
 }
 
-type Subscription {
-    addedProjects(company: String!): Project
-    @aws_subscribe(mutations: ["addProject"])
-    addedJob(company: String!): Job
-    @aws_subscribe(mutations: ["addJob", "updateJob"])
-    addedJobByProject(company: String!, project_id: String!): Job
-    @aws_subscribe(mutations: ["addJob", "updateJob"])
-    addedJobRuns(job_id: String!): JobRun 
-    @aws_subscribe(mutations: ["addJobRun", "updateJobRun"])
-}
+
 
 type Mutation {
     addProject(name: String!, company: String!): Project!
@@ -81,12 +72,26 @@ type Mutation {
         jobs_currently_running: Int!,
         average_job_length_in_seconds: Float!
         total_jobs: Int!
-    ): JobRun!
+    ): Job!
     updateJobRun(
         id: ID!, 
         status: JobStatusEnum!,
         end_time: AWSDateTime
     ): JobRun!
+}
+
+type Subscription {
+    addedProjects(company: String!): Project
+    @aws_subscribe(mutations: ["addProject"])
+    
+    addedJob(company: String!): Job
+    @aws_subscribe(mutations: ["addJob", "updateJob"])
+
+    addedJobByProject(company: String!, project_id: String!): Job
+    @aws_subscribe(mutations: ["addJob", "updateJob"])
+
+    addedJobRuns(job_id: String!): JobRun 
+    @aws_subscribe(mutations: ["addJobRun", "updateJobRun"])
 }
 
 schema {

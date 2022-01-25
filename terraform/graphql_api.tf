@@ -23,7 +23,7 @@ resource "aws_appsync_graphql_api" "coordinator" {
 resource "aws_appsync_datasource" "project" {
   api_id = aws_appsync_graphql_api.coordinator.id
   name   = "project_${var.stage}"
-  #service_role_arn = aws_iam_role.example.arn # TODO add this role
+  service_role_arn = aws_iam_role.appsync.arn 
   type = "AMAZON_DYNAMODB"
   dynamodb_config {
     table_name = aws_dynamodb_table.project.name
@@ -33,7 +33,7 @@ resource "aws_appsync_datasource" "project" {
 resource "aws_appsync_datasource" "job" {
   api_id = aws_appsync_graphql_api.coordinator.id
   name   = "job_${var.stage}"
-  #service_role_arn = aws_iam_role.example.arn # TODO add this role
+  service_role_arn = aws_iam_role.appsync.arn 
   type = "AMAZON_DYNAMODB"
   dynamodb_config {
     table_name = aws_dynamodb_table.job.name
@@ -43,24 +43,12 @@ resource "aws_appsync_datasource" "job" {
 resource "aws_appsync_datasource" "jobrun" {
   api_id = aws_appsync_graphql_api.coordinator.id
   name   = "job_run_${var.stage}"
-  # .example.arn # TODO add this role
+  service_role_arn = aws_iam_role.appsync.arn 
   type = "AMAZON_DYNAMODB"
   dynamodb_config {
     table_name = aws_dynamodb_table.job_run.name
   }
 }
-
-# Create resolver using the velocity templates.
-
-### TODO create more of these
-/*resource "aws_appsync_resolver" "query" {
-  api_id      = aws_appsync_graphql_api.coordinator.id
-  type        = "Query"
-  field       = "listPeople"
-  data_source = aws_appsync_datasource.coordinator.name
-  request_template  = file("../lambda/resolvers/request.vtl")
-  response_template = file("../lambda/resolvers/response.vtl")
-}*/
 
 resource "aws_appsync_resolver" "mutation_add_job_run" {
   api_id            = aws_appsync_graphql_api.coordinator.id
@@ -200,3 +188,4 @@ resource "aws_iam_role_policy" "appsync" {
   role   = aws_iam_role.appsync.id
   policy = data.aws_iam_policy_document.appsync.json
 }
+
