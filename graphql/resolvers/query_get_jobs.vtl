@@ -6,7 +6,8 @@
         "expressionValues" : {
             ":company" : $util.dynamodb.toDynamoDBJson($ctx.args.company)
         }
-	}
+	},
+	"index": "company_index"
 	#if($ctx.args.nextToken)
 			,"nextToken": $util.toJson($ctx.args.nextToken)
 	#end

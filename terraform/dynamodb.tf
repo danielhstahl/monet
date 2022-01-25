@@ -48,15 +48,11 @@ resource "aws_dynamodb_table" "job" {
   attribute {
     name = "project_id"
     type = "S"
-  } 
+  }
   global_secondary_index {
     name            = "company_index"
     hash_key        = "company"
-    projection_type = "KEYS_ONLY"
-  }
-  global_secondary_index {
-    name            = "project_index"
-    hash_key        = "project_id"
+    range_key       = "project_id"
     projection_type = "KEYS_ONLY"
   }
   tags = {

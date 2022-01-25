@@ -6,5 +6,6 @@
         "expressionValues" : {
             ":name" : $util.dynamodb.toDynamoDBJson($ctx.args.name)
         }
-	}
+	},
+    "index": "name_index"
 }

@@ -2,16 +2,16 @@
 # GraphQL 
 
 resource "aws_appsync_graphql_api" "coordinator" {
-  authentication_type = "OPENID_CONNECT"
+  authentication_type = "AWS_IAM"
   additional_authentication_provider {
-    authentication_type = "AWS_IAM"
+    authentication_type = "OPENID_CONNECT"
+    openid_connect_config {
+      issuer    = var.issuer
+      client_id = var.client_id
+    }
   }
   name   = "jobinfo"
   schema = file("../graphql/schema.graphql")
-  openid_connect_config {
-    issuer    = var.issuer
-    client_id = var.client_id
-  }
 }
 
 # create the API Key to authenticate against graphql
@@ -21,30 +21,30 @@ resource "aws_appsync_graphql_api" "coordinator" {
 }*/
 
 resource "aws_appsync_datasource" "project" {
-  api_id = aws_appsync_graphql_api.coordinator.id
-  name   = "project_${var.stage}"
-  service_role_arn = aws_iam_role.appsync.arn 
-  type = "AMAZON_DYNAMODB"
+  api_id           = aws_appsync_graphql_api.coordinator.id
+  name             = "project_${var.stage}"
+  service_role_arn = aws_iam_role.appsync.arn
+  type             = "AMAZON_DYNAMODB"
   dynamodb_config {
     table_name = aws_dynamodb_table.project.name
   }
 }
 
 resource "aws_appsync_datasource" "job" {
-  api_id = aws_appsync_graphql_api.coordinator.id
-  name   = "job_${var.stage}"
-  service_role_arn = aws_iam_role.appsync.arn 
-  type = "AMAZON_DYNAMODB"
+  api_id           = aws_appsync_graphql_api.coordinator.id
+  name             = "job_${var.stage}"
+  service_role_arn = aws_iam_role.appsync.arn
+  type             = "AMAZON_DYNAMODB"
   dynamodb_config {
     table_name = aws_dynamodb_table.job.name
   }
 }
 
 resource "aws_appsync_datasource" "jobrun" {
-  api_id = aws_appsync_graphql_api.coordinator.id
-  name   = "job_run_${var.stage}"
-  service_role_arn = aws_iam_role.appsync.arn 
-  type = "AMAZON_DYNAMODB"
+  api_id           = aws_appsync_graphql_api.coordinator.id
+  name             = "job_run_${var.stage}"
+  service_role_arn = aws_iam_role.appsync.arn
+  type             = "AMAZON_DYNAMODB"
   dynamodb_config {
     table_name = aws_dynamodb_table.job_run.name
   }
@@ -151,6 +151,11 @@ resource "aws_appsync_resolver" "get_projects" {
   response_template = file("../graphql/resolvers/query_response.vtl")
 }
 
+output "appsyncendpoint" {
+  value = aws_appsync_graphql_api.coordinator.uris
+}
+
+
 # IAM
 
 
@@ -175,6 +180,7 @@ data "aws_iam_policy_document" "appsync" {
       "dynamodb:GetItem",
       "dynamodb:PutItem",
       "dynamodb:Query",
+      "dynamodb:UpdateItem"
     ]
     resources = [
       aws_dynamodb_table.project.arn,

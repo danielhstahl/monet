@@ -7,7 +7,8 @@
             ":company" : $util.dynamodb.toDynamoDBJson($ctx.args.company),
             ":project_id" : $util.dynamodb.toDynamoDBJson($ctx.args.project_id)
         }
-	}
+	},
+	"index": "company_index"
 	#if($ctx.args.nextToken)
 			,"nextToken": $util.toJson($ctx.args.nextToken)
 	#end

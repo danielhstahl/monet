@@ -44,7 +44,7 @@ const handleError = error => {
 exports.createProject = async (event, context) => {
     const asc = appSyncClient || makeAppSyncClient()
     try {
-        const result = createProject(asc, event)
+        const result = await createProject(asc, event)
         const response = {
             statusCode: 200,
             headers: {
@@ -63,7 +63,7 @@ exports.createProject = async (event, context) => {
 exports.createJob = async (event, context) => {
     const asc = appSyncClient || makeAppSyncClient()
     try {
-        const result = createJob(asc, event)
+        const result = await createJob(asc, event)
         const response = {
             statusCode: 200,
             headers: {
@@ -82,7 +82,7 @@ exports.startJob = async (event, context) => {
     const ddb = dynamoDbClient || makeDynamoClient()
     const asc = appSyncClient || makeAppSyncClient()
     try {
-        const result = startJob(asc, ddb, event)
+        const result = await startJob(asc, ddb, event)
         const response = {
             statusCode: 200,
             headers: {
@@ -102,7 +102,7 @@ exports.finishJob = async (event, context) => {
     const ddb = dynamoDbClient || makeDynamoClient()
     const asc = appSyncClient || makeAppSyncClient()
     try {
-        const result = finishJob(asc, ddb, event)
+        const result = await finishJob(asc, ddb, event)
         const response = {
             statusCode: 200,
             headers: {
@@ -121,7 +121,7 @@ exports.finishJob = async (event, context) => {
 exports.getJobs = async (event, context) => {
     const ddb = dynamoDbClient || makeDynamoClient()
     try {
-        const result = getJobs(ddb, event)
+        const result = await getJobs(ddb, event)
         const response = {
             statusCode: 200,
             headers: {
@@ -139,7 +139,7 @@ exports.getJobs = async (event, context) => {
 exports.getJobRun = async (event, context) => {
     const ddb = dynamoDbClient || makeDynamoClient()
     try {
-        const result = getJobRun(ddb, event)
+        const result = await getJobRun(ddb, event)
         const response = {
             statusCode: 200,
             headers: {
