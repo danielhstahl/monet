@@ -1,0 +1,20 @@
+name: test
+on: [push]
+
+jobs:
+    test:
+      runs-on: ubuntu-latest
+      steps:
+      - uses: actions/checkout@v2
+      - name: Run api tests
+        run: |
+          cd api_lambda
+          npm ci
+          npm test
+          cd ..
+      - name: Run transform tests
+        run: |
+          cd transform_lambda
+          npm ci
+          npm test
+          cd ..
