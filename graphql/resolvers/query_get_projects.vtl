@@ -8,6 +8,9 @@
         }
     },
     "index": "company_index"
+    #if($ctx.args.limit)
+		,"limit": $util.toJson($ctx.args.limit)
+	#end
 	#if($ctx.args.nextToken)
 			,"nextToken": $util.toJson($ctx.args.nextToken)
 	#end

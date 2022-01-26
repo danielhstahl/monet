@@ -34,10 +34,6 @@ paths:
       produces:
       - application/json
       parameters:
-      #- name: company
-      #  in: path
-      #  type: string
-      #  example: mycompany
       - name: body
         in: body
         required: true

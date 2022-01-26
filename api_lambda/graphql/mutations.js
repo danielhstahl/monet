@@ -1,42 +1,45 @@
 const createProject = /* GraphQL */ `
   mutation CreateProject(
-     name: String!, company: String!
+     $project_name: String!
+     $company: String!
   ) {
-    addProject(id: $id, name: $name, company: $company) {
+    addProject(project_name: $project_name, company: $company) {
       id
-      name
+      project_name
       company
+      created_date
     }
   }
 `;
 
 const createJob = /* GraphQL */ `
   mutation CreateJob(
-    name: String!,
-    company: String! ,
-    project_id: String!
+    $job_name: String!
+    $company: String! 
+    $project_id: String!
   ) {
     addJob(
-      name: $name, company: $company, project_id: $project_id
+      job_name: $job_name, company: $company, project_id: $project_id
     ) {
       id
-      name
+      job_name
       company
       project_id
+      created_date
     }
   }
 `;
 
 const updateJob = /* GraphQL */ `
   mutation UpdateJob(
-    id: ID!,
-    last_time_job_completed: String!,
-    last_time_job_completed_successfully:String!,
-    total_successes: Int!,
-    total_failures: Int!,
-    jobs_currently_running: Int!,
-    average_job_length_in_seconds: Float!,
-    total_jobs: Int!
+    $id: ID!
+    $last_time_job_completed: String!
+    $last_time_job_completed_successfully:String!
+    $total_successes: Int!
+    $total_failures: Int!
+    $jobs_currently_running: Int!
+    $average_job_length_in_seconds: Float!
+    $total_jobs: Int!
   ) {
     updateJob(
       id: $id, 
@@ -64,9 +67,11 @@ const updateJob = /* GraphQL */ `
 
 const createJobRun = /* GraphQL */ `
   mutation CreateJobRun(
-    id: ID!, job_id: String!, status: JobStatusEnum!, start_time: AWSDateTime
+    $job_id: String!
+    $status: JobStatusEnum!
+    $start_time: AWSDateTime
   ) {
-    addJobRun(id: $id, job_id: $job_id, status: $status, start_time: $start_time) {
+    addJobRun(job_id: $job_id, status: $status, start_time: $start_time) {
       id
       job_id
       status 
@@ -77,7 +82,9 @@ const createJobRun = /* GraphQL */ `
 
 const updateJobRun = /* GraphQL */ `
   mutation UpdateJobRun(
-    id: ID!, status: JobStatusEnum!, end_time: AWSDateTime
+    $id: ID!
+    $status: JobStatusEnum!
+    $end_time: AWSDateTime
   ) {
     updateJobRun(id: $id,  status: $status, end_time: $end_time) {
       id

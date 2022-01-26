@@ -198,7 +198,13 @@ data "aws_iam_policy_document" "api_lambda_to_graphql_policy" {
   statement {
     effect = "Allow"
     actions = [
-      "appsync:GraphQL"
+      "appsync:Create*",
+      "appsync:StartSchemaCreation",
+      "appsync:GraphQL",
+      "appsync:Get*",
+      "appsync:List*",
+      "appsync:Update*",
+      "appsync:Delete*"
     ]
     resources = [
       aws_appsync_graphql_api.coordinator.arn
@@ -226,6 +232,14 @@ resource "aws_iam_role_policy" "lambda_to_dynamodb_policy" {
   role   = aws_iam_role.api_lambda.name
   policy = data.aws_iam_policy_document.api_lambda_to_dynamodb_assume_policy.json
 }
+
+resource "aws_iam_role_policy" "lambda_to_graphql_policy" {
+  name   = "lambda_to_graphql_policy"
+  role   = aws_iam_role.api_lambda.name
+  policy = data.aws_iam_policy_document.api_lambda_to_graphql_policy.json
+}
+
+
 resource "aws_iam_role_policy_attachment" "terraform_api_lambda_policy" {
   role       = aws_iam_role.api_lambda.name
   policy_arn = "arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"

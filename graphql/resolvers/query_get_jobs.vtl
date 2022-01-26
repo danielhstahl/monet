@@ -11,4 +11,7 @@
 	#if($ctx.args.nextToken)
 			,"nextToken": $util.toJson($ctx.args.nextToken)
 	#end
+	#if($ctx.args.limit)
+		,"limit": $util.toJson($ctx.args.limit)
+	#end
 }

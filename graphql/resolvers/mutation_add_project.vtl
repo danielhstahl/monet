@@ -5,7 +5,7 @@
     "id": $util.dynamodb.toDynamoDBJson($util.autoId())
   },
   "attributeValues": {
-    "name":  $util.dynamodb.toDynamoDBJson($ctx.arguments.name),
+    "project_name":  $util.dynamodb.toDynamoDBJson($ctx.arguments.project_name),
     "company":  $util.dynamodb.toDynamoDBJson($ctx.arguments.company),
     "created_date":  $util.dynamodb.toDynamoDBJson($util.time.nowISO8601())
   }

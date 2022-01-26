@@ -49,11 +49,11 @@ type PaginatedJobRun {
 
 
 type Query {
-    getProjects(company: String!, nextToken: String): PaginatedProject!
+    getProjects(company: String!, nextToken: String, limit: Int): PaginatedProject!
     getProjectsByName(project_name: String!): Project!
-    getJobsByProject(company: String!, project_id: String!, nextToken: String): PaginatedJob!
-    getJobs(company: String!, nextToken: String): PaginatedJob!
-    getJobRuns(job_id: String!, nextToken: String): PaginatedJobRun!
+    getJobsByProject(company: String!, project_id: String!, nextToken: String, limit: Int): PaginatedJob!
+    getJobs(company: String!, nextToken: String, limit: Int): PaginatedJob!
+    getJobRuns(job_id: String!, nextToken: String, limit: Int): PaginatedJobRun!
     getLastNJobRuns(job_id: String!, n: Int!): JobRun!
 }
 

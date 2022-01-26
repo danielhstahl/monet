@@ -2,9 +2,9 @@
     "version" : "2018-05-29",
 	"operation" : "Query",
 	"query" : {
-		"expression": "name = :name",
+		"expression": "project_name = :project_name",
         "expressionValues" : {
-            ":name" : $util.dynamodb.toDynamoDBJson($ctx.args.name)
+            ":project_name" : $util.dynamodb.toDynamoDBJson($ctx.args.project_name)
         }
 	},
     "index": "name_index"

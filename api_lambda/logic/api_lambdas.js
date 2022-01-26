@@ -9,26 +9,31 @@ const {
     updateJobRun: updateJobRunMutation
 } = require("../graphql/mutations")
 const { dateToAws } = require('./dates');
-const createProject = async (client, { body, pathParameters }) => {
+const STATUS = {
+    SUCCESS: "SUCCESS",
+    FAILURE: "FAILURE",
+    IN_PROGRESS: "IN_PROGRESS"
+}
+const createProject = (client, { body }) => {
     const { name, company } = body
-    return await executeMutation(
+    return executeMutation(
         client,
         createProjectMutation,
         "createProject",
-        { company, name }
+        { company, project_name: name }
     ) //id, name, company
 }
 
-const createJob = async (client, { body, pathParameters }) => {
+const createJob = (client, { body, pathParameters }) => {
     const { project_id } = pathParameters
     const { name, company } = body
-    return await executeMutation(
+    return executeMutation(
         client,
         createJobMutation,
         "createJob",
         {
             company,
-            name,
+            job_name: name,
             project_id
         }
     ) //id, name, company, project_id
@@ -45,7 +50,7 @@ const startJob = async (client, dynamoClient, { pathParameters }) => {
             "createJobRun",
             {
                 job_id,
-                status: "IN_PROGRESS",
+                status: STATUS.IN_PROGRESS,
                 start_time: dateToAws(Date.now())
             }
         ), //id, name, company, project_id, job_id, status, start_time
@@ -69,7 +74,7 @@ const _evolveJobFinish = ({
     average_job_in_seconds, total_jobs, jobs_currently_running
 }, { start_time, end_time, status }) => {
     const timeToRunJob = timeDiff(start_time, end_time)
-    const didSucceed = status === "SUCCESS"
+    const didSucceed = status === STATUS.SUCCESS
     const newTotalJobs = total_jobs + 1
     const avg_job_in_seconds = average_job_in_seconds || 0
     return {
