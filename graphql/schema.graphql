@@ -5,19 +5,19 @@ enum JobStatusEnum {
 }
 type Project {
     id: ID!
-    name: String!
+    project_name: String!
     company: String!
     created_date: AWSDateTime
 }
 
 type PaginatedProject {
     nextToken: String
-    projects: [Project!]!
+    items: [Project!]!
 }
 
 type Job{
     id: ID!
-    name: String!
+    job_name: String!
     project_id: String! 
     company: String!
     last_time_job_completed: String
@@ -31,7 +31,7 @@ type Job{
 }
 type PaginatedJob {
     nextToken: String 
-    jobs: [Job!]!
+    items: [Job!]!
 }
 
 type JobRun{ # idea, use last "n" jobs to create histogram
@@ -44,13 +44,13 @@ type JobRun{ # idea, use last "n" jobs to create histogram
 
 type PaginatedJobRun {
     nextToken: String 
-    jobs_runs: [JobRun!]!
+    items: [JobRun!]!
 }
 
 
 type Query {
     getProjects(company: String!, nextToken: String): PaginatedProject!
-    getProjectsByName(name: String!): Project!
+    getProjectsByName(project_name: String!): Project!
     getJobsByProject(company: String!, project_id: String!, nextToken: String): PaginatedJob!
     getJobs(company: String!, nextToken: String): PaginatedJob!
     getJobRuns(job_id: String!, nextToken: String): PaginatedJobRun!
@@ -60,8 +60,8 @@ type Query {
 
 
 type Mutation {
-    addProject(name: String!, company: String!): Project!
-    addJob(name: String!, company: String!, project_id: String!): Job!
+    addProject(project_name: String!, company: String!): Project!
+    addJob(project_name: String!, company: String!, project_id: String!): Job!
     addJobRun(company: String!, job_id: String!, status: JobStatusEnum!, start_time: AWSDateTime!): JobRun!
     updateJob(
         id: ID!, 

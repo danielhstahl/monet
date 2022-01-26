@@ -180,12 +180,16 @@ data "aws_iam_policy_document" "appsync" {
       "dynamodb:GetItem",
       "dynamodb:PutItem",
       "dynamodb:Query",
-      "dynamodb:UpdateItem"
+      "dynamodb:UpdateItem",
+      "dynamodb:ConditionCheckItem",
     ]
     resources = [
       aws_dynamodb_table.project.arn,
       aws_dynamodb_table.job.arn,
       aws_dynamodb_table.job_run.arn,
+      "${aws_dynamodb_table.project.arn}/*",
+      "${aws_dynamodb_table.job.arn}/*",
+      "${aws_dynamodb_table.job_run.arn}/*",
     ]
   }
 }

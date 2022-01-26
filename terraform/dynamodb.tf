@@ -14,7 +14,7 @@ resource "aws_dynamodb_table" "project" {
     type = "S"
   }
   attribute {
-    name = "name"
+    name = "project_name"
     type = "S"
   }
   global_secondary_index {
@@ -24,7 +24,7 @@ resource "aws_dynamodb_table" "project" {
   }
   global_secondary_index {
     name            = "name_index"
-    hash_key        = "name"
+    hash_key        = "project_name"
     projection_type = "KEYS_ONLY"
   }
   tags = {
