@@ -42,14 +42,14 @@ const updateJob = /* GraphQL */ `
     $total_jobs: Int!
   ) {
     updateJob(
-      id: $id, 
-      last_time_job_completed: $last_time_job_completed,
-      last_time_job_completed_successfully: $last_time_job_completed_successfully,
-      total_successes: $total_successes,
-      total_failures: $total_failures,
-      jobs_currently_running: $jobs_currently_running,
-      average_job_length_in_seconds: $average_job_length_in_seconds,
-      total_jobs: $total_jobs
+        id: $id, 
+        last_time_job_completed: $last_time_job_completed,
+        last_time_job_completed_successfully: $last_time_job_completed_successfully,
+        total_successes: $total_successes,
+        total_failures: $total_failures,
+        jobs_currently_running: $jobs_currently_running,
+        average_job_length_in_seconds: $average_job_length_in_seconds,
+        total_jobs: $total_jobs
     ) {
       id
       company
@@ -71,7 +71,7 @@ const createJobRun = /* GraphQL */ `
     $status: JobStatusEnum!
     $start_time: AWSDateTime
   ) {
-    addJobRun(job_id: $job_id, status: $status, start_time: $start_time) {
+    addJobRun( job_id: $job_id, status: $status, start_time: $start_time ) {
       id
       job_id
       status 

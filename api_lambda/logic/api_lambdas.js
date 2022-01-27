@@ -19,7 +19,7 @@ const createProject = (client, { body }) => {
     return executeMutation(
         client,
         createProjectMutation,
-        "createProject",
+        "addProject",
         { company, project_name: name }
     ) //id, name, company
 }
@@ -30,7 +30,7 @@ const createJob = (client, { body, pathParameters }) => {
     return executeMutation(
         client,
         createJobMutation,
-        "createJob",
+        "addJob",
         {
             company,
             job_name: name,
@@ -47,7 +47,7 @@ const startJob = async (client, dynamoClient, { pathParameters }) => {
         executeMutation(
             client,
             createJobRunMutation,
-            "createJobRun",
+            "addJobRun",
             {
                 job_id,
                 status: STATUS.IN_PROGRESS,

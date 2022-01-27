@@ -7,8 +7,9 @@ const executeMutation = async (client, mutation, operationName, variables) => {
     const response = await client.mutate({
         mutation: gql(mutation),
         variables,
-        //fetchPolicy: "no-cache"
+        fetchPolicy: "no-cache"
     });
+    console.log(response)
     return parseResults(operationName, response.data)
 
 }
