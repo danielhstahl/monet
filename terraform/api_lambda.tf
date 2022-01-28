@@ -28,8 +28,6 @@ resource "aws_lambda_function" "create_project" {
   source_code_hash = filebase64sha256(data.archive_file.api_lambdas.output_path)
   environment {
     variables = {
-      TABLE_NAME = aws_dynamodb_table.project.name
-      # REGION               = var.region
       GRAPHQL_API_ENDPOINT = aws_appsync_graphql_api.coordinator.uris["GRAPHQL"]
       GRAPHQL_API_KEY      = aws_appsync_api_key.appsync_api_key.key
     }
@@ -56,8 +54,6 @@ resource "aws_lambda_function" "create_job" {
   source_code_hash = filebase64sha256(data.archive_file.api_lambdas.output_path)
   environment {
     variables = {
-      TABLE_NAME = aws_dynamodb_table.job.name
-      #REGION               = var.region
       GRAPHQL_API_ENDPOINT = aws_appsync_graphql_api.coordinator.uris["GRAPHQL"]
       GRAPHQL_API_KEY      = aws_appsync_api_key.appsync_api_key.key
     }
@@ -84,8 +80,7 @@ resource "aws_lambda_function" "get_jobs" {
   source_code_hash = filebase64sha256(data.archive_file.api_lambdas.output_path)
   environment {
     variables = {
-      TABLE_NAME = aws_dynamodb_table.job.name
-      #REGION               = var.region
+      JOB_TABLE_NAME       = aws_dynamodb_table.job.name
       GRAPHQL_API_ENDPOINT = aws_appsync_graphql_api.coordinator.uris["GRAPHQL"]
       GRAPHQL_API_KEY      = aws_appsync_api_key.appsync_api_key.key
     }
@@ -111,8 +106,7 @@ resource "aws_lambda_function" "start_job" {
   source_code_hash = filebase64sha256(data.archive_file.api_lambdas.output_path)
   environment {
     variables = {
-      TABLE_NAME = aws_dynamodb_table.job_run.name
-      #REGION               = var.region
+      JOB_TABLE_NAME       = aws_dynamodb_table.job.name
       GRAPHQL_API_ENDPOINT = aws_appsync_graphql_api.coordinator.uris["GRAPHQL"]
       GRAPHQL_API_KEY      = aws_appsync_api_key.appsync_api_key.key
     }
@@ -139,8 +133,8 @@ resource "aws_lambda_function" "finish_job" {
   source_code_hash = filebase64sha256(data.archive_file.api_lambdas.output_path)
   environment {
     variables = {
-      TABLE_NAME = aws_dynamodb_table.job_run.name
-      # REGION               = var.region
+      JOB_TABLE_NAME       = aws_dynamodb_table.job.name
+      JOB_RUN_TABLE_NAME   = aws_dynamodb_table.job_run.name
       GRAPHQL_API_ENDPOINT = aws_appsync_graphql_api.coordinator.uris["GRAPHQL"]
       GRAPHQL_API_KEY      = aws_appsync_api_key.appsync_api_key.key
     }
@@ -167,8 +161,7 @@ resource "aws_lambda_function" "get_job_status" {
   source_code_hash = filebase64sha256(data.archive_file.api_lambdas.output_path)
   environment {
     variables = {
-      TABLE_NAME = aws_dynamodb_table.job_run.name
-      #REGION               = var.region
+      JOB_RUN_TABLE_NAME   = aws_dynamodb_table.job_run.name
       GRAPHQL_API_ENDPOINT = aws_appsync_graphql_api.coordinator.uris["GRAPHQL"]
       GRAPHQL_API_KEY      = aws_appsync_api_key.appsync_api_key.key
     }

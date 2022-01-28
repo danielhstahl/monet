@@ -64,8 +64,7 @@ resource "aws_dynamodb_table" "job" {
 resource "aws_dynamodb_table" "job_run" {
   name         = "job_run_${var.stage}"
   billing_mode = "PAY_PER_REQUEST"
-  hash_key     = "job_id" # pattern is to query on job_id
-  range_key    = "start_time"
+  hash_key     = "id"
   attribute {
     name = "id"
     type = "S"
@@ -79,8 +78,9 @@ resource "aws_dynamodb_table" "job_run" {
     type = "S"
   }
   global_secondary_index {
-    name            = "id_index"
-    hash_key        = "id"
+    name            = "job_index"
+    hash_key        = "job_id"
+    range_key       = "start_time"
     projection_type = "ALL"
   }
   tags = {

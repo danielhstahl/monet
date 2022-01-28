@@ -7,8 +7,8 @@
   "update":{
         "expression": "SET status = :status, end_time = :end_time",
         "expressionValues": {
-            "status": $util.dynamodb.toDynamoDBJson($ctx.arguments.status),
-            "end_time": $util.dynamodb.toDynamoDBJson($ctx.arguments.end_time),
+            ":status": $util.dynamodb.toDynamoDBJson($ctx.arguments.status),
+            ":end_time": $util.dynamodb.toDynamoDBJson($ctx.arguments.end_time),
         }
   }
 }

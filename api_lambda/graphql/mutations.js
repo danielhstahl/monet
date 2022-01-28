@@ -33,12 +33,12 @@ const createJob = /* GraphQL */ `
 const updateJob = /* GraphQL */ `
   mutation UpdateJob(
     $id: ID!
-    $last_time_job_completed: String!
-    $last_time_job_completed_successfully:String!
+    $last_time_job_completed: String
+    $last_time_job_completed_successfully:String
     $total_successes: Int!
     $total_failures: Int!
     $jobs_currently_running: Int!
-    $average_job_length_in_seconds: Float!
+    $average_job_length_in_seconds: Float
     $total_jobs: Int!
   ) {
     updateJob(
@@ -69,7 +69,7 @@ const createJobRun = /* GraphQL */ `
   mutation CreateJobRun(
     $job_id: String!
     $status: JobStatusEnum!
-    $start_time: AWSDateTime
+    $start_time: AWSDateTime!
   ) {
     addJobRun( job_id: $job_id, status: $status, start_time: $start_time ) {
       id

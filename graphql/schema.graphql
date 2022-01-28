@@ -61,16 +61,16 @@ type Query {
 
 type Mutation {
     addProject(project_name: String!, company: String!): Project!
-    addJob(project_name: String!, company: String!, project_id: String!): Job!
-    addJobRun(company: String!, job_id: String!, status: JobStatusEnum!, start_time: AWSDateTime!): JobRun!
+    addJob(job_name: String!, company: String!, project_id: String!): Job!
+    addJobRun(job_id: String!, status: JobStatusEnum!, start_time: AWSDateTime!): JobRun!
     updateJob(
         id: ID!, 
-        last_time_job_completed: String!, 
-        last_time_job_completed_successfully:String!,
+        last_time_job_completed: String, 
+        last_time_job_completed_successfully: String,
         total_successes: Int!,
         total_failures: Int!,
         jobs_currently_running: Int!,
-        average_job_length_in_seconds: Float!
+        average_job_length_in_seconds: Float
         total_jobs: Int!
     ): Job!
     updateJobRun(

@@ -6,11 +6,12 @@
         "expressionValues" : {
             ":job_id" : $util.dynamodb.toDynamoDBJson($ctx.args.job_id)
         }
-	}
+	},
+	"index": "job_index"
 	#if($ctx.args.limit)
 		,"limit": $util.toJson($ctx.args.limit)
 	#end
 	#if($ctx.args.nextToken)
-			,"nextToken": $util.toJson($ctx.args.nextToken)
+		,"nextToken": $util.toJson($ctx.args.nextToken)
 	#end
 }

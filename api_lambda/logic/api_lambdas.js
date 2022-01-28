@@ -40,9 +40,8 @@ const createJob = (client, { body, pathParameters }) => {
 }
 
 
-const startJob = async (client, dynamoClient, { pathParameters }) => {
+const startJob = (client, dynamoClient, { pathParameters }) => {
     const { job_id } = pathParameters
-    const job = await _getJob(dynamoClient, job_id)
     return Promise.all([
         executeMutation(
             client,
@@ -54,13 +53,16 @@ const startJob = async (client, dynamoClient, { pathParameters }) => {
                 start_time: dateToAws(Date.now())
             }
         ), //id, name, company, project_id, job_id, status, start_time
-        executeMutation(
-            client,
-            updateJobMutation,
-            "updateJob",
-            { ...job, jobs_currently_running: job.jobs_currently_running + 1 }
-        )
-    ])
+        _getJob(dynamoClient, job_id).then(job => {
+            console.log(job)
+            return executeMutation(
+                client,
+                updateJobMutation,
+                "updateJob",
+                { ...job, jobs_currently_running: job.jobs_currently_running + 1 }
+            )
+        })
+    ]).then(([result]) => result)
 }
 const MS_IN_SECONDS = 1000
 const timeDiff = (time1, time2) => {
@@ -93,38 +95,46 @@ const _evolveJobFinish = ({
 
 const _getJob = (dynamoClient, id) => {
     return dynamoClient.get({
-        TableName: process.env.TABLE_NAME,
+        TableName: process.env.JOB_TABLE_NAME,
         Key: {
             id
-        },
-    }).promise()
+        }
+    }).promise().then(data => data.Item)
 }
 
 const _getJobRun = (dynamoClient, id) => {
     return dynamoClient.get({
-        TableName: process.env.TABLE_NAME,
+        TableName: process.env.JOB_RUN_TABLE_NAME,
         Key: {
             id
         },
-    }).promise()
+        //IndexName: "id_index"
+    }).promise().then(data => {
+        console.log(data)
+        return data.Items
+    })
 }
-
-const _getJobByProject = (dynamoClient, project_id) => {
-    return dynamoClient.query({
-        TableName: process.env.TABLE_NAME,
+const _getProject = (dynamoClient, id) => {
+    return dynamoClient.get({
+        TableName: process.env.PROJECT_TABLE_NAME,
         Key: {
-            project_id
+            id
         },
-    }).promise()
+    }).promise().then(data => data.Item)
 }
 
-const finishJob = async (client, dynamoClient, { body, pathParameters }) => {
+const _getJobByProject = (dynamoClient, company, project_id) => {
+    return dynamoClient.query({
+        TableName: process.env.JOB_TABLE_NAME,
+        KeyConditionExpression: 'project_id = :project_id, company=:company',
+        ExpressionAttributeValues: { ':project_id': project_id, ':company': company },
+    }).promise().then(data => data.Item)
+}
+
+const finishJob = (client, dynamoClient, { body, pathParameters }) => {
     const { job_run_id, job_id } = pathParameters
     const { status } = body
-    const { start_time } = await _getJobRun(dynamoClient, job_run_id)
     const end_time = dateToAws(Date.now())
-    const job = await _getJob(dynamoClient, job_id) // need to get all the parameters 
-    const newJob = _evolveJobFinish(job, { start_time, end_time, status })
     return Promise.all([
         executeMutation(
             client,
@@ -136,18 +146,24 @@ const finishJob = async (client, dynamoClient, { body, pathParameters }) => {
                 end_time
             }
         ),
-        executeMutation(
-            client,
-            updateJobMutation,
-            "updateJob",
-            newJob
-        )
-    ])
+        Promise.all([_getJobRun(dynamoClient, job_run_id), _getJob(dynamoClient, job_id)])
+            .then(([{ start_time }, job]) => _evolveJobFinish(job, { start_time, end_time, status }))
+            .then(newJob => {
+                console.log(newJob)
+                return executeMutation(
+                    client,
+                    updateJobMutation,
+                    "updateJob",
+                    newJob
+                )
+            })
+    ]).then(([result]) => result)
 }
 
 const getJobs = (dynamoClient, { pathParameters }) => {
     const { project_id } = pathParameters
-    return _getJobByProject(dynamoClient, project_id)
+    const { company } = _getProject(dynamoClient, project_id)
+    return _getJobByProject(dynamoClient, company, project_id)
 }
 
 const getJobRun = (dynamoClient, { pathParameters }) => {

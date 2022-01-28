@@ -132,7 +132,7 @@ paths:
               method.response.header.Access-Control-Allow-Origin: "'*'"
         uri: arn:aws:apigateway:${region}:lambda:path/2015-03-31/functions/${arn_get_jobs}/invocations
         passthroughBehavior: "when_no_match"
-        httpMethod: "GET"
+        httpMethod: "POST"
         type: "aws_proxy"
       summary: returns all jobs for a project
       description: ''
@@ -276,7 +276,7 @@ paths:
               method.response.header.Access-Control-Allow-Origin: "'*'"
         uri: arn:aws:apigateway:${region}:lambda:path/2015-03-31/functions/${arn_get_job_status}/invocations
         passthroughBehavior: "when_no_match"
-        httpMethod: "GET"
+        httpMethod: "POST"
         type: "aws_proxy"
       summary: returns status for job run
       description: ''

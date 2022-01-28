@@ -7,13 +7,13 @@
   "update":{
         "expression": "SET last_time_job_completed = :last_time_job_completed, last_time_job_completed_successfully = :last_time_job_completed_successfully, total_successes = :total_successes, total_failures = :total_failures, jobs_currently_running = :jobs_currently_running, average_job_length_in_seconds = :average_job_length_in_seconds, total_jobs = :total_jobs",
         "expressionValues": {
-            "last_time_job_completed": $util.dynamodb.toDynamoDBJson($ctx.arguments.last_time_job_completed),
-            "last_time_job_completed_successfully": $util.dynamodb.toDynamoDBJson($ctx.arguments.last_time_job_completed_successfully),
-            "total_successes": $util.dynamodb.toDynamoDBJson($ctx.arguments.total_successes),
-            "total_failures": $util.dynamodb.toDynamoDBJson($ctx.arguments.total_failures),
-            "jobs_currently_running": $util.dynamodb.toDynamoDBJson($ctx.arguments.jobs_currently_running),
-            "average_job_length_in_seconds": $util.dynamodb.toDynamoDBJson($ctx.arguments.average_job_length_in_seconds),
-            "total_jobs": $util.dynamodb.toDynamoDBJson($ctx.arguments.total_jobs)
+            ":last_time_job_completed": $util.dynamodb.toDynamoDBJson($ctx.arguments.last_time_job_completed),
+            ":last_time_job_completed_successfully": $util.dynamodb.toDynamoDBJson($ctx.arguments.last_time_job_completed_successfully),
+            ":total_successes": $util.dynamodb.toDynamoDBJson($ctx.arguments.total_successes),
+            ":total_failures": $util.dynamodb.toDynamoDBJson($ctx.arguments.total_failures),
+            ":jobs_currently_running": $util.dynamodb.toDynamoDBJson($ctx.arguments.jobs_currently_running),
+            ":average_job_length_in_seconds": $util.dynamodb.toDynamoDBJson($ctx.arguments.average_job_length_in_seconds),
+            ":total_jobs": $util.dynamodb.toDynamoDBJson($ctx.arguments.total_jobs)
         }
   }
 }
