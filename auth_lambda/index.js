@@ -19,7 +19,7 @@ const _getUser = (dynamoClient, hashApiKey) => {
 
 exports.authUser = async (event, context) => {
     const ddb = dynamoDbClient || makeDynamoClient()
-    const { Authorizer: key } = event.headers
+    const { authorizationToken: key } = event.headers
     const hash = crypto.createHash('sha256').update(key).digest('base64')
     const result = await _getUser(ddb, hash)
     if (result) {
