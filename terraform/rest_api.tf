@@ -11,7 +11,6 @@ data "template_file" "swagger" {
     arn_get_job_status = aws_lambda_function.get_job_status.arn
     arn_create_api_key = aws_lambda_function.create_api_key.arn
     arn_auth           = aws_lambda_function.auth_lambda.arn
-
   }
 }
 
@@ -22,11 +21,9 @@ resource "aws_api_gateway_rest_api" "api" {
 
 resource "aws_api_gateway_deployment" "deployapi" {
   rest_api_id = aws_api_gateway_rest_api.api.id
-
   triggers = {
     redeployment = filebase64sha256(data.archive_file.api_lambdas.output_path)
   }
-
   lifecycle {
     create_before_destroy = true
   }
@@ -38,7 +35,6 @@ resource "aws_api_gateway_deployment" "deployapi" {
     aws_lambda_function.finish_job,
     aws_lambda_function.get_job_status,
     aws_lambda_function.create_api_key
-
   ]
 }
 

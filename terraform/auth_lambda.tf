@@ -42,11 +42,6 @@ data "aws_iam_policy_document" "auth_lambda_assume_role" {
   }
 }
 
-resource "aws_iam_role_policy_attachment" "auth_lambda_lambda_policy" {
-  role       = aws_iam_role.auth_lambda.name
-  policy_arn = "arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
-}
-
 data "aws_iam_policy_document" "auth_lambda_to_dynamodb_assume_policy" {
   statement {
     effect = "Allow"
@@ -63,3 +58,9 @@ resource "aws_iam_role_policy" "auth_lambda_to_dynamodb_policy" {
   role   = aws_iam_role.auth_lambda.name
   policy = data.aws_iam_policy_document.auth_lambda_to_dynamodb_assume_policy.json
 }
+
+resource "aws_iam_role_policy_attachment" "auth_lambda_lambda_policy" {
+  role       = aws_iam_role.auth_lambda.name
+  policy_arn = "arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
+}
+

@@ -83,8 +83,6 @@ resource "aws_lambda_function" "get_jobs" {
     variables = {
       JOB_TABLE_NAME     = aws_dynamodb_table.job.name
       PROJECT_TABLE_NAME = aws_dynamodb_table.project.name
-      #GRAPHQL_API_ENDPOINT = aws_appsync_graphql_api.coordinator.uris["GRAPHQL"]
-      #GRAPHQL_API_KEY      = aws_appsync_api_key.appsync_api_key.key
     }
   }
 }
@@ -164,8 +162,6 @@ resource "aws_lambda_function" "get_job_status" {
   environment {
     variables = {
       JOB_RUN_TABLE_NAME = aws_dynamodb_table.job_run.name
-      #GRAPHQL_API_ENDPOINT = aws_appsync_graphql_api.coordinator.uris["GRAPHQL"]
-      #GRAPHQL_API_KEY      = aws_appsync_api_key.appsync_api_key.key
     }
   }
 }
