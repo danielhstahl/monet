@@ -8,12 +8,12 @@ data "archive_file" "graphql_lambda" {
 # Auth Lambdas
 
 resource "aws_lambda_function" "create_api_key" {
-  filename         = data.archive_file.api_lambdas.output_path
+  filename         = data.archive_file.graphql_lambda.output_path
   function_name    = "create_api_key_${var.stage}"
   role             = aws_iam_role.api_lambda.arn
   handler          = "index.createApiKey"
   runtime          = "nodejs14.x"
-  source_code_hash = filebase64sha256(data.archive_file.api_lambdas.output_path)
+  source_code_hash = filebase64sha256(data.archive_file.graphql_lambda.output_path)
   environment {
     variables = {
       USER_TABLE_NAME = aws_dynamodb_table.user.name

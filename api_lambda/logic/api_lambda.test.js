@@ -16,7 +16,7 @@ describe("evolveJobFinish", () => {
         const result = _evolveJobFinish(job, {
             start_time: "2022-01-25T12:02:43.303Z",
             end_time: "2022-01-25T12:06:43.303Z",
-            status: "SUCCESS"
+            job_status: "SUCCESS"
         })
         expect(result).toEqual({
             id: "myjobid",
@@ -46,7 +46,7 @@ describe("evolveJobFinish", () => {
         const result = _evolveJobFinish(job, {
             start_time: "2022-01-25T12:02:43.303Z",
             end_time: "2022-01-25T12:06:43.303Z",
-            status: "FAILURE"
+            job_status: "FAILURE"
         })
         expect(result).toEqual({
             id: "myjobid",
@@ -76,7 +76,7 @@ describe("evolveJobFinish", () => {
         const result = _evolveJobFinish(job, {
             start_time: "2022-01-25T12:05:43.303Z",
             end_time: "2022-01-25T12:07:43.303Z",
-            status: "SUCCESS"
+            job_status: "SUCCESS"
         })
         expect(result).toEqual({
             id: "myjobid",
@@ -106,7 +106,7 @@ describe("evolveJobFinish", () => {
         const result = _evolveJobFinish(job, {
             start_time: "2022-01-25T12:05:43.303Z",
             end_time: "2022-01-25T12:07:43.303Z",
-            status: "FAILURE"
+            job_status: "FAILURE"
         })
         expect(result).toEqual({
             id: "myjobid",
