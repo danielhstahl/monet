@@ -5,9 +5,9 @@
     "id": $util.dynamodb.toDynamoDBJson($ctx.arguments.id)
   },
   "update":{
-        "expression": "SET status = :status, end_time = :end_time",
+        "expression": "SET job_status = :job_status, end_time = :end_time",
         "expressionValues": {
-            ":status": $util.dynamodb.toDynamoDBJson($ctx.arguments.status),
+            ":job_status": $util.dynamodb.toDynamoDBJson($ctx.arguments.job_status),
             ":end_time": $util.dynamodb.toDynamoDBJson($ctx.arguments.end_time),
         }
   }

@@ -9,6 +9,8 @@ data "template_file" "swagger" {
     arn_start_job      = aws_lambda_function.start_job.arn
     arn_finish_job     = aws_lambda_function.finish_job.arn
     arn_get_job_status = aws_lambda_function.get_job_status.arn
+    arn_create_api_key = aws_lambda_function.create_api_key.arn
+    arn_auth           = aws_lambda_function.auth_lambda.arn
 
   }
 }
@@ -34,7 +36,8 @@ resource "aws_api_gateway_deployment" "deployapi" {
     aws_lambda_function.get_jobs,
     aws_lambda_function.start_job,
     aws_lambda_function.finish_job,
-    aws_lambda_function.get_job_status
+    aws_lambda_function.get_job_status,
+    aws_lambda_function.create_api_key
 
   ]
 }

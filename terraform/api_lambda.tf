@@ -9,6 +9,7 @@ data "archive_file" "api_lambdas" {
 
 # Lambda Resources
 
+
 # Create Project
 resource "aws_lambda_permission" "create_project" {
   statement_id  = "AllowExecutionFromAPIGateway"
@@ -80,9 +81,10 @@ resource "aws_lambda_function" "get_jobs" {
   source_code_hash = filebase64sha256(data.archive_file.api_lambdas.output_path)
   environment {
     variables = {
-      JOB_TABLE_NAME       = aws_dynamodb_table.job.name
-      GRAPHQL_API_ENDPOINT = aws_appsync_graphql_api.coordinator.uris["GRAPHQL"]
-      GRAPHQL_API_KEY      = aws_appsync_api_key.appsync_api_key.key
+      JOB_TABLE_NAME     = aws_dynamodb_table.job.name
+      PROJECT_TABLE_NAME = aws_dynamodb_table.project.name
+      #GRAPHQL_API_ENDPOINT = aws_appsync_graphql_api.coordinator.uris["GRAPHQL"]
+      #GRAPHQL_API_KEY      = aws_appsync_api_key.appsync_api_key.key
     }
   }
 }
@@ -161,9 +163,9 @@ resource "aws_lambda_function" "get_job_status" {
   source_code_hash = filebase64sha256(data.archive_file.api_lambdas.output_path)
   environment {
     variables = {
-      JOB_RUN_TABLE_NAME   = aws_dynamodb_table.job_run.name
-      GRAPHQL_API_ENDPOINT = aws_appsync_graphql_api.coordinator.uris["GRAPHQL"]
-      GRAPHQL_API_KEY      = aws_appsync_api_key.appsync_api_key.key
+      JOB_RUN_TABLE_NAME = aws_dynamodb_table.job_run.name
+      #GRAPHQL_API_ENDPOINT = aws_appsync_graphql_api.coordinator.uris["GRAPHQL"]
+      #GRAPHQL_API_KEY      = aws_appsync_api_key.appsync_api_key.key
     }
   }
 }
@@ -212,11 +214,16 @@ data "aws_iam_policy_document" "api_lambda_to_dynamodb_assume_policy" {
       "dynamodb:PutItem",
       "dynamodb:UpdateItem",
       "dynamodb:GetItem",
+      "dynamodb:Query",
+      "dynamodb:ConditionCheckItem"
     ]
     resources = [
       aws_dynamodb_table.project.arn,
       aws_dynamodb_table.job.arn,
       aws_dynamodb_table.job_run.arn,
+      "${aws_dynamodb_table.project.arn}/*",
+      "${aws_dynamodb_table.job.arn}/*",
+      "${aws_dynamodb_table.job_run.arn}/*",
     ]
   }
 }

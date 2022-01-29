@@ -9,14 +9,23 @@ host: dummyhost
 basePath: "/"
 schemes:
 - https
-    
+
+securityDefinitions:
+  ApiKeyAuthorizer:
+    type: apiKey
+    name: Authorization
+    in: header
+    x-amazon-apigateway-authtype: custom
+    x-amazon-apigateway-authorizer:
+      authorizerResultTtlInSeconds: 300
+      authorizerUri: arn:aws:apigateway:${region}:lambda:path/2015-03-31/functions/${arn_auth}/invocations
+      type: token
+
 paths:
   "/project/create":
     post:
       security:
-        - NONE: []
-      x-amazon-apigateway-auth: 
-        type: NONE
+        - ApiKeyAuthorizer: []
       x-amazon-apigateway-integration:
         responses:
           default:
@@ -66,7 +75,7 @@ paths:
   "/project/{project_id}/job/create":
     post:
       security:
-        - NONE: []
+        - ApiKeyAuthorizer: []
       x-amazon-apigateway-auth: 
         type: NONE
       x-amazon-apigateway-integration:
@@ -121,7 +130,7 @@ paths:
   "/project/{project_id}/job":          
     get:
       security:
-        - NONE: []
+        - ApiKeyAuthorizer: []
       x-amazon-apigateway-auth: 
         type: NONE
       x-amazon-apigateway-integration:
@@ -167,7 +176,7 @@ paths:
   "/job/{job_id}/start":
     post:
       security:
-        - NONE: []
+        - ApiKeyAuthorizer: []
       x-amazon-apigateway-auth: 
         type: NONE
       x-amazon-apigateway-integration:
@@ -207,7 +216,7 @@ paths:
   "/job/{job_id}/run/{job_run_id}/finish":
     post:
       security:
-        - NONE: []
+        - ApiKeyAuthorizer: []
       x-amazon-apigateway-auth: 
         type: NONE
       x-amazon-apigateway-integration:
@@ -243,10 +252,10 @@ paths:
           Create:
             type: object
             required:
-              - status
+              - job_status
             type: object
             parameters:
-              status:
+              job_status:
                 type: string
                 example: SUCCESS
 
@@ -265,7 +274,7 @@ paths:
   "/job/{job_id}/run/{job_run_id}":  
     get:
       security:
-        - NONE: []
+        - ApiKeyAuthorizer: []
       x-amazon-apigateway-auth: 
         type: NONE
       x-amazon-apigateway-integration:
@@ -315,7 +324,7 @@ paths:
                 type: string
               end_time:
                 type: string
-              status:
+              job_status:
                 type: string
                 example: IN_PROGRESS
 

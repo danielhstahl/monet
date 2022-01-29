@@ -2,16 +2,7 @@
 const AWS = require('aws-sdk')
 global.fetch = require('node-fetch')
 const { createJob, createProject, startJob, finishJob, getJobRun, getJobs } = require('./logic/api_lambdas')
-//const region = process.env.REGION;
-const appsyncUrl = process.env.GRAPHQL_API_ENDPOINT;
-/*AWS.config.update({
-    region,
-    credentials: new AWS.Credentials(
-        process.env.AWS_ACCESS_KEY_ID,
-        process.env.AWS_SECRET_ACCESS_KEY,
-        process.env.AWS_SESSION_TOKEN
-    )
-})*/
+
 const AWSAppSyncClient = require("aws-appsync").default;
 const { AUTH_TYPE } = require("aws-appsync");
 
@@ -27,7 +18,7 @@ const makeDynamoClient = () => {
 let appSyncClient
 const makeAppSyncClient = () => {
     appSyncClient = new AWSAppSyncClient({
-        url: appsyncUrl,
+        url: process.env.GRAPHQL_API_ENDPOINT,
         region: AWS.config.region,
         auth: {
             type: AUTH_TYPE.API_KEY,
@@ -49,8 +40,8 @@ const handleError = error => {
         body: JSON.stringify({ error: error.message })
     }
 }
+
 const handleResult = result => {
-    console.log(result)
     return {
         statusCode: 200,
         headers: {

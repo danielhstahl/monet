@@ -10,6 +10,10 @@ type Project {
     created_date: AWSDateTime
 }
 
+type ApiKey {
+    api_key: String!
+}
+
 type PaginatedProject {
     nextToken: String
     items: [Project!]!
@@ -39,7 +43,7 @@ type JobRun{ # idea, use last "n" jobs to create histogram
     job_id: String!
     start_time: AWSDateTime!
     end_time: AWSDateTime 
-    status: JobStatusEnum!
+    job_status: JobStatusEnum!
 }
 
 type PaginatedJobRun {
@@ -60,9 +64,10 @@ type Query {
 
 
 type Mutation {
+    addApiKey(user_id: String!, project_id: String!): ApiKey!
     addProject(project_name: String!, company: String!): Project!
     addJob(job_name: String!, company: String!, project_id: String!): Job!
-    addJobRun(job_id: String!, status: JobStatusEnum!, start_time: AWSDateTime!): JobRun!
+    addJobRun(job_id: String!, job_status: JobStatusEnum!, start_time: AWSDateTime!): JobRun!
     updateJob(
         id: ID!, 
         last_time_job_completed: String, 
@@ -75,7 +80,7 @@ type Mutation {
     ): Job!
     updateJobRun(
         id: ID!, 
-        status: JobStatusEnum!,
+        job_status: JobStatusEnum!,
         end_time: AWSDateTime
     ): JobRun!
 }

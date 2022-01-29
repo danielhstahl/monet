@@ -49,12 +49,11 @@ const startJob = (client, dynamoClient, { pathParameters }) => {
             "addJobRun",
             {
                 job_id,
-                status: STATUS.IN_PROGRESS,
+                job_status: STATUS.IN_PROGRESS,
                 start_time: dateToAws(Date.now())
             }
         ), //id, name, company, project_id, job_id, status, start_time
         _getJob(dynamoClient, job_id).then(job => {
-            console.log(job)
             return executeMutation(
                 client,
                 updateJobMutation,
@@ -74,9 +73,9 @@ const _evolveJobFinish = ({
     id, company, project_id, total_failures,
     total_successes, last_time_job_completed_successfully,
     average_job_in_seconds, total_jobs, jobs_currently_running
-}, { start_time, end_time, status }) => {
+}, { start_time, end_time, job_status }) => {
     const timeToRunJob = timeDiff(start_time, end_time)
-    const didSucceed = status === STATUS.SUCCESS
+    const didSucceed = job_status === STATUS.SUCCESS
     const newTotalJobs = total_jobs + 1
     const avg_job_in_seconds = average_job_in_seconds || 0
     return {
@@ -108,11 +107,7 @@ const _getJobRun = (dynamoClient, id) => {
         Key: {
             id
         },
-        //IndexName: "id_index"
-    }).promise().then(data => {
-        console.log(data)
-        return data.Items
-    })
+    }).promise().then(data => data.Item)
 }
 const _getProject = (dynamoClient, id) => {
     return dynamoClient.get({
@@ -126,43 +121,44 @@ const _getProject = (dynamoClient, id) => {
 const _getJobByProject = (dynamoClient, company, project_id) => {
     return dynamoClient.query({
         TableName: process.env.JOB_TABLE_NAME,
-        KeyConditionExpression: 'project_id = :project_id, company=:company',
+        KeyConditionExpression: 'project_id = :project_id and company = :company',
         ExpressionAttributeValues: { ':project_id': project_id, ':company': company },
-    }).promise().then(data => data.Item)
+        IndexName: "company_index"
+    }).promise().then(data.Items)
 }
 
-const finishJob = (client, dynamoClient, { body, pathParameters }) => {
+
+
+const finishJob = async (client, dynamoClient, { body, pathParameters }) => {
     const { job_run_id, job_id } = pathParameters
-    const { status } = body
+    const { job_status } = body
     const end_time = dateToAws(Date.now())
-    return Promise.all([
-        executeMutation(
-            client,
-            updateJobRunMutation,
-            "updateJobRun",
-            {
-                id: job_run_id,
-                status,
-                end_time
-            }
-        ),
-        Promise.all([_getJobRun(dynamoClient, job_run_id), _getJob(dynamoClient, job_id)])
-            .then(([{ start_time }, job]) => _evolveJobFinish(job, { start_time, end_time, status }))
-            .then(newJob => {
-                console.log(newJob)
-                return executeMutation(
-                    client,
-                    updateJobMutation,
-                    "updateJob",
-                    newJob
-                )
-            })
-    ]).then(([result]) => result)
+
+    const result = await executeMutation(
+        client,
+        updateJobRunMutation,
+        "updateJobRun",
+        {
+            id: job_run_id,
+            job_status,
+            end_time
+        }
+    )
+    const job = await _getJob(dynamoClient, job_id)
+    const newJob = _evolveJobFinish(job, { start_time: result.start_time, end_time, job_status })
+    await executeMutation(
+        client,
+        updateJobMutation,
+        "updateJob",
+        newJob
+    )
+    return result
+
 }
 
-const getJobs = (dynamoClient, { pathParameters }) => {
+const getJobs = async (dynamoClient, { pathParameters }) => {
     const { project_id } = pathParameters
-    const { company } = _getProject(dynamoClient, project_id)
+    const { company } = await _getProject(dynamoClient, project_id)
     return _getJobByProject(dynamoClient, company, project_id)
 }
 

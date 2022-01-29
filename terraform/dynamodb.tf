@@ -89,6 +89,28 @@ resource "aws_dynamodb_table" "job_run" {
   }
 }
 
+resource "aws_dynamodb_table" "user" {
+  name         = "user_${var.stage}"
+  billing_mode = "PAY_PER_REQUEST"
+  hash_key     = "hash_api_key"
+  attribute {
+    name = "hash_api_key"
+    type = "S"
+  }
+  attribute {
+    name = "user_id" # okta user id
+    type = "S"
+  }
+  global_secondary_index {
+    name            = "api_index"
+    hash_key        = "user_id"
+    projection_type = "ALL"
+  }
+  tags = {
+    Name        = "user"
+    Environment = var.stage
+  }
+}
 
 
 resource "aws_kinesis_stream" "persist_project" {

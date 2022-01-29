@@ -20,6 +20,17 @@ resource "aws_appsync_api_key" "appsync_api_key" {
   api_id = aws_appsync_graphql_api.coordinator.id
 }
 
+
+resource "aws_appsync_datasource" "apikey" {
+  api_id           = aws_appsync_graphql_api.coordinator.id
+  name             = "apikey_${var.stage}"
+  service_role_arn = aws_iam_role.appsync.arn
+  type             = "AWS_LAMBDA"
+  lambda_config {
+    function_arn = aws_lambda_function.create_api_key.arn
+  }
+}
+
 resource "aws_appsync_datasource" "project" {
   api_id           = aws_appsync_graphql_api.coordinator.id
   name             = "project_${var.stage}"
@@ -48,6 +59,15 @@ resource "aws_appsync_datasource" "jobrun" {
   dynamodb_config {
     table_name = aws_dynamodb_table.job_run.name
   }
+}
+
+resource "aws_appsync_resolver" "mutation_add_api_key" {
+  api_id            = aws_appsync_graphql_api.coordinator.id
+  type              = "Mutation"
+  field             = "addApiKey"
+  data_source       = aws_appsync_datasource.apikey.name
+  request_template  = file("../graphql/resolvers/mutation_add_api_key.vtl")
+  response_template = file("../graphql/resolvers/mutation_response.vtl")
 }
 
 resource "aws_appsync_resolver" "mutation_add_job_run" {
@@ -194,8 +214,23 @@ data "aws_iam_policy_document" "appsync" {
   }
 }
 
+data "aws_iam_policy_document" "appsynclambda" {
+  statement {
+    actions = [
+      "lambda:InvokeFunction"
+    ]
+    resources = [
+      aws_lambda_function.create_api_key.arn
+    ]
+  }
+}
+
 resource "aws_iam_role_policy" "appsync" {
   role   = aws_iam_role.appsync.id
   policy = data.aws_iam_policy_document.appsync.json
 }
 
+resource "aws_iam_role_policy" "appsynclambda" {
+  role   = aws_iam_role.appsync.id
+  policy = data.aws_iam_policy_document.appsynclambda.json
+}
