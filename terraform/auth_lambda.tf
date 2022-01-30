@@ -22,6 +22,11 @@ resource "aws_lambda_function" "auth_lambda" {
   handler          = "index.authUser"
   runtime          = "nodejs14.x"
   source_code_hash = filebase64sha256(data.archive_file.auth_lambda.output_path)
+  environment {
+    variables = {
+      USER_TABLE_NAME = aws_dynamodb_table.user.name
+    }
+  }
 }
 
 ### IAM

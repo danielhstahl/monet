@@ -11,12 +11,14 @@ data "template_file" "swagger" {
     arn_get_job_status = aws_lambda_function.get_job_status.arn
     arn_create_api_key = aws_lambda_function.create_api_key.arn
     arn_auth           = aws_lambda_function.auth_lambda.arn
+    arn_auth_role      = aws_iam_role.api.arn
   }
 }
 
 resource "aws_api_gateway_rest_api" "api" {
   name = "jobcoordinator"
   body = data.template_file.swagger.rendered
+
 }
 
 resource "aws_api_gateway_deployment" "deployapi" {
@@ -54,4 +56,50 @@ output "endpointdeploy" {
 resource "local_file" "envforreact" {
   content  = "REACT_APP_HOST=${aws_api_gateway_stage.api.invoke_url}"
   filename = "../client/.env"
+}
+
+
+resource "aws_api_gateway_authorizer" "apiauthorizer" {
+  name                   = "ApiKeyAuthorizer"
+  rest_api_id            = aws_api_gateway_rest_api.api.id
+  authorizer_uri         = aws_lambda_function.auth_lambda.invoke_arn
+  authorizer_credentials = aws_iam_role.api.arn
+}
+
+### IAM
+
+resource "aws_iam_role" "api" {
+  name               = "api_role"
+  path               = "/"
+  assume_role_policy = data.aws_iam_policy_document.api_assum_role.json
+}
+
+data "aws_iam_policy_document" "api_assum_role" {
+  statement {
+    effect  = "Allow"
+    actions = ["sts:AssumeRole"]
+    principals {
+      type        = "Service"
+      identifiers = ["apigateway.amazonaws.com"]
+    }
+  }
+}
+
+resource "aws_iam_role_policy" "api_to_lambda" {
+  name   = "api_to_lambda_policy"
+  role   = aws_iam_role.api.id
+  policy = data.aws_iam_policy_document.api_to_lambda.json
+}
+
+
+data "aws_iam_policy_document" "api_to_lambda" {
+  statement {
+    effect = "Allow"
+    actions = [
+      "lambda:InvokeFunction",
+    ]
+    resources = [
+      aws_lambda_function.auth_lambda.arn
+    ]
+  }
 }

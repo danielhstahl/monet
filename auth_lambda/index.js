@@ -18,12 +18,29 @@ const _getUser = (dynamoClient, hashApiKey) => {
 }
 
 exports.authUser = async (event, context) => {
+    console.log(event)
     const ddb = dynamoDbClient || makeDynamoClient()
-    const { authorizationToken: key } = event.headers
+    const { authorizationToken: key } = event
     const hash = crypto.createHash('sha256').update(key).digest('base64')
     const result = await _getUser(ddb, hash)
     if (result) {
-        return true
+        return {
+            "principalId": result.user_id, // The principal user identification associated with the token sent by the client.
+            "policyDocument": {
+                "Version": "2012-10-17",
+                "Statement": [
+                    {
+                        "Action": "execute-api:Invoke",
+                        "Effect": "Allow",
+                        "Resource": event.methodArn
+                    }
+                ]
+            },
+            "context": {
+
+            },
+            "usageIdentifierKey": key
+        }
     }
     else {
         throw new Error('Unauthorized')
