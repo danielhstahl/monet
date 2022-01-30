@@ -10,8 +10,8 @@ data "template_file" "swagger" {
     arn_finish_job     = aws_lambda_function.finish_job.arn
     arn_get_job_status = aws_lambda_function.get_job_status.arn
     arn_create_api_key = aws_lambda_function.create_api_key.arn
-    arn_auth           = aws_lambda_function.auth_lambda.arn
-    arn_auth_role      = aws_iam_role.api.arn
+    # arn_auth           = aws_lambda_function.auth_lambda.arn
+    #arn_auth_role      = aws_iam_role.api.arn
   }
 }
 
@@ -68,6 +68,10 @@ resource "aws_api_gateway_authorizer" "apiauthorizer" {
 
 ### IAM
 
+resource "aws_api_gateway_account" "api" {
+  cloudwatch_role_arn = aws_iam_role.api.arn
+}
+
 resource "aws_iam_role" "api" {
   name               = "api_role"
   path               = "/"
@@ -100,6 +104,31 @@ data "aws_iam_policy_document" "api_to_lambda" {
     ]
     resources = [
       aws_lambda_function.auth_lambda.arn
+    ]
+  }
+}
+
+resource "aws_iam_role_policy" "cloudwatch" {
+  name = "api_to_cloudwatch"
+  role = aws_iam_role.api.id
+
+  policy = data.aws_iam_policy_document.cloudwatch.json
+}
+
+data "aws_iam_policy_document" "cloudwatch" {
+  statement {
+    effect = "Allow"
+    actions = [
+      "logs:CreateLogGroup",
+      "logs:CreateLogStream",
+      "logs:DescribeLogGroups",
+      "logs:DescribeLogStreams",
+      "logs:PutLogEvents",
+      "logs:GetLogEvents",
+      "logs:FilterLogEvents"
+    ]
+    resources = [
+      "*"
     ]
   }
 }

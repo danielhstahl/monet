@@ -27,6 +27,7 @@ resource "aws_lambda_function" "auth_lambda" {
       USER_TABLE_NAME = aws_dynamodb_table.user.name
     }
   }
+  depends_on=[aws_api_gateway_stage.api]
 }
 
 ### IAM
