@@ -52,18 +52,10 @@ output "endpointstage" {
 output "endpointdeploy" {
   value = aws_api_gateway_deployment.deployapi.invoke_url
 }
-
+/*
 resource "local_file" "envforreact" {
   content  = "REACT_APP_HOST=${aws_api_gateway_stage.api.invoke_url}"
   filename = "../client/.env"
-}
-
-/*
-resource "aws_api_gateway_authorizer" "apiauthorizer" {
-  name                   = "ApiKeyAuthorizer"
-  rest_api_id            = aws_api_gateway_rest_api.api.id
-  authorizer_uri         = aws_lambda_function.auth_lambda.invoke_arn
-  authorizer_credentials = aws_iam_role.api.arn
 }*/
 
 ### IAM
