@@ -14,10 +14,7 @@ To actually create:
 `terraform apply -var-file=dev.tfvars`
 
 `cd ..`
-AWS_ACCESS_KEY_ID=AKIAQNX6I2JUSNHPRFTZ AWS_SECRET_ACCESS_KEY=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 terraform apply -var-file=dev.tfvars
 
-
-0oa3ohmat8THSWftp5d7
 
 
 ## Make a post request
