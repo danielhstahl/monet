@@ -12,7 +12,7 @@ resource "aws_lambda_permission" "auth_lambda" {
   action        = "lambda:InvokeFunction"
   function_name = aws_lambda_function.auth_lambda.function_name
   principal     = "apigateway.amazonaws.com"
-  source_arn    = "${aws_api_gateway_rest_api.api.execution_arn}/*/*/*"
+  source_arn    = "${aws_api_gateway_rest_api.api.execution_arn}/authorizers/*" #"${aws_api_gateway_rest_api.api.execution_arn}/*"
 }
 
 resource "aws_lambda_function" "auth_lambda" {
@@ -27,7 +27,7 @@ resource "aws_lambda_function" "auth_lambda" {
       USER_TABLE_NAME = aws_dynamodb_table.user.name
     }
   }
-  depends_on=[aws_api_gateway_stage.api]
+  #depends_on=[aws_api_gateway_stage.api]
 }
 
 ### IAM

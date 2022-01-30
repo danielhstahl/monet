@@ -10,6 +10,19 @@ basePath: "/"
 schemes:
 - https
 
+
+securityDefinitions:
+  ApiKeyAuthorizer:
+    type: apiKey
+    name: Authorization
+    in: header
+    x-amazon-apigateway-authtype: custom
+    x-amazon-apigateway-authorizer:
+      authorizerResultTtlInSeconds: 300
+      authorizerUri: arn:aws:apigateway:${region}:lambda:path/2015-03-31/functions/${arn_auth}/invocations
+      authorizerCredentials: ${arn_auth_role}
+      type: token
+
 paths:
   "/project/create":
     post:

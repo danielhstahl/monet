@@ -10,8 +10,8 @@ data "template_file" "swagger" {
     arn_finish_job     = aws_lambda_function.finish_job.arn
     arn_get_job_status = aws_lambda_function.get_job_status.arn
     arn_create_api_key = aws_lambda_function.create_api_key.arn
-    # arn_auth           = aws_lambda_function.auth_lambda.arn
-    #arn_auth_role      = aws_iam_role.api.arn
+    arn_auth           = aws_lambda_function.auth_lambda.arn
+    arn_auth_role      = aws_iam_role.api.arn
   }
 }
 
@@ -58,13 +58,13 @@ resource "local_file" "envforreact" {
   filename = "../client/.env"
 }
 
-
+/*
 resource "aws_api_gateway_authorizer" "apiauthorizer" {
   name                   = "ApiKeyAuthorizer"
   rest_api_id            = aws_api_gateway_rest_api.api.id
   authorizer_uri         = aws_lambda_function.auth_lambda.invoke_arn
   authorizer_credentials = aws_iam_role.api.arn
-}
+}*/
 
 ### IAM
 
