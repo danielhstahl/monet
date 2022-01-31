@@ -177,7 +177,7 @@ output "appsyncendpoint" {
 
 
 resource "local_file" "envforreact" {
-  content  = "REACT_GRAPHQL_URL=${aws_appsync_graphql_api.coordinator.uris["GRAPHQL"]}"
+  content  = "REACT_APP_GRAPHQL_URL=${aws_appsync_graphql_api.coordinator.uris["GRAPHQL"]}"
   filename = "../client/.env"
 }
 

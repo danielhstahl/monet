@@ -1,5 +1,4 @@
 import { Table } from 'antd'
-import React, { useState, useEffect } from 'react'
 import {
     useQuery
 } from "@apollo/client";
@@ -45,7 +44,8 @@ const columns = [
         key: "average_job_length_in_seconds"
     }
 ]
-export default ({ }) => {
+const JobsTable = ({ }) => {
+    //console.log("got here")
     const { loading, error, data } = useQuery(getJobsByProject);
     //const [data, setData] = useState([])
     //useEffect(() => {
@@ -54,3 +54,4 @@ export default ({ }) => {
 
     return <Table loading={loading} dataSource={data} columns={columns} />
 }
+export default JobsTable

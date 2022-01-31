@@ -1,5 +1,5 @@
 name: test
-on: [push]
+on: [push, pull_request]
 
 jobs:
     test:
@@ -16,5 +16,16 @@ jobs:
         run: |
           cd transform_lambda
           npm ci
+          npm test
+          cd ..
+    test_ui:
+      runs-on: ubuntu-latest
+      steps:
+      - uses: actions/checkout@v2
+      - name: Run client tests
+        run: |
+          cd client
+          npm ci
+          npm build 
           npm test
           cd ..
