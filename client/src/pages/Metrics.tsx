@@ -9,7 +9,7 @@ type Props = {
 }
 const Metrics = ({ company }: Props) => {
     const [projectId, setProjectId] = useState<string | null>(null)
-    const [createProject, { loading, error, data }] = useMutation(CREATE_PROJECT)
+    const [createProject, { loading }] = useMutation(CREATE_PROJECT)
     return <>
         <CreateProject company={company} createProject={createProject} loading={loading} />
         <SelectProject company={company} setProject={setProjectId} />

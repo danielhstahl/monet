@@ -53,7 +53,7 @@ type Props = {
 }
 
 const JobsTable = ({ company, project_id, limit, nextToken, setNextToken }: Props) => {
-    const { loading, error, data } = useQuery(getJobsByProject, { variables: { company, project_id, limit, nextToken } });
+    const { loading, data } = useQuery(getJobsByProject, { variables: { company, project_id, limit, nextToken } });
     const onChange = () => setNextToken(data.nextToken)
     console.log(data)
     return <><Table

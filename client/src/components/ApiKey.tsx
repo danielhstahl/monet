@@ -41,7 +41,7 @@ const ApiDisplay = ({ project_id, createApiKey, loading, data }: DisplayProps) =
 const ApiKey = ({ company }: Props) => {
     const [projectId, setProjectId] = useState<string | null>(null)
     const [visible, setVisible] = useState(false)
-    const [createApiKey, { loading, error, data }] = useMutation(CREATE_API_KEY)
+    const [createApiKey, { loading, data }] = useMutation(CREATE_API_KEY)
     const close = () => setVisible(false)
     return <>
         <SelectProject setProject={setProjectId} company={company} />
