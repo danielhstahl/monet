@@ -1,8 +1,10 @@
-import { Table } from 'antd'
+import { Table, Pagination, Button } from 'antd'
+import { useEffect, useState } from 'react'
 import {
     useQuery
 } from "@apollo/client";
 import { getJobsByProject } from '../graphql/queries';
+import { setSourceMapRange } from 'typescript';
 type Person = {
     name: string;
     age: number;
@@ -44,14 +46,33 @@ const columns = [
         key: "average_job_length_in_seconds"
     }
 ]
-const JobsTable = ({ }) => {
-    //console.log("got here")
-    const { loading, error, data } = useQuery(getJobsByProject);
-    //const [data, setData] = useState([])
-    //useEffect(() => {
-
-    //})
-
-    return <Table loading={loading} dataSource={data} columns={columns} />
+type ProjectProps = {
+    company: string,
+    project_id: string
 }
-export default JobsTable
+type Props = {
+    company: string,
+    project_id: string,
+    limit: number,
+    nextToken: string | null,
+    setNextToken: (nextToken: string) => void
+}
+
+const JobsTable = ({ company, project_id, limit, nextToken, setNextToken }: Props) => {
+    const { loading, error, data } = useQuery(getJobsByProject, { variables: { company, project_id, limit, nextToken } });
+    const onChange = () => setNextToken(data.nextToken)
+    return <><Table
+        loading={loading}
+        dataSource={data.items}
+        columns={columns}
+        pagination={false}
+    />
+        <Button onClick={onChange}>Next</Button></>
+}
+
+
+const JobsPerProject = ({ company, project_id }: ProjectProps) => {
+    const [token, setToken] = useState<string | null>(null)
+    return <JobsTable company={company} project_id={project_id} nextToken={token} setNextToken={setToken} limit={50} />
+}
+export default JobsPerProject

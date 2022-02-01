@@ -12,5 +12,5 @@ variable "client_id" {
 
 variable "issuer" {
   type    = string
-  default = "https://dev-20490044.okta.com"
+  default = "https://dev-20490044.okta.com/oauth2/default"
 }

@@ -19,22 +19,17 @@ const ApolloWrapper = ({ children }: Props) => {
 
     const { authState } = useOktaAuth()
     const isAuthenticated = authState?.isAuthenticated
-    const accessToken = authState?.accessToken?.accessToken
+    const accessToken = authState?.idToken?.idToken
     //const token=oktaAuth.acces
     const [client, setClient] = useState<ApolloClient<NormalizedCacheObject> | undefined>(undefined)
     useEffect(() => {
-        console.log(authState)
-        //console.log(oktaAuth)
         if (isAuthenticated) {
             console.log("authenticated and creating authLink")
             const authLink = setContext((_, { headers }) => {
-                // get the authentication token from local storage if it exists
-                // const token = authState.accessToken?.accessToken//localStorage.getItem('token'); //TODO, need a full login process with okta etc
-                // return the headers to the context so httpLink can read them
                 return {
                     headers: {
                         ...headers,
-                        authorization: accessToken ? `Bearer ${accessToken}` : "",
+                        authorization: accessToken ? `${accessToken}` : "",
                     }
                 }
             });

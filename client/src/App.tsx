@@ -7,8 +7,8 @@ import { Route, Switch, useHistory } from 'react-router-dom';
 import { OktaAuth, toRelativeUrl } from '@okta/okta-auth-js';
 import Login from './components/Login';
 import ApolloWrapper from './components/ApolloWrapper';
-const issuer = 'https://dev-20490044.okta.com/oauth2/default'
-const clientId = '0oa3rhm4iuHrIwZba5d7'
+const issuer = process.env.REACT_APP_OKTA_ISSUER
+const clientId = process.env.REACT_APP_OKTA_ID
 //const redirect = process.env.REACT_APP_OKTA_APP_BASE_URL + '/callback';
 
 const REDIRECT_URL = '/login/callback'
@@ -32,16 +32,21 @@ const App = () => {
   return (
 
     <Security oktaAuth={oktaAuth} restoreOriginalUri={restoreOriginalUri} onAuthRequired={onAuthRequired}>
-      <Route path={REDIRECT_URL} ><LoginCallback /></Route>
-      <Route path='/login' ><Login /></Route>
-      <Route path='/' ><Home /></Route>
-      <SecureRoute path='/metrics' >
-        <ApolloWrapper>
-          <Route path='/' >
-            <JobsPerProject />
-          </Route>
-        </ApolloWrapper >
-      </SecureRoute>
+      <Switch>
+        <Route path={REDIRECT_URL} ><LoginCallback /></Route>
+        <Route path='/login' ><Login /></Route>
+        <Route path='/' >
+          <Home>
+            <SecureRoute path='/metrics' >
+              <ApolloWrapper>
+                <Route path='/' >
+                  <JobsPerProject />
+                </Route>
+              </ApolloWrapper >
+            </SecureRoute>
+          </Home>
+        </Route>
+      </Switch>
     </Security >
 
   )
