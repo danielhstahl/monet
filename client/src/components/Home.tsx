@@ -37,7 +37,7 @@ const Home = ({ children }: Props) => {
                         <Link to='/metrics'>Metrics</Link>
                     </Menu.Item>
                     <Menu.Item key="3" icon={<UploadOutlined />}>
-                        nav 3
+                        <Link to='/metrics/apikey'>Api Key</Link>
                     </Menu.Item>
                 </Menu>
             </Sider>

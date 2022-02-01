@@ -1,5 +1,5 @@
 import './App.css';
-import JobsPerProject from './components/JobsPerProject'
+import ApiKey from './components/ApiKey'
 import Home from './components/Home';
 
 import { Security, SecureRoute, LoginCallback, } from '@okta/okta-react';
@@ -41,9 +41,15 @@ const App = () => {
           <Home>
             <SecureRoute path='/metrics' >
               <ApolloWrapper>
-                <Route path='/' >
-                  <Metrics company={clientId} />
-                </Route>
+                <Switch>
+                  <Route path='/metrics' exact >
+                    <Metrics company={clientId} />
+                  </Route>
+                  <Route path='/metrics/apikey'>
+                    <ApiKey company={clientId} />
+                  </Route>
+                </Switch>
+
               </ApolloWrapper >
             </SecureRoute>
           </Home>

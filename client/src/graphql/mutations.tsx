@@ -16,6 +16,17 @@ mutation CreateProject(
   }
 `;
 
+export const CREATE_API_KEY = gql`
+mutation AddApiKey(
+  $user_id: String!
+  $project_id: String!
+){
+  addApiKey(user_id:  $user_id, project_id: $project_id){
+    api_key
+  }
+}
+`
+
 export const createJob = gql`
   mutation CreateJob(
     $job_name: String!

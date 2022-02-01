@@ -26,6 +26,6 @@ jobs:
         run: |
           cd client
           npm ci
-          npm build 
+          npm run build 
           npm test
           cd ..
