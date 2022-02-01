@@ -64,10 +64,11 @@ exports.createProject = async (event, context) => {
 }
 
 exports.createJob = async (event, context) => {
+    const ddb = dynamoDbClient || makeDynamoClient()
     const asc = appSyncClient || makeAppSyncClient()
     try {
         const body = JSON.parse(event.body)
-        const result = await createJob(asc, { ...event, body })
+        const result = await createJob(asc, ddb, { ...event, body })
         return handleResult(result)
     }
     catch (e) {

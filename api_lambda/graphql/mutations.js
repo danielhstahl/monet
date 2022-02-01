@@ -11,7 +11,20 @@ const createProject = /* GraphQL */ `
     }
   }
 `;
-
+const updateProject = /* GraphQL */ `
+  mutation UpdateProject(
+     $id: ID!
+     $total_jobs: Int!
+  ) {
+    updateProject(id: $id, total_jobs: $total_jobs) {
+      id
+      project_name
+      company
+      created_date
+      total_jobs
+    }
+  }
+`;
 const createJob = /* GraphQL */ `
   mutation CreateJob(
     $job_name: String!
@@ -102,5 +115,6 @@ module.exports = {
   createJob,
   updateJob,
   createJobRun,
-  updateJobRun
+  updateJobRun,
+  updateProject
 }

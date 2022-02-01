@@ -6,7 +6,8 @@ const {
     createJob: createJobMutation,
     updateJob: updateJobMutation,
     createJobRun: createJobRunMutation,
-    updateJobRun: updateJobRunMutation
+    updateJobRun: updateJobRunMutation,
+    updateProject: updateProjectMutation
 } = require("../graphql/mutations")
 const { dateToAws } = require('./dates');
 const STATUS = {
@@ -24,19 +25,30 @@ const createProject = (client, { body }) => {
     ) //id, name, company
 }
 
-const createJob = (client, { body, pathParameters }) => {
+const createJob = (client, dynamoClient, { body, pathParameters }) => {
     const { project_id } = pathParameters
     const { name, company } = body
-    return executeMutation(
-        client,
-        createJobMutation,
-        "addJob",
-        {
-            company,
-            job_name: name,
-            project_id
-        }
-    ) //id, name, company, project_id
+    return Promise.all([
+        executeMutation(
+            client,
+            createJobMutation,
+            "addJob",
+            {
+                company,
+                job_name: name,
+                project_id
+            }
+        ), //id, name, company, project_id
+        _getProject(dynamoClient, project_id).then(project => executeMutation(
+            client,
+            updateProjectMutation,
+            "updateProject",
+            {
+                id: project_id,
+                total_jobs: project.total_jobs + 1
+            }
+        ))
+    ])
 }
 
 
@@ -100,6 +112,7 @@ const _getJob = (dynamoClient, id) => {
         }
     }).promise().then(data => data.Item)
 }
+
 
 const _getJobRun = (dynamoClient, id) => {
     return dynamoClient.get({

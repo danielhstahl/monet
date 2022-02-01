@@ -14,7 +14,7 @@ resource "aws_appsync_graphql_api" "coordinator" {
   schema = file("../graphql/schema.graphql")
   log_config {
     cloudwatch_logs_role_arn = aws_iam_role.appsync.arn
-    field_log_level          = "ALL"
+    field_log_level          = "ERROR"
   }
 }
 
@@ -99,6 +99,16 @@ resource "aws_appsync_resolver" "mutation_add_project" {
   field             = "addProject"
   data_source       = aws_appsync_datasource.project.name
   request_template  = file("../graphql/resolvers/mutation_add_project.vtl")
+  response_template = file("../graphql/resolvers/mutation_response.vtl")
+}
+
+
+resource "aws_appsync_resolver" "mutation_update_project" {
+  api_id            = aws_appsync_graphql_api.coordinator.id
+  type              = "Mutation"
+  field             = "updateProject"
+  data_source       = aws_appsync_datasource.project.name
+  request_template  = file("../graphql/resolvers/mutation_update_project.vtl")
   response_template = file("../graphql/resolvers/mutation_response.vtl")
 }
 

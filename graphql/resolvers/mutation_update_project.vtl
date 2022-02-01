@@ -1,0 +1,13 @@
+{
+  "version" : "2018-05-29",
+  "operation": "UpdateItem",
+  "key": {
+    "id": $util.dynamodb.toDynamoDBJson($ctx.arguments.id)
+  },
+  "update":{
+        "expression": "SET total_jobs = :total_jobs,
+        "expressionValues": {
+            ":total_jobs": $util.dynamodb.toDynamoDBJson($ctx.arguments.total_jobs)
+        }
+  }
+}
