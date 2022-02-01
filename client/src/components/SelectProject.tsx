@@ -1,26 +1,28 @@
 import { Select } from 'antd';
-const { Option } = Select;
 import { getProjects } from '../graphql/queries';
+import { useQuery } from "@apollo/client";
 
-const SelectProject = () => {
-    const { loading, error, data } = useQuery(getProjects);
-    return <Select
+const { Option } = Select;
+type Props = {
+    company: string,
+    setProject: (project_id: string) => void
+}
+type Project = {
+    id: string,
+    project_name: string
+}
+const SelectProject = ({ company, setProject }: Props) => {
+    const limit = 999 //appsync has a hard max at 999 I believe, it will be a while before we get to that point :)
+    const { loading, error, data } = useQuery(getProjects, { variables: { company, limit } });
+    console.log(data)
+    return data ? <Select
         showSearch
         style={{ width: 200 }}
-        placeholder="Search to Select"
-        optionFilterProp="children"
-        filterOption={(input, option) =>
-            option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
-        }
-        filterSort={(optionA, optionB) =>
-            optionA.children.toLowerCase().localeCompare(optionB.children.toLowerCase())
-        }
+        loading={loading}
+        onChange={setProject}
     >
-        <Option value="1">Not Identified</Option>
-        <Option value="2">Closed</Option>
-        <Option value="3">Communicated</Option>
-        <Option value="4">Identified</Option>
-        <Option value="5">Resolved</Option>
-        <Option value="6">Cancelled</Option>
-    </Select>
+        {data.items.map(({ id, project_name }: Project) => <Option key={id} value={id}>{project_name}</Option>)}
+    </Select> : <p>Please create a project first</p>
 }
+
+export default SelectProject

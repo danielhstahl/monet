@@ -7,9 +7,11 @@ import { Route, Switch, useHistory } from 'react-router-dom';
 import { OktaAuth, toRelativeUrl } from '@okta/okta-auth-js';
 import Login from './components/Login';
 import ApolloWrapper from './components/ApolloWrapper';
+import Metrics from './pages/Metrics';
 const issuer = process.env.REACT_APP_OKTA_ISSUER
-const clientId = process.env.REACT_APP_OKTA_ID
-//const redirect = process.env.REACT_APP_OKTA_APP_BASE_URL + '/callback';
+
+//since there should be a 1-1 between client id and company, FOR NOW we will us this as the company
+const clientId = process.env.REACT_APP_OKTA_ID || ""
 
 const REDIRECT_URL = '/login/callback'
 
@@ -40,7 +42,7 @@ const App = () => {
             <SecureRoute path='/metrics' >
               <ApolloWrapper>
                 <Route path='/' >
-                  <JobsPerProject />
+                  <Metrics company={clientId} />
                 </Route>
               </ApolloWrapper >
             </SecureRoute>

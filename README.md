@@ -19,13 +19,9 @@ To actually create:
 
 ## Make a post request
 
-`curl -X POST https://usnw5tmpqh.execute-api.us-east-1.amazonaws.com/dev/project/create -d '{"name":"mytestname", "company":"mytestcompany"}' -H "Content-Type: application/json" -H "Authorization: 2ca27762-05ca-4ba4-b4d7-d63d18def05a"`
+`export API_KEY=12345`
 
-
-## Get oauth token
-
-`curl https://https://dev-20490044.okta.com/oauth2/v1/authorize?client_id=0oa3ohmat8THSWftp5d7&response_type=id_token&nonce=1234&scope=openid%20profile&state=test&redirect_uri=https://YOUR DOMAIN/`
-
+`curl -X POST https://usnw5tmpqh.execute-api.us-east-1.amazonaws.com/dev/project/create -d '{"name":"mytestname", "company":"mytestcompany"}' -H "Content-Type: application/json" -H "Authorization: $API_KEY"`
 
 ## Example
 
@@ -73,3 +69,8 @@ Query the job run:
 Finish a job run:
 
 `curl -X POST  https://usnw5tmpqh.execute-api.us-east-1.amazonaws.com/dev/job/cc86975e-ad1e-498d-a0bb-926e055e12f1/run/e12e3061-38ca-498c-94c7-777c5a510789/finish -d '{"status":"SUCCESS"}'  -H "Content-Type: application/json"`
+
+
+## Okta
+
+You have to manually add User Name for auth to work (kind of annoying!)

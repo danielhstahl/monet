@@ -12,6 +12,10 @@ resource "aws_appsync_graphql_api" "coordinator" {
   }
   name   = "jobinfo"
   schema = file("../graphql/schema.graphql")
+  log_config {
+    cloudwatch_logs_role_arn = aws_iam_role.appsync.arn
+    field_log_level          = "ALL"
+  }
 }
 
 # create the API Key to authenticate against graphql
@@ -239,4 +243,9 @@ resource "aws_iam_role_policy" "appsync" {
 resource "aws_iam_role_policy" "appsynclambda" {
   role   = aws_iam_role.appsync.id
   policy = data.aws_iam_policy_document.appsynclambda.json
+}
+
+resource "aws_iam_role_policy_attachment" "appsynccloudwatch" {
+  policy_arn = "arn:aws:iam::aws:policy/service-role/AWSAppSyncPushToCloudWatchLogs"
+  role       = aws_iam_role.appsync.name
 }

@@ -1,14 +1,8 @@
-import { Table, Pagination, Button } from 'antd'
-import { useEffect, useState } from 'react'
-import {
-    useQuery
-} from "@apollo/client";
+import { Table, Button } from 'antd'
+import { useState } from 'react'
+import { useQuery } from "@apollo/client";
 import { getJobsByProject } from '../graphql/queries';
-import { setSourceMapRange } from 'typescript';
-type Person = {
-    name: string;
-    age: number;
-}
+
 const columns = [
     {
         title: "Job Id",
@@ -67,7 +61,7 @@ const JobsTable = ({ company, project_id, limit, nextToken, setNextToken }: Prop
         columns={columns}
         pagination={false}
     />
-        <Button onClick={onChange}>Next</Button></>
+        {nextToken && <Button onClick={onChange}>Next</Button>}</>
 }
 
 
