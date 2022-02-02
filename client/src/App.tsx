@@ -27,6 +27,7 @@ const App = () => {
   });
   const navigate = useNavigate();
   const restoreOriginalUri = async (_: any, originalUri: string) => {
+    console.log(originalUri)
     navigate(toRelativeUrl(originalUri || '/', window.location.origin), { replace: true });
   };
   return (
