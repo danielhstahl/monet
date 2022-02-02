@@ -1,13 +1,13 @@
 import { useState } from 'react';
 import { useOktaAuth } from '@okta/okta-react';
-import { Redirect } from 'react-router-dom';
+import { Navigate } from 'react-router-dom';
 import { Form, Input, Button } from 'antd';
 
 type FormValues = {
     username: string,
     password: string
 }
-const Login = () => {
+const Login = ({ from }: { from?: string }) => {
     const { oktaAuth, authState } = useOktaAuth();
     const [sessionToken, setSessionToken] = useState<undefined | string>(undefined);
 
@@ -33,7 +33,7 @@ const Login = () => {
         return <div>Loading...</div>;
     }
     if (authState.isAuthenticated) {
-        return <Redirect to={{ pathname: '/metrics' }} />
+        return <Navigate to={from || "/"} />
     }
     else {
 

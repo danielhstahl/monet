@@ -1,4 +1,4 @@
-import { Link, useHistory } from 'react-router-dom';
+import { Link, useNavigate, Outlet } from 'react-router-dom';
 import { useOktaAuth } from '@okta/okta-react';
 import React, { useState } from "react"
 import { Layout, Menu } from 'antd';
@@ -16,15 +16,19 @@ import {
 const { Header, Sider, Content } = Layout;
 
 type Props = {
-    children: JSX.Element | JSX.Element[]
+    children?: JSX.Element | JSX.Element[]
 }
-const Home = ({ children }: Props) => {
+const Home = () => {
+    //console.log(children)
     const [collapsed, setCollapsed] = useState(false)
     const { authState, oktaAuth } = useOktaAuth()
-    const history = useHistory();
+    const navigate = useNavigate();
     const button = authState?.isAuthenticated ?
-        <LogoutOutlined className="logout" onClick={() => { oktaAuth.signOut() }} /> :
-        <LoginOutlined className="logout" onClick={() => { history.push('/login') }} />
+        <LogoutOutlined className="logout" onClick={() => {
+            oktaAuth.signOut()
+            navigate('/login')
+        }} /> :
+        <LoginOutlined className="logout" onClick={() => { navigate('/login') }} />
     return (
         <Layout>
             <Sider trigger={null} collapsible collapsed={collapsed}>
@@ -37,7 +41,7 @@ const Home = ({ children }: Props) => {
                         <Link to='/metrics'>Metrics</Link>
                     </Menu.Item>
                     <Menu.Item key="3" icon={<UploadOutlined />}>
-                        <Link to='/metrics/apikey'>Api Key</Link>
+                        <Link to='/apikey'>Api Key</Link>
                     </Menu.Item>
                 </Menu>
             </Sider>
@@ -58,7 +62,7 @@ const Home = ({ children }: Props) => {
                         minHeight: 280,
                     }}
                 >
-                    {children}
+                    <Outlet />
                 </Content>
             </Layout>
         </Layout>
