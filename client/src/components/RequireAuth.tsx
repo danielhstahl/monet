@@ -1,5 +1,6 @@
 import { useLocation, Navigate, Outlet } from 'react-router-dom';
-import { useOktaAuth } from '@okta/okta-react';
+import { useOktaAuth } from '../okta-react/OktaContext';
+
 const RequireAuth = () => {
     const { authState } = useOktaAuth()
     let location = useLocation()

@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useOktaAuth } from '@okta/okta-react';
+import { useOktaAuth } from '../okta-react/OktaContext';
 import { Navigate } from 'react-router-dom';
 import { Form, Input, Button, Spin } from 'antd';
 
@@ -11,20 +11,23 @@ type FormValues = {
 type LoginProp = {
     handleSubmit: (obj0: FormValues) => void
 }
-
+const margin = {
+    marginTop: "20%"
+}
 const LoginForm = ({ handleSubmit }: LoginProp) => <Form
     name="basic"
     labelCol={{ span: 8 }}
     wrapperCol={{ span: 16 }}
     initialValues={{ remember: true }}
     onFinish={handleSubmit}
-    //onFinishFailed={onFinishFailed}
+    style={margin}
     autoComplete="off"
 >
     <Form.Item
         label="Username"
         name="username"
         rules={[{ required: true, message: 'Please input your username!' }]}
+        wrapperCol={{ span: 8 }}
     >
         <Input />
     </Form.Item>
@@ -33,11 +36,12 @@ const LoginForm = ({ handleSubmit }: LoginProp) => <Form
         label="Password"
         name="password"
         rules={[{ required: true, message: 'Please input your password!' }]}
+        wrapperCol={{ span: 8 }}
     >
         <Input.Password />
     </Form.Item>
 
-    <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
+    <Form.Item wrapperCol={{ offset: 8, span: 8 }}>
         <Button type="primary" htmlType="submit">
             Submit
         </Button>

@@ -2,7 +2,8 @@ import './App.css';
 import ApiKey from './components/ApiKey'
 import Home from './components/Home';
 
-import { Security, LoginCallback, } from '@okta/okta-react';
+import Security from './okta-react/Security';
+import LoginCallback from './okta-react/LoginCallback';
 import { Route, Routes, useNavigate } from 'react-router-dom';
 import { OktaAuth, toRelativeUrl } from '@okta/okta-auth-js';
 import Login from './components/Login';

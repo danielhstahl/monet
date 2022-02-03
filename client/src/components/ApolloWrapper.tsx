@@ -6,7 +6,7 @@ import {
     NormalizedCacheObject,
 } from "@apollo/client";
 import { setContext } from '@apollo/client/link/context'
-import { useOktaAuth } from '@okta/okta-react';
+import { useOktaAuth } from '../okta-react/OktaContext';
 import { Spin } from "antd";
 import { useEffect, useState } from "react";
 import { Outlet } from "react-router-dom";

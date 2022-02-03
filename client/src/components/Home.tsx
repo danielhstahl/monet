@@ -1,5 +1,5 @@
 import { Link, useNavigate, Outlet, useLocation } from 'react-router-dom';
-import { useOktaAuth } from '@okta/okta-react';
+import { useOktaAuth } from '../okta-react/OktaContext';
 import React, { useState } from "react"
 import { Layout, Menu } from 'antd';
 import "./Home.css"
