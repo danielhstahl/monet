@@ -1,8 +1,7 @@
-import { Link, useNavigate, Outlet, useLocation } from 'react-router-dom';
-import { useOktaAuth } from '../okta-react/OktaContext';
+import { Link, Outlet, useLocation } from 'react-router-dom';
 import React, { useState } from "react"
 import { Layout, Menu } from 'antd';
-import { LOGIN, HOME, API_KEY, METRICS } from '../constants/routes';
+import { HOME, API_KEY, METRICS } from '../constants/routes';
 
 import "./Home.css"
 import {
@@ -10,24 +9,17 @@ import {
     MenuFoldOutlined,
     UserOutlined,
     VideoCameraOutlined,
-    UploadOutlined,
-    LogoutOutlined,
-    LoginOutlined
+    UploadOutlined
 } from '@ant-design/icons';
 
 const { Header, Sider, Content } = Layout;
 const FULL_HEIGHT = { height: "100vh" }
-const Home = () => {
+type Props = {
+    loginElement: React.ReactElement //React.Component<React.HTMLAttributes<>
+}
+const Home = ({ loginElement }: Props) => {
     const [collapsed, setCollapsed] = useState(false)
-    const { authState, oktaAuth } = useOktaAuth()
-    const navigate = useNavigate()
     const location = useLocation()
-    const button = authState?.isAuthenticated ?
-        <LogoutOutlined className="logout" onClick={() => {
-            oktaAuth.signOut()
-            navigate(LOGIN)
-        }} /> :
-        <LoginOutlined className="logout" onClick={() => { navigate(LOGIN) }} />
     return (
         <Layout style={FULL_HEIGHT}>
             <Sider trigger={null} collapsible collapsed={collapsed}>
@@ -51,7 +43,7 @@ const Home = () => {
                         className: 'trigger',
                         onClick: () => setCollapsed(!collapsed),
                     })}
-                    {button}
+                    {loginElement}
                 </Header>
                 <Content
                     className="site-layout-background"

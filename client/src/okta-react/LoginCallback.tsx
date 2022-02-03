@@ -43,7 +43,7 @@ const LoginCallback: React.FC<LoginCallbackProps> = ({ errorComponent, loadingEl
         }).catch(e => {
             setCallbackError(e);
         });
-    }, [oktaAuth]);
+    }, [oktaAuth, onAuthResume]);
 
     const authError = authState?.error;
     const displayError = callbackError || authError;

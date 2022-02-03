@@ -15,10 +15,19 @@ const httpLink = createHttpLink({
     uri: process.env.REACT_APP_GRAPHQL_URL || "",
 });
 
+type Props = {
+    isAuthenticated: boolean | undefined,
+    accessToken: string | undefined
+}
+
 const ApolloWrapper = () => {
     const { authState } = useOktaAuth()
     const isAuthenticated = authState?.isAuthenticated
     const accessToken = authState?.idToken?.idToken
+    return <ApolloProviderWithAuth isAuthenticated={isAuthenticated} accessToken={accessToken} />
+}
+
+export const ApolloProviderWithAuth = ({ isAuthenticated, accessToken }: Props) => {
     const [client, setClient] = useState<ApolloClient<NormalizedCacheObject> | undefined>(undefined)
     useEffect(() => {
         if (isAuthenticated) {
