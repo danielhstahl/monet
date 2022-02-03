@@ -6,25 +6,22 @@ import {
     NormalizedCacheObject,
 } from "@apollo/client";
 import { setContext } from '@apollo/client/link/context'
-import { useOktaAuth } from '@okta/okta-react';
+import { useOktaAuth } from '../okta-react/OktaContext';
+import { Spin } from "antd";
 import { useEffect, useState } from "react";
+import { Outlet } from "react-router-dom";
 
 const httpLink = createHttpLink({
     uri: process.env.REACT_APP_GRAPHQL_URL || "",
 });
-type Props = {
-    children: JSX.Element | JSX.Element[]
-}
-const ApolloWrapper = ({ children }: Props) => {
 
+const ApolloWrapper = () => {
     const { authState } = useOktaAuth()
     const isAuthenticated = authState?.isAuthenticated
     const accessToken = authState?.idToken?.idToken
-    //const token=oktaAuth.acces
     const [client, setClient] = useState<ApolloClient<NormalizedCacheObject> | undefined>(undefined)
     useEffect(() => {
         if (isAuthenticated) {
-            console.log("authenticated and creating authLink")
             const authLink = setContext((_, { headers }) => {
                 return {
                     headers: {
@@ -40,7 +37,7 @@ const ApolloWrapper = ({ children }: Props) => {
         }
     }, [isAuthenticated, accessToken])
     return client ? < ApolloProvider client={client} >
-        {children}
-    </ApolloProvider > : <p>Loading</p>
+        <Outlet />
+    </ApolloProvider > : <Spin />
 }
 export default ApolloWrapper

@@ -14,7 +14,6 @@ type Project = {
 const SelectProject = ({ company, setProject }: Props) => {
     const limit = 999 //appsync has a hard max at 999 I believe, it will be a while before we get to that point :)
     const { loading, data } = useQuery(GET_PROJECTS, { variables: { company, limit }, pollInterval: 500 });
-    console.log(data)
     return <Select
         showSearch
         style={{ width: 200 }}

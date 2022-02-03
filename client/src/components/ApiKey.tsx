@@ -3,7 +3,8 @@ import SelectProject from "./SelectProject"
 import { CREATE_API_KEY } from "../graphql/mutations"
 import { Button, Modal, Spin } from "antd"
 import { useMutation } from "@apollo/client";
-import { useOktaAuth } from '@okta/okta-react';
+import { useOktaAuth } from '../okta-react/OktaContext';
+
 
 type Props = {
     company: string
