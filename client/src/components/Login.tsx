@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useOktaAuth } from '../okta-react/OktaContext';
 import { Navigate } from 'react-router-dom';
 import { Form, Input, Button, Spin } from 'antd';
+import { HOME } from '../constants/routes';
 
 type FormValues = {
     username: string,
@@ -68,7 +69,7 @@ const Login = ({ from }: { from?: string }) => {
         return <Spin />
     }
     if (authState.isAuthenticated) {
-        return <Navigate to={from || "/"} />
+        return <Navigate to={from || HOME} />
     }
     return <LoginForm handleSubmit={handleSubmit} />
 

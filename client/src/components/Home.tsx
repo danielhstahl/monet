@@ -2,6 +2,8 @@ import { Link, useNavigate, Outlet, useLocation } from 'react-router-dom';
 import { useOktaAuth } from '../okta-react/OktaContext';
 import React, { useState } from "react"
 import { Layout, Menu } from 'antd';
+import { LOGIN, HOME, API_KEY, METRICS } from '../constants/routes';
+
 import "./Home.css"
 import {
     MenuUnfoldOutlined,
@@ -14,7 +16,7 @@ import {
 } from '@ant-design/icons';
 
 const { Header, Sider, Content } = Layout;
-
+const FULL_HEIGHT = { height: "100vh" }
 const Home = () => {
     const [collapsed, setCollapsed] = useState(false)
     const { authState, oktaAuth } = useOktaAuth()
@@ -23,22 +25,22 @@ const Home = () => {
     const button = authState?.isAuthenticated ?
         <LogoutOutlined className="logout" onClick={() => {
             oktaAuth.signOut()
-            navigate('/login')
+            navigate(LOGIN)
         }} /> :
-        <LoginOutlined className="logout" onClick={() => { navigate('/login') }} />
+        <LoginOutlined className="logout" onClick={() => { navigate(LOGIN) }} />
     return (
-        <Layout>
+        <Layout style={FULL_HEIGHT}>
             <Sider trigger={null} collapsible collapsed={collapsed}>
                 <div className="logo" />
                 <Menu theme="dark" mode="inline" selectedKeys={[location.pathname]} >
-                    <Menu.Item key='/' icon={<UserOutlined />}>
-                        <Link to='/'>Home</Link>
+                    <Menu.Item key={HOME} icon={<UserOutlined />}>
+                        <Link to={HOME}>Home</Link>
                     </Menu.Item>
-                    <Menu.Item key='/metrics' icon={<VideoCameraOutlined />}>
-                        <Link to='/metrics'>Metrics</Link>
+                    <Menu.Item key={METRICS} icon={<VideoCameraOutlined />}>
+                        <Link to={METRICS}>Metrics</Link>
                     </Menu.Item>
-                    <Menu.Item key='/apikey' icon={<UploadOutlined />}>
-                        <Link to='/apikey'>Api Key</Link>
+                    <Menu.Item key={API_KEY} icon={<UploadOutlined />}>
+                        <Link to={API_KEY}>Api Key</Link>
                     </Menu.Item>
                 </Menu>
             </Sider>

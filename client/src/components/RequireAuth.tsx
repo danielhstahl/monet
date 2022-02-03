@@ -1,5 +1,6 @@
 import { useLocation, Navigate, Outlet } from 'react-router-dom';
 import { useOktaAuth } from '../okta-react/OktaContext';
+import { LOGIN } from '../constants/routes';
 
 const RequireAuth = () => {
     const { authState } = useOktaAuth()
@@ -10,7 +11,7 @@ const RequireAuth = () => {
         // trying to go to when they were redirected. This allows us to send them
         // along to that page after they login, which is a nicer user experience
         // than dropping them off on the home page.
-        return <Navigate to="/login" state={{ from: location }} replace />;
+        return <Navigate to={LOGIN} state={{ from: location }} replace />;
     }
 
     return <Outlet />
