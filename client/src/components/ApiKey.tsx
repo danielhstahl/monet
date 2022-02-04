@@ -20,7 +20,7 @@ type DisplayProps = {
     data: Data
 }
 export const ApiDisplay = ({ loading, data }: DisplayProps) => {
-    return loading ? <Spin /> : <h3>{data?.addApiKey?.api_key}</h3>
+    return loading || !data ? <Spin /> : <h3>{data?.addApiKey?.api_key}</h3>
 }
 
 const ApiKey = ({ company, getUser }: Props) => {

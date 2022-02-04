@@ -15,39 +15,46 @@ type LoginProp = {
 const margin = {
     marginTop: "20%"
 }
-const LoginForm = ({ handleSubmit }: LoginProp) => <Form
-    name="basic"
-    labelCol={{ span: 8 }}
-    wrapperCol={{ span: 16 }}
-    initialValues={{ remember: true }}
-    onFinish={handleSubmit}
-    style={margin}
-    autoComplete="off"
->
-    <Form.Item
-        label="Username"
-        name="username"
-        rules={[{ required: true, message: 'Please input your username!' }]}
-        wrapperCol={{ span: 8 }}
+const LoginForm = ({ handleSubmit }: LoginProp) => {
+    const [loading, setLoading] = useState(false)
+    const onFinish = (values: FormValues) => {
+        setLoading(true)
+        handleSubmit(values)
+    }
+    return <Form
+        name="basic"
+        labelCol={{ span: 8 }}
+        wrapperCol={{ span: 16 }}
+        initialValues={{ remember: true }}
+        onFinish={onFinish}
+        style={margin}
+        autoComplete="off"
     >
-        <Input />
-    </Form.Item>
+        <Form.Item
+            label="Username"
+            name="username"
+            rules={[{ required: true, message: 'Please input your username!' }]}
+            wrapperCol={{ span: 8 }}
+        >
+            <Input />
+        </Form.Item>
 
-    <Form.Item
-        label="Password"
-        name="password"
-        rules={[{ required: true, message: 'Please input your password!' }]}
-        wrapperCol={{ span: 8 }}
-    >
-        <Input.Password />
-    </Form.Item>
+        <Form.Item
+            label="Password"
+            name="password"
+            rules={[{ required: true, message: 'Please input your password!' }]}
+            wrapperCol={{ span: 8 }}
+        >
+            <Input.Password />
+        </Form.Item>
 
-    <Form.Item wrapperCol={{ offset: 8, span: 8 }}>
-        <Button type="primary" htmlType="submit">
-            Submit
-        </Button>
-    </Form.Item>
-</Form>
+        <Form.Item wrapperCol={{ offset: 8, span: 8 }}>
+            <Button type="primary" htmlType="submit" loading={loading}>
+                Submit
+            </Button>
+        </Form.Item>
+    </Form>
+}
 
 const Login = ({ from }: { from?: string }) => {
     const { oktaAuth, authState } = useOktaAuth();

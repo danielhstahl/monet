@@ -39,8 +39,8 @@ const createApiKey = async (dynamoClient, hashApiKey, projectId, userId) => {
     await _removeExisting(
         dynamoClient,
         process.env.USER_TABLE_NAME,
-        "api_index",
         "hash_api_key",
+        "api_index",
         "user_id",
         userId
     )
