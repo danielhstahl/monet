@@ -57,6 +57,7 @@ resource "aws_lambda_function" "create_job" {
     variables = {
       GRAPHQL_API_ENDPOINT = aws_appsync_graphql_api.coordinator.uris["GRAPHQL"]
       GRAPHQL_API_KEY      = aws_appsync_api_key.appsync_api_key.key
+      PROJECT_TABLE_NAME   = aws_dynamodb_table.project.name
     }
   }
 }

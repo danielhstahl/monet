@@ -27,18 +27,12 @@ To actually create:
 
 Response from create project:
 
-`{
-  "id": "c7c22d8f-6af7-473b-9dda-8cea5592ae16",
-  "project_name": "mytestname",
-  "company": "mytestcompany",
-  "created_date": "2022-01-27T11:42:05.495Z",
-  "__typename": "Project"
-}`
+`{"id":"39ec7114-ba0e-4888-9318-b811311b7a2b","project_name":"mytestname","company":"mytestcompany","created_date":"2022-02-04T22:19:18.164Z","__typename":"Project"}`
 
 
 Create a job in that project:
 
-`curl -X POST https://rp4et8g4d8.execute-api.us-east-1.amazonaws.com/dev/project/c7c22d8f-6af7-473b-9dda-8cea5592ae16/job/create -d '{"name":"myjobname", "company":"mytestcompany"}' -H "Content-Type: application/json" -H "Authorization: $API_KEY"`
+`curl -X POST https://rp4et8g4d8.execute-api.us-east-1.amazonaws.com/dev/project/39ec7114-ba0e-4888-9318-b811311b7a2b/job/create -d '{"name":"myjobname", "company":"mytestcompany"}' -H "Content-Type: application/json" -H "Authorization: $API_KEY"`
 
 Response:
 
