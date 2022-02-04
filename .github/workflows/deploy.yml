@@ -14,8 +14,26 @@ jobs:
       steps:
       - uses: actions/checkout@v2
       - uses: hashicorp/setup-terraform@v1
-     
-      
+      - name: install api_lambda
+        run: |
+          cd api_lambda
+          npm ci
+          cd ..
+      - name: install auth_lambda
+        run: |
+          cd auth_lambda
+          npm ci
+          cd ..
+      - name: install graphql_lambda
+        run: |
+          cd graphql_lambda
+          npm ci
+          cd ..
+      - name: install transform_lambda
+        run: |
+          cd transform_lambda
+          npm ci
+          cd ..
       - name: Init terraform
         run: terraform -chdir=terraform init 
       
@@ -34,6 +52,7 @@ jobs:
           cd ..
 
       - name: Deploy pages
+        if: ${{ env.GITHUB_REF_NAME == main }}
         uses: JamesIves/github-pages-deploy-action@4.1.4
         with: 
           branch: gh-pages
