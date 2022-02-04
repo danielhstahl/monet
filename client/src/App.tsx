@@ -19,7 +19,7 @@ const issuer = process.env.REACT_APP_OKTA_ISSUER
 const clientId = process.env.REACT_APP_OKTA_ID || ""
 
 const App = () => {
-  return <BrowserRouter><AppWithBrowser /></BrowserRouter>
+  return <BrowserRouter basename="/job-coordinator"><AppWithBrowser /></BrowserRouter>
 }
 
 const AppWithBrowser = () => {
