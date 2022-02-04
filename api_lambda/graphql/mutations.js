@@ -13,7 +13,7 @@ const createProject = /* GraphQL */ `
 `;
 const updateProject = /* GraphQL */ `
   mutation UpdateProject(
-     $id: ID!
+     $id: String!
      $total_jobs: Int!
   ) {
     updateProject(id: $id, total_jobs: $total_jobs) {
@@ -45,7 +45,7 @@ const createJob = /* GraphQL */ `
 
 const updateJob = /* GraphQL */ `
   mutation UpdateJob(
-    $id: ID!
+    $id: String!
     $last_time_job_completed: String
     $last_time_job_completed_successfully:String
     $total_successes: Int!
@@ -95,7 +95,7 @@ const createJobRun = /* GraphQL */ `
 
 const updateJobRun = /* GraphQL */ `
   mutation UpdateJobRun(
-    $id: ID!
+    $id: String!
     $status: JobStatusEnum!
     $end_time: AWSDateTime
   ) {
