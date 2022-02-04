@@ -4,7 +4,7 @@ import Home from './components/Home';
 import LogInButton from './components/LogInButton'
 import Security from './okta-react/Security';
 import LoginCallback from './okta-react/LoginCallback';
-import { BrowserRouter, Route, Routes, useNavigate } from 'react-router-dom';
+import { BrowserRouter, Route, Routes, useLocation, useNavigate } from 'react-router-dom';
 import { OktaAuth, toRelativeUrl } from '@okta/okta-auth-js';
 import Login from './components/Login';
 import ApolloWrapper from './components/ApolloWrapper';
@@ -23,10 +23,12 @@ const App = () => {
 }
 
 const AppWithBrowser = () => {
+  const location = useLocation()
+  console.log(location)
   const oktaAuth = new OktaAuth({
     issuer: issuer,
     clientId: clientId,
-    redirectUri: window.location.origin + REDIRECT_URL,
+    redirectUri: location.pathname + REDIRECT_URL,
   });
   const getUser = getOktaUser(oktaAuth)
   const navigate = useNavigate();
