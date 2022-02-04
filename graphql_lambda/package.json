@@ -4,12 +4,15 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "jest"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
     "aws-sdk": "^2.1066.0",
     "uuid": "^8.3.2"
+  },
+  "devDependencies": {
+    "jest": "^27.4.7"
   }
 }

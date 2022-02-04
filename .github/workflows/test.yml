@@ -18,6 +18,12 @@ jobs:
           npm ci
           npm test
           cd ..
+      - name: Run api key tests
+        run: |
+          cd graphql_lambda
+          npm ci
+          npm test
+          cd ..
     test_ui:
       runs-on: ubuntu-latest
       steps:

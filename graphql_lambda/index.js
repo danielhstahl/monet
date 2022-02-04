@@ -10,7 +10,40 @@ const makeDynamoClient = () => {
     })
     return dynamoDbClient
 }
-const createApiKey = (dynamoClient, hashApiKey, projectId, userId) => {
+
+const _removeExisting = async (
+    dynamoClient,
+    table,
+    primaryKeyName,
+    secondaryIndexName,
+    secondaryKeyName,
+    secondaryKeyValue) => {
+    const data = await dynamoClient.query({
+        TableName: table,
+        KeyConditionExpression: `${secondaryKeyName} = :temp`,
+        ExpressionAttributeValues: {
+            ':temp': secondaryKeyValue
+        },
+        IndexName: secondaryIndexName
+    }).promise()
+    return Promise.all(data.Items.map(item => dynamoClient.delete({
+        TableName: table,
+        Key: {
+            [primaryKeyName]: item[primaryKeyName]
+        }
+    }).promise()))
+}
+
+
+const createApiKey = async (dynamoClient, hashApiKey, projectId, userId) => {
+    await _removeExisting(
+        dynamoClient,
+        process.env.USER_TABLE_NAME,
+        "api_index",
+        "hash_api_key",
+        "user_id",
+        userId
+    )
     return dynamoClient.put({
         TableName: process.env.USER_TABLE_NAME,
         Item: {
@@ -35,3 +68,6 @@ exports.createApiKey = async (event, context) => {
         console.error(e)
     }
 }
+
+//for testing
+exports._removeExisting = _removeExisting
