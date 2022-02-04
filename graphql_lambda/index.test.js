@@ -10,6 +10,7 @@ AWS.config.update({
     region, accessKeyId: "12345",
     secretAccessKey: "12345"
 });
+jest.setTimeout(20000)
 const createDynamoClient = () => {
     const options = {
         region, apiVersion: '2012-08-10', endpoint: `http://localhost:8000`
