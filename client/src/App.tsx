@@ -29,6 +29,8 @@ const AppWithBrowser = () => {
     clientId: clientId,
     redirectUri: BASE_NAME + pathname + REDIRECT_URL,
   });
+  console.log(BASE_NAME)
+  console.log(pathname)
   const getUser = getOktaUser(oktaAuth)
   const navigate = useNavigate();
   const restoreOriginalUri = async (_: any, originalUri: string) => {
