@@ -1,7 +1,7 @@
 import { Table, Button } from 'antd'
 import { useState } from 'react'
 import { useQuery } from "@apollo/client";
-import { getJobsByProject } from '../graphql/queries';
+import { GET_JOBS_BY_PROJECT } from '../graphql/queries';
 
 const columns = [
     {
@@ -53,8 +53,8 @@ type Props = {
 }
 
 const JobsTable = ({ company, project_id, limit, nextToken, setNextToken }: Props) => {
-    const { loading, data } = useQuery(getJobsByProject, { variables: { company, project_id, limit, nextToken } });
-    const onChange = () => setNextToken(data.nextToken)
+    const { loading, data } = useQuery(GET_JOBS_BY_PROJECT, { variables: { company, project_id, limit, nextToken } });
+    const onChange = () => setNextToken(data?.getJobsByProject?.nextToken)
     console.log(data)
     return <><Table
         loading={loading}
@@ -62,7 +62,7 @@ const JobsTable = ({ company, project_id, limit, nextToken, setNextToken }: Prop
         columns={columns}
         pagination={false}
     />
-        {nextToken && <Button onClick={onChange}>Next</Button>}</>
+        {data?.getJobsByProject?.nextToken && <Button onClick={onChange}>Next</Button>}</>
 }
 
 

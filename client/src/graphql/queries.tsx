@@ -20,7 +20,7 @@ export const GET_PROJECTS = gql`
   }
 `;
 
-export const getProjectsByName = gql`
+export const GET_PROJECTS_BY_NAME = gql`
   query GetProjectsByName(
      $project_name: String!
   ) {
@@ -34,7 +34,7 @@ export const getProjectsByName = gql`
   }
 `;
 
-export const getJobsByProject = gql`
+export const GET_JOBS_BY_PROJECT = gql`
   query GetJobsByProject(
      $project_name: String!
      $company: String!
@@ -61,7 +61,7 @@ export const getJobsByProject = gql`
   }
 `;
 
-export const getJobs = gql`
+export const GET_JOBS = gql`
   query GetJobs(
      $company: String!
      $nextToken: String
@@ -87,7 +87,7 @@ export const getJobs = gql`
   }
 `;
 
-export const getJobRuns = gql`
+export const GET_JOB_RUNS = gql`
   query GetJobRuns(
      $job_id: String!
      $nextToken: String
@@ -106,7 +106,7 @@ export const getJobRuns = gql`
   }
 `;
 
-export const getLastNJobRuns = gql`
+export const GET_LAST_N_JOB_RUNS = gql`
   query GetLastNJobRuns(
      $job_id: String!
      $n: Int

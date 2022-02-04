@@ -29,7 +29,7 @@ type DisplayProps = {
     getUser: () => Promise<string | undefined>,
     data: Data
 }
-const ApiDisplay = ({ project_id, loading, data, createApiKey, getUser }: DisplayProps) => {
+export const ApiDisplay = ({ project_id, loading, data, createApiKey, getUser }: DisplayProps) => {
     useEffect(() => {
         project_id && getUser().then(user_id => {
             createApiKey({ variables: { user_id, project_id } })
