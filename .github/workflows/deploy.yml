@@ -19,6 +19,9 @@ jobs:
       - name: Init terraform
         run: terraform -chdir=terraform init 
       
+      - name: Set environment
+        run: terraform -chdir=terraform workspace new $GITHUB_REF_NAME || terraform -chdir=terraform workspace select $GITHUB_REF_NAME
+      
       - name: Run terraform
         run: terraform -chdir=terraform apply -auto-approve -var="stage=$GITHUB_REF_NAME" -var="region=${{ secrets.AWS_REGION }}"  -var="client_id=${{ secrets.OKTA_CLIENT_ID }}" -var="issuer=${{ secrets.OKTA_ISSUER }}"
 
