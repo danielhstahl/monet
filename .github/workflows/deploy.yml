@@ -14,13 +14,7 @@ jobs:
       steps:
       - uses: actions/checkout@v2
       - uses: hashicorp/setup-terraform@v1
-      - name: Run build client
-        run: |
-          cd client
-          npm ci
-          npm run build 
-          npm test
-          cd ..
+     
       
       - name: Init terraform
         run: terraform -chdir=terraform init 
@@ -28,18 +22,18 @@ jobs:
       - name: Run terraform
         run: terraform -chdir=terraform apply -auto-approve -var="stage=$GITHUB_REF_NAME" -var="region=${{ secrets.AWS_REGION }}"  -var="client_id=${{ secrets.OKTA_CLIENT_ID }}" -var="issuer=${{ secrets.OKTA_ISSUER }}"
 
-      - name: Get Bucket Name
-        id: bucket_name
-        run: echo '::set-output name=BUCKET_NAME::$(terraform -chdir=terraform output bucketurl)'
+      - name: Run build client
+        run: |
+          cd client
+          npm ci
+          npm run build 
+          npm test
+          cd ..
 
-      - name: Configure credentials
-        uses: aws-actions/configure-aws-credentials@v1 # Configure with AWS Credentials
-        with:
-          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws-region: ${{ secrets.AWS_REGION }}
-
-      - name: Push to s3
-        run: cd client/build && aws s3 cp --recursive ./ s3://${{ steps.bucket_name.outputs.BUCKET_NAME }}/ && cd ../../
+      - name: Deploy pages
+        uses: JamesIves/github-pages-deploy-action@4.1.4
+        with: 
+          branch: gh-pages
+          folder: client/build
 
 
