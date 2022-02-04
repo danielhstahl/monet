@@ -17,23 +17,22 @@ const issuer = process.env.REACT_APP_OKTA_ISSUER
 
 //since there should be a 1-1 between client id and company, FOR NOW we will us this as the company
 const clientId = process.env.REACT_APP_OKTA_ID || ""
-
+const BASE_NAME = process.env.NODE_ENV === "development" ? "" : "/job-coordinator"
 const App = () => {
-  return <BrowserRouter basename="/job-coordinator"><AppWithBrowser /></BrowserRouter>
+  return <BrowserRouter basename={BASE_NAME}><AppWithBrowser /></BrowserRouter>
 }
 
 const AppWithBrowser = () => {
-  const location = useLocation()
-  console.log(location)
+  const { pathname } = useLocation()
   const oktaAuth = new OktaAuth({
     issuer: issuer,
     clientId: clientId,
-    redirectUri: location.pathname + REDIRECT_URL,
+    redirectUri: BASE_NAME + pathname + REDIRECT_URL,
   });
   const getUser = getOktaUser(oktaAuth)
   const navigate = useNavigate();
   const restoreOriginalUri = async (_: any, originalUri: string) => {
-    navigate(toRelativeUrl(originalUri || HOME, window.location.origin), { replace: true });
+    navigate(toRelativeUrl(originalUri || HOME, pathname), { replace: true });
   };
   return (
     <Security oktaAuth={oktaAuth} restoreOriginalUri={restoreOriginalUri} >
