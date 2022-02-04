@@ -13,7 +13,8 @@
     "aws-sdk": "^2.987.0",
     "graphql": "^15.7.0",
     "graphql-tag": "^2.12.6",
-    "node-fetch": "^2.6.7"
+    "node-fetch": "^2.6.7",
+    "uuid": "^8.3.2"
   },
   "devDependencies": {
     "docker-lambda": "^0.15.3",

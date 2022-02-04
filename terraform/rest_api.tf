@@ -52,11 +52,6 @@ output "endpointstage" {
 output "endpointdeploy" {
   value = aws_api_gateway_deployment.deployapi.invoke_url
 }
-/*
-resource "local_file" "envforreact" {
-  content  = "REACT_APP_HOST=${aws_api_gateway_stage.api.invoke_url}"
-  filename = "../client/.env"
-}*/
 
 ### IAM
 
