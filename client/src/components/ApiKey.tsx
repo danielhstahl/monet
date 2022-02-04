@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react"
+import { useState } from "react"
 import SelectProject from "./SelectProject"
 import { CREATE_API_KEY } from "../graphql/mutations"
 import { Button, Modal, Spin } from "antd"
