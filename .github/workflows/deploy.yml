@@ -14,7 +14,7 @@ jobs:
         BRANCH: ${GITHUB_REF##*/} 
       steps:
       - uses: actions/checkout@v2
-      
+      - uses: hashicorp/setup-terraform@v1
       - name: Run build client
         run: |
           cd client
@@ -24,7 +24,6 @@ jobs:
           cd ..
       
       - name: Init terraform
-        uses: hashicorp/setup-terraform@v1
         run: terraform -chdir=terraform init 
       
       - name: Run terraform prod
@@ -34,12 +33,14 @@ jobs:
         id: bucket_name
         run: echo '::set-output name=BUCKET_NAME::$(terraform -chdir=terraform output bucketurl)'
 
-      - name: Push to s3
+      - name: Configure credentials
         uses: aws-actions/configure-aws-credentials@v1 # Configure with AWS Credentials
         with:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: ${{ secrets.AWS_REGION }}
+          
+      - name: Push to s3
         run: cd client/build && aws s3 cp --recursive ./ s3://${{ steps.bucket_name.outputs.BUCKET_NAME }}/ && cd ../../
 
 
