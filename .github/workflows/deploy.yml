@@ -1,0 +1,45 @@
+name: deplydev
+on:
+  push:
+    branches:
+      - main
+      - dev
+
+jobs:
+    deploy:
+      runs-on: ubuntu-latest
+      env:
+        AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        BRANCH: ${GITHUB_REF##*/} 
+      steps:
+      - uses: actions/checkout@v2
+      
+      - name: Run build client
+        run: |
+          cd client
+          npm ci
+          npm run build 
+          npm test
+          cd ..
+      
+      - name: Init terraform
+        uses: hashicorp/setup-terraform@v1
+        run: terraform -chdir=terraform init 
+      
+      - name: Run terraform prod
+        run: terraform apply -auto-approve -chdir=terraform -var="stage=$BRANCH" -var="region=${{ secrets.AWS_REGION }}"  -var="client_id=${{ secrets.OKTA_CLIENT_ID }}" -var="issuer=${{ secrets.OKTA_ISSUER }}"
+
+      - name: Get Bucket Name
+        id: bucket_name
+        run: echo '::set-output name=BUCKET_NAME::$(terraform -chdir=terraform output bucketurl)'
+
+      - name: Push to s3
+        uses: aws-actions/configure-aws-credentials@v1 # Configure with AWS Credentials
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ secrets.AWS_REGION }}
+        run: cd client/build && aws s3 cp --recursive ./ s3://${{ steps.bucket_name.outputs.BUCKET_NAME }}/ && cd ../../
+
+

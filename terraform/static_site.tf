@@ -45,3 +45,14 @@ resource "aws_s3_bucket_policy" "static_site_bucket" {
   policy = data.aws_iam_policy_document.static_site_bucket.json
 }
 
+output "websiteendpoint" {
+  value = aws_s3_bucket.www_bucket.website_endpoint
+}
+
+output "websitedomain" {
+  value = aws_s3_bucket.www_bucket.website_domain
+}
+
+output "bucketurl" {
+  value = aws_s3_bucket.www_bucket.bucket
+}
