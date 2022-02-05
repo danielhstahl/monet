@@ -51,18 +51,18 @@ Start a job run:
 Response:
 
 `
-{"id":"e12e3061-38ca-498c-94c7-777c5a510789","job_id":"cc86975e-ad1e-498d-a0bb-926e055e12f1","status":"IN_PROGRESS","start_time":"2022-01-28T22:43:59.219Z","__typename":"JobRun"}
+{"id":"c5f67eab-ea9b-443f-83a5-2b654c62ed79","job_id":"5eb8b677-a56c-4996-92ea-0f8a77502630","job_status":"IN_PROGRESS","start_time":"2022-02-05T12:23:52.357Z","__typename":"JobRun"}
 
 `
 
 Query the job run:
 
 
-`curl  https://rp4et8g4d8.execute-api.us-east-1.amazonaws.com/dev/job/cc86975e-ad1e-498d-a0bb-926e055e12f1/run/e12e3061-38ca-498c-94c7-777c5a510789  -H "Content-Type: application/json" -H "Authorization: $API_KEY"`
+`curl  https://rp4et8g4d8.execute-api.us-east-1.amazonaws.com/dev/job/5eb8b677-a56c-4996-92ea-0f8a77502630/run/c5f67eab-ea9b-443f-83a5-2b654c62ed79  -H "Content-Type: application/json" -H "Authorization: $API_KEY"`
 
 Finish a job run:
 
-`curl -X POST  https://rp4et8g4d8.execute-api.us-east-1.amazonaws.com/dev/job/cc86975e-ad1e-498d-a0bb-926e055e12f1/run/e12e3061-38ca-498c-94c7-777c5a510789/finish -d '{"status":"SUCCESS"}'  -H "Content-Type: application/json" -H "Authorization: $API_KEY"`
+`curl -X POST  https://rp4et8g4d8.execute-api.us-east-1.amazonaws.com/dev/job/5eb8b677-a56c-4996-92ea-0f8a77502630/run/c5f67eab-ea9b-443f-83a5-2b654c62ed79/finish -d '{"job_status":"SUCCESS"}'  -H "Content-Type: application/json" -H "Authorization: $API_KEY"`
 
 
 ## Okta

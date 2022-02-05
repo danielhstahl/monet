@@ -84,19 +84,19 @@ const timeDiff = (time1, time2) => {
 const _evolveJobFinish = ({
     id, company, project_id, total_failures,
     total_successes, last_time_job_completed_successfully,
-    average_job_in_seconds, total_jobs, jobs_currently_running
+    average_job_length_in_seconds, total_jobs, jobs_currently_running
 }, { start_time, end_time, job_status }) => {
     const timeToRunJob = timeDiff(start_time, end_time)
     const didSucceed = job_status === STATUS.SUCCESS
     const newTotalJobs = total_jobs + 1
-    const avg_job_in_seconds = average_job_in_seconds || 0
+    const avg_job_in_seconds = average_job_length_in_seconds || 0
     return {
         id,
         company,
         project_id,
         total_successes: total_successes + (didSucceed ? 1 : 0),
         total_failures: total_failures + (didSucceed ? 0 : 1),
-        average_job_in_seconds: (timeToRunJob + avg_job_in_seconds * total_jobs) / newTotalJobs,
+        average_job_length_in_seconds: (timeToRunJob + avg_job_in_seconds * total_jobs) / newTotalJobs,
         total_jobs: newTotalJobs,
         last_time_job_completed_successfully: didSucceed ? end_time : last_time_job_completed_successfully,
         last_time_job_completed: end_time,
@@ -104,31 +104,25 @@ const _evolveJobFinish = ({
     }
 }
 
-const _getJob = (dynamoClient, id) => {
+const _getItem = (dynamoClient, id, table_name) => {
     return dynamoClient.get({
-        TableName: process.env.JOB_TABLE_NAME,
+        TableName: table_name,
         Key: {
             id
         }
     }).promise().then(data => data.Item)
 }
 
+const _getJob = (dynamoClient, id) => {
+    return _getItem(dynamoClient, id, process.env.JOB_TABLE_NAME)
+}
 
 const _getJobRun = (dynamoClient, id) => {
-    return dynamoClient.get({
-        TableName: process.env.JOB_RUN_TABLE_NAME,
-        Key: {
-            id
-        },
-    }).promise().then(data => data.Item)
+    return _getItem(dynamoClient, id, process.env.JOB_RUN_TABLE_NAME)
 }
+
 const _getProject = (dynamoClient, id) => {
-    return dynamoClient.get({
-        TableName: process.env.PROJECT_TABLE_NAME,
-        Key: {
-            id
-        },
-    }).promise().then(data => data.Item)
+    return _getItem(dynamoClient, id, process.env.PROJECT_TABLE_NAME)
 }
 
 const _getJobByProject = (dynamoClient, company, project_id) => {
@@ -140,13 +134,11 @@ const _getJobByProject = (dynamoClient, company, project_id) => {
     }).promise().then(data => data.Items)
 }
 
-
-
 const finishJob = async (client, dynamoClient, { body, pathParameters }) => {
     const { job_run_id, job_id } = pathParameters
     const { job_status } = body
     const end_time = dateToAws(Date.now())
-
+    const job = await _getJob(dynamoClient, job_id) //this goes first in case the job_id is incorrect
     const result = await executeMutation(
         client,
         updateJobRunMutation,
@@ -157,7 +149,6 @@ const finishJob = async (client, dynamoClient, { body, pathParameters }) => {
             end_time
         }
     )
-    const job = await _getJob(dynamoClient, job_id)
     const newJob = _evolveJobFinish(job, { start_time: result.start_time, end_time, job_status })
     await executeMutation(
         client,
@@ -166,7 +157,6 @@ const finishJob = async (client, dynamoClient, { body, pathParameters }) => {
         newJob
     )
     return result
-
 }
 
 const getJobs = async (dynamoClient, { pathParameters }) => {
