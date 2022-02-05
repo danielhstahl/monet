@@ -52,7 +52,7 @@ jobs:
           cd ..
 
       - name: Deploy pages
-        if: ${{ env.GITHUB_REF_NAME == 'main' }}
+        if: github.ref == 'refs/heads/main'
         uses: JamesIves/github-pages-deploy-action@4.1.4
         with: 
           branch: gh-pages
