@@ -56,14 +56,14 @@ exports.jobInfo = payload => {
 
 const extractJobRunInfo = body => {
     const {
-        id, job_id, start_time, end_time, status
+        id, job_id, start_time, end_time, job_status
     } = body
     return {
         job_run_id: id.S,
         job_id: job_id.S,
         start_time: awsToUnixFormat(start_time.S),
         end_time: end_time?.S ? awsToUnixFormat(end_time.S) : null,
-        status: status.S
+        job_status: job_status.S
     }
 }
 exports.completedJobInfo = payload => {

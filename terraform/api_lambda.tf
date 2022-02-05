@@ -171,7 +171,7 @@ resource "aws_lambda_function" "get_job_status" {
 ### IAM
 
 resource "aws_iam_role" "api_lambda" {
-  name               = "api_lambda_function_role"
+  name               = "api_lambda_function_role_${var.stage}"
   assume_role_policy = data.aws_iam_policy_document.api_lambda_assume_role.json
 }
 
@@ -225,13 +225,13 @@ data "aws_iam_policy_document" "api_lambda_to_dynamodb_assume_policy" {
   }
 }
 resource "aws_iam_role_policy" "lambda_to_dynamodb_policy" {
-  name   = "lambda_to_dynamodb_function_policy"
+  name   = "lambda_to_dynamodb_function_policy_${var.stage}"
   role   = aws_iam_role.api_lambda.name
   policy = data.aws_iam_policy_document.api_lambda_to_dynamodb_assume_policy.json
 }
 
 resource "aws_iam_role_policy" "lambda_to_graphql_policy" {
-  name   = "lambda_to_graphql_policy"
+  name   = "lambda_to_graphql_policy_${var.stage}"
   role   = aws_iam_role.api_lambda.name
   policy = data.aws_iam_policy_document.api_lambda_to_graphql_policy.json
 }

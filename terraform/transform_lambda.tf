@@ -46,7 +46,7 @@ resource "aws_lambda_function" "transform_job_runs_event_payload" {
 ### IAM
 
 resource "aws_iam_role" "transform_lambda" {
-  name               = "transform_lambda_function_role"
+  name               = "transform_lambda_function_role_${var.stage}"
   assume_role_policy = data.aws_iam_policy_document.transform_lambda_assume_role.json
 }
 

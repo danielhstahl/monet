@@ -3,7 +3,7 @@ resource "aws_glue_catalog_database" "glue_catalog_database" {
   name = "jobcoordinate_${var.stage}"
 }
 resource "aws_glue_catalog_table" "project_info_table" {
-  name          = "project_info"
+  name          = "project_info_${var.stage}"
   database_name = aws_glue_catalog_database.glue_catalog_database.name
 
   parameters = {
@@ -49,7 +49,7 @@ resource "aws_glue_catalog_table" "project_info_table" {
   }
 }
 resource "aws_glue_catalog_table" "job_info_table" {
-  name          = "job_info"
+  name          = "job_info_${var.stage}"
   database_name = aws_glue_catalog_database.glue_catalog_database.name
 
   parameters = {
@@ -94,7 +94,7 @@ resource "aws_glue_catalog_table" "job_info_table" {
 }
 
 resource "aws_glue_catalog_table" "job_run_info_table" {
-  name          = "complete_jobs"
+  name          = "complete_jobs_${var.stage}"
   database_name = aws_glue_catalog_database.glue_catalog_database.name
 
   parameters = {
@@ -135,7 +135,7 @@ resource "aws_glue_catalog_table" "job_run_info_table" {
       type = "timestamp"
     }
     columns {
-      name = "status"
+      name = "job_status"
       type = "string"
     }
     columns {
@@ -147,7 +147,7 @@ resource "aws_glue_catalog_table" "job_run_info_table" {
 }
 
 resource "aws_glue_catalog_table" "job_run_events_table" {
-  name          = "job_run_events"
+  name          = "job_run_events_${var.stage}"
   database_name = aws_glue_catalog_database.glue_catalog_database.name
 
   parameters = {
@@ -188,7 +188,7 @@ resource "aws_glue_catalog_table" "job_run_events_table" {
       type = "timestamp"
     }
     columns {
-      name = "status"
+      name = "job_status"
       type = "string"
     }
     columns {
