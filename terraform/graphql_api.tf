@@ -191,7 +191,7 @@ output "appsyncendpoint" {
 
 
 resource "local_file" "envforreact" {
-  content  = "REACT_APP_GRAPHQL_URL=${aws_appsync_graphql_api.coordinator.uris["GRAPHQL"]}\nREACT_APP_OKTA_ISSUER=${var.issuer}\nREACT_APP_OKTA_ID=${var.client_id}"
+  content  = "REACT_APP_GRAPHQL_URL=${aws_appsync_graphql_api.coordinator.uris["GRAPHQL"]}\nREACT_APP_OKTA_ISSUER=${var.issuer}\nREACT_APP_OKTA_ID=${var.client_id}\nREACT_APP_REST_ENDPOINT=${aws_api_gateway_stage.api.invoke_url}"
   filename = "../client/.env"
 }
 

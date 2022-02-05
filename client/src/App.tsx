@@ -14,7 +14,7 @@ import { LOGIN, REDIRECT_URL, HOME, API_KEY, METRICS } from './constants/routes'
 import { stripPath } from './utils/route_utils'
 import { getOktaUser } from './utils/okta_utils'
 const issuer = process.env.REACT_APP_OKTA_ISSUER
-
+const restEndpoint = process.env.REACT_APP_REST_ENDPOINT || "mytest"
 //since there should be a 1-1 between client id and company, FOR NOW we will us this as the company
 const clientId = process.env.REACT_APP_OKTA_ID || ""
 const BASE_NAME = process.env.NODE_ENV === "development" ? "" : "/job-coordinator"
@@ -47,7 +47,7 @@ const AppWithBrowser = () => {
           <Route element={<RequireAuth />}>
             <Route element={<ApolloWrapper />}>
               <Route path={stripPath(METRICS)} element={<Metrics company={clientId} />} />
-              <Route path={stripPath(API_KEY)} element={<ApiKey company={clientId} getUser={getUser} />} />
+              <Route path={stripPath(API_KEY)} element={<ApiKey restEndpoint={restEndpoint} company={clientId} getUser={getUser} />} />
             </Route>
           </Route>
         </Route>

@@ -6,6 +6,7 @@ import { useMutation } from "@apollo/client";
 
 type Props = {
     company: string,
+    restEndpoint: string,
     getUser: () => Promise<string | undefined>
 }
 type ApiKeyType = {
@@ -23,7 +24,7 @@ export const ApiDisplay = ({ loading, data }: DisplayProps) => {
     return loading || !data ? <Spin /> : <h3>{data?.addApiKey?.api_key}</h3>
 }
 
-const ApiKey = ({ company, getUser }: Props) => {
+const ApiKey = ({ company, restEndpoint, getUser }: Props) => {
     const [projectId, setProjectId] = useState<string | null>(null)
     const [visible, setVisible] = useState(false)
     const [createApiKey, { loading, data }] = useMutation(CREATE_API_KEY)
@@ -35,6 +36,7 @@ const ApiKey = ({ company, getUser }: Props) => {
         })
     }
     return <>
+        <p>REST endpoint: {restEndpoint}</p>
         <SelectProject setProject={setProjectId} company={company} />
         {projectId && <Button type="primary" onClick={onClick}>
             Generate new API key and overwrite previous.
