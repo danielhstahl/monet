@@ -60,7 +60,7 @@ resource "aws_api_gateway_account" "api" {
 }
 
 resource "aws_iam_role" "api" {
-  name               = "api_role"
+  name               = "api_role_${var.stage}"
   path               = "/"
   assume_role_policy = data.aws_iam_policy_document.api_assum_role.json
 }
@@ -77,7 +77,7 @@ data "aws_iam_policy_document" "api_assum_role" {
 }
 
 resource "aws_iam_role_policy" "api_to_lambda" {
-  name   = "api_to_lambda_policy"
+  name   = "api_to_lambda_policy_${var.stage}"
   role   = aws_iam_role.api.id
   policy = data.aws_iam_policy_document.api_to_lambda.json
 }
@@ -96,7 +96,7 @@ data "aws_iam_policy_document" "api_to_lambda" {
 }
 
 resource "aws_iam_role_policy" "cloudwatch" {
-  name = "api_to_cloudwatch"
+  name = "api_to_cloudwatch_${var.stage}"
   role = aws_iam_role.api.id
 
   policy = data.aws_iam_policy_document.cloudwatch.json

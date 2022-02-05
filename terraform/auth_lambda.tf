@@ -32,7 +32,7 @@ resource "aws_lambda_function" "auth_lambda" {
 ### IAM
 
 resource "aws_iam_role" "auth_lambda" {
-  name               = "auth_lambda_function_role"
+  name               = "auth_lambda_function_role_${var.stage}"
   assume_role_policy = data.aws_iam_policy_document.auth_lambda_assume_role.json
 }
 
@@ -59,7 +59,7 @@ data "aws_iam_policy_document" "auth_lambda_to_dynamodb_assume_policy" {
   }
 }
 resource "aws_iam_role_policy" "auth_lambda_to_dynamodb_policy" {
-  name   = "auth_lambda_to_dynamodb_function_policy"
+  name   = "auth_lambda_to_dynamodb_function_policy_${var.stage}"
   role   = aws_iam_role.auth_lambda.name
   policy = data.aws_iam_policy_document.auth_lambda_to_dynamodb_assume_policy.json
 }

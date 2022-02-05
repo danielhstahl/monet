@@ -10,7 +10,7 @@ resource "aws_appsync_graphql_api" "coordinator" {
       client_id = var.client_id
     }
   }
-  name   = "jobinfo"
+  name   = "jobinfo_${var.stage}"
   schema = file("../graphql/schema.graphql")
   log_config {
     cloudwatch_logs_role_arn = aws_iam_role.appsync.arn

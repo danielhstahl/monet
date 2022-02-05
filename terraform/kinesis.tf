@@ -263,7 +263,7 @@ data "aws_iam_policy_document" "kinesis_firehose_kinesis_data_stream_policy" {
 }
 
 resource "aws_iam_role_policy" "lambda_policy" {
-  name   = "lambda_function_policy"
+  name   = "lambda_function_policy_${var.stage}"
   role   = aws_iam_role.kinesis_firehose_stream_role.name
   policy = data.aws_iam_policy_document.lambda_assume_policy.json
 }
@@ -296,24 +296,24 @@ data "aws_iam_policy_document" "kinesis_firehose_access_glue_assume_policy" {
 }
 
 resource "aws_iam_role" "kinesis_firehose_stream_role" {
-  name               = "kinesis_firehose_stream_role"
+  name               = "kinesis_firehose_stream_role_${var.stage}"
   assume_role_policy = data.aws_iam_policy_document.kinesis_firehose_stream_assume_role.json
 }
 
 resource "aws_iam_role_policy" "kinesis_firehose_access_bucket_policy" {
-  name   = "kinesis_firehose_access_bucket_policy"
+  name   = "kinesis_firehose_access_bucket_policy_${var.stage}"
   role   = aws_iam_role.kinesis_firehose_stream_role.name
   policy = data.aws_iam_policy_document.kinesis_firehose_access_bucket_assume_policy.json
 }
 
 resource "aws_iam_role_policy" "kinesis_firehose_kinesis_data_stream_policy" {
-  name   = "kinesis_firehose_kinesis_data_stream_policy"
+  name   = "kinesis_firehose_kinesis_data_stream_policy_${var.stage}"
   role   = aws_iam_role.kinesis_firehose_stream_role.name
   policy = data.aws_iam_policy_document.kinesis_firehose_kinesis_data_stream_policy.json
 }
 
 resource "aws_iam_role_policy" "kinesis_firehose_access_glue_policy" {
-  name   = "kinesis_firehose_access_glue_policy"
+  name   = "kinesis_firehose_access_glue_policy_${var.stage}"
   role   = aws_iam_role.kinesis_firehose_stream_role.name
   policy = data.aws_iam_policy_document.kinesis_firehose_access_glue_assume_policy.json
 }

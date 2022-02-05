@@ -146,14 +146,14 @@ describe("jobRunInfo", () => {
                 NewImage: {
                     id: { S: "myjobrunid" },
                     job_id: { S: "myjobid" },
-                    status: { S: "SUCCESS" },
+                    job_status: { S: "SUCCESS" },
                     start_time: { S: "2022-01-25T12:02:43.303Z" },
                     end_time: { S: "2022-01-25T12:02:43.303Z" },
                 },
                 OldImage: {
                     id: { S: "myjobrunid" },
                     job_id: { S: "myjobid" },
-                    status: { S: "SUCCESS" },
+                    job_status: { S: "SUCCESS" },
                     start_time: { S: "2022-01-25T12:02:43.303Z" },
                 },
                 SizeBytes: 442
@@ -165,7 +165,7 @@ describe("jobRunInfo", () => {
             log_date: 1631703176356,
             job_run_id: "myjobrunid",
             job_id: "myjobid",
-            status: "SUCCESS",
+            job_status: "SUCCESS",
             start_time: 1643112163303,
             end_time: 1643112163303
         })
@@ -184,13 +184,13 @@ describe("jobRunInfo", () => {
                 NewImage: {
                     id: { S: "myjobrunid" },
                     job_id: { S: "myjobid" },
-                    status: { S: "SUCCESS" },
+                    job_status: { S: "SUCCESS" },
                     start_time: { S: "2022-01-25T12:02:43.303Z" },
                 },
                 OldImage: {
                     id: { S: "myjobrunid" },
                     job_id: { S: "myjobid" },
-                    status: { S: "SUCCESS" },
+                    job_status: { S: "SUCCESS" },
                     start_time: { S: "2022-01-25T12:02:43.303Z" },
                 },
                 SizeBytes: 442
@@ -217,7 +217,7 @@ describe("jobRunEvents", () => {
                 NewImage: {
                     id: { S: "myjobrunid" },
                     job_id: { S: "myjobid" },
-                    status: { S: "SUCCESS" },
+                    job_status: { S: "SUCCESS" },
                     start_time: { S: "2022-01-25T12:02:43.303Z" },
                     end_time: { S: "2022-01-25T12:02:43.303Z" },
                 },
@@ -230,7 +230,7 @@ describe("jobRunEvents", () => {
             log_date: 1631703176356,
             job_run_id: "myjobrunid",
             job_id: "myjobid",
-            status: "SUCCESS",
+            job_status: "SUCCESS",
             start_time: 1643112163303,
             end_time: 1643112163303
         })
@@ -249,7 +249,7 @@ describe("jobRunEvents", () => {
                 NewImage: {
                     id: { S: "myjobrunid" },
                     job_id: { S: "myjobid" },
-                    status: { S: "SUCCESS" },
+                    job_status: { S: "SUCCESS" },
                     start_time: { S: "2022-01-25T12:02:43.303Z" }
                 },
                 SizeBytes: 442
@@ -261,7 +261,7 @@ describe("jobRunEvents", () => {
             log_date: 1631703176356,
             job_run_id: "myjobrunid",
             job_id: "myjobid",
-            status: "SUCCESS",
+            job_status: "SUCCESS",
             start_time: 1643112163303,
             end_time: null
         })
@@ -280,14 +280,14 @@ describe("jobRunEvents", () => {
                 NewImage: {
                     id: { S: "myjobrunid" },
                     job_id: { S: "myjobid" },
-                    status: { S: "SUCCESS" },
+                    job_status: { S: "SUCCESS" },
                     start_time: { S: "2022-01-25T12:02:43.303Z" },
                     end_time: { S: "2022-01-25T12:02:43.303Z" },
                 },
                 OldImage: {
                     id: { S: "myjobrunid" },
                     job_id: { S: "myjobid" },
-                    status: { S: "SUCCESS" },
+                    job_status: { S: "SUCCESS" },
                     start_time: { S: "2022-01-25T12:02:43.303Z" },
                     end_time: { S: "2022-01-25T12:02:43.303Z" },
                 },
