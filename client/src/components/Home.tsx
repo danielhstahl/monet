@@ -15,7 +15,7 @@ import {
 const { Header, Sider, Content } = Layout;
 const FULL_HEIGHT = { height: "100vh" }
 type Props = {
-    loginElement: React.ReactElement //React.Component<React.HTMLAttributes<>
+    loginElement: React.ReactElement
 }
 const Home = ({ loginElement }: Props) => {
     const [collapsed, setCollapsed] = useState(false)

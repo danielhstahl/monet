@@ -4,7 +4,7 @@ import Home from './components/Home';
 import LogInButton from './components/LogInButton'
 import Security from './okta-react/Security';
 import LoginCallback from './okta-react/LoginCallback';
-import { BrowserRouter, Route, Routes, useNavigate } from 'react-router-dom';
+import { BrowserRouter, Route, Routes, useLocation, useNavigate } from 'react-router-dom';
 import { OktaAuth, toRelativeUrl } from '@okta/okta-auth-js';
 import Login from './components/Login';
 import ApolloWrapper from './components/ApolloWrapper';
@@ -17,21 +17,25 @@ const issuer = process.env.REACT_APP_OKTA_ISSUER
 
 //since there should be a 1-1 between client id and company, FOR NOW we will us this as the company
 const clientId = process.env.REACT_APP_OKTA_ID || ""
-
+const BASE_NAME = process.env.NODE_ENV === "development" ? "" : "/job-coordinator"
 const App = () => {
-  return <BrowserRouter><AppWithBrowser /></BrowserRouter>
+  return <BrowserRouter basename={BASE_NAME}><AppWithBrowser /></BrowserRouter>
 }
 
+const OKTA_REDIRECT_URL = BASE_NAME + REDIRECT_URL
+
 const AppWithBrowser = () => {
+  const { pathname } = useLocation()
   const oktaAuth = new OktaAuth({
     issuer: issuer,
     clientId: clientId,
-    redirectUri: window.location.origin + REDIRECT_URL,
+    redirectUri: OKTA_REDIRECT_URL,
   });
+  console.log("redirect url", OKTA_REDIRECT_URL)
   const getUser = getOktaUser(oktaAuth)
   const navigate = useNavigate();
   const restoreOriginalUri = async (_: any, originalUri: string) => {
-    navigate(toRelativeUrl(originalUri || HOME, window.location.origin), { replace: true });
+    navigate(toRelativeUrl(originalUri || HOME, pathname), { replace: true });
   };
   return (
     <Security oktaAuth={oktaAuth} restoreOriginalUri={restoreOriginalUri} >

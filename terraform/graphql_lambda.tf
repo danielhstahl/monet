@@ -45,7 +45,11 @@ data "aws_iam_policy_document" "graphql_lambda_to_dynamodb_assume_policy" {
     effect = "Allow"
     actions = [
       "dynamodb:PutItem",
-      "dynamodb:UpdateItem"
+      "dynamodb:UpdateItem",
+      "dynamodb:GetItem",
+      "dynamodb:Query",
+      "dynamodb:ConditionCheckItem",
+      "dynamodb:DeleteItem",
     ]
     resources = [
       aws_dynamodb_table.user.arn,

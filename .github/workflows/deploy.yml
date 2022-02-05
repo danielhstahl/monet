@@ -1,0 +1,61 @@
+name: deploy
+on:
+  push:
+    branches:
+      - main
+      - dev
+
+jobs:
+    deploy:
+      runs-on: ubuntu-latest
+      env:
+        AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+      steps:
+      - uses: actions/checkout@v2
+      - uses: hashicorp/setup-terraform@v1
+      - name: install api_lambda
+        run: |
+          cd api_lambda
+          npm ci
+          cd ..
+      - name: install auth_lambda
+        run: |
+          cd auth_lambda
+          npm ci
+          cd ..
+      - name: install graphql_lambda
+        run: |
+          cd graphql_lambda
+          npm ci
+          cd ..
+      - name: install transform_lambda
+        run: |
+          cd transform_lambda
+          npm ci
+          cd ..
+      - name: Init terraform
+        run: terraform -chdir=terraform init 
+      
+      - name: Set environment
+        run: terraform -chdir=terraform workspace new $GITHUB_REF_NAME || terraform -chdir=terraform workspace select $GITHUB_REF_NAME
+      
+      - name: Run terraform
+        run: terraform -chdir=terraform apply -auto-approve -var="stage=$GITHUB_REF_NAME" -var="region=${{ secrets.AWS_REGION }}"  -var="client_id=${{ secrets.OKTA_CLIENT_ID }}" -var="issuer=${{ secrets.OKTA_ISSUER }}"
+
+      - name: Run build client
+        run: |
+          cd client
+          npm ci
+          npm run build 
+          npm test
+          cd ..
+
+      - name: Deploy pages
+        if: ${{ env.GITHUB_REF_NAME == 'main' }}
+        uses: JamesIves/github-pages-deploy-action@4.1.4
+        with: 
+          branch: gh-pages
+          folder: client/build
+
+

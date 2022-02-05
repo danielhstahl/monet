@@ -9,7 +9,7 @@ describe("evolveJobFinish", () => {
             last_time_job_completed_successfully: null,
             total_failures: 0,
             total_successes: 0,
-            average_job_in_seconds: null,
+            average_job_length_in_seconds: null,
             total_jobs: 0,
             jobs_currently_running: 1
         }
@@ -24,7 +24,7 @@ describe("evolveJobFinish", () => {
             project_id: "myproject",
             total_successes: 1,
             total_failures: 0,
-            average_job_in_seconds: 240,
+            average_job_length_in_seconds: 240,
             total_jobs: 1,
             last_time_job_completed_successfully: "2022-01-25T12:06:43.303Z",
             last_time_job_completed: "2022-01-25T12:06:43.303Z",
@@ -39,7 +39,7 @@ describe("evolveJobFinish", () => {
             last_time_job_completed_successfully: null,
             total_failures: 0,
             total_successes: 0,
-            average_job_in_seconds: null,
+            average_job_length_in_seconds: null,
             total_jobs: 0,
             jobs_currently_running: 1
         }
@@ -54,7 +54,7 @@ describe("evolveJobFinish", () => {
             project_id: "myproject",
             total_successes: 0,
             total_failures: 1,
-            average_job_in_seconds: 240,
+            average_job_length_in_seconds: 240,
             total_jobs: 1,
             last_time_job_completed_successfully: null,
             last_time_job_completed: "2022-01-25T12:06:43.303Z",
@@ -69,7 +69,7 @@ describe("evolveJobFinish", () => {
             last_time_job_completed_successfully: "2022-01-25T12:06:43.303Z",
             total_failures: 0,
             total_successes: 1,
-            average_job_in_seconds: 240,
+            average_job_length_in_seconds: 240,
             total_jobs: 1,
             jobs_currently_running: 1
         }
@@ -84,7 +84,7 @@ describe("evolveJobFinish", () => {
             project_id: "myproject",
             total_successes: 2,
             total_failures: 0,
-            average_job_in_seconds: 180,
+            average_job_length_in_seconds: 180,
             total_jobs: 2,
             last_time_job_completed_successfully: "2022-01-25T12:07:43.303Z",
             last_time_job_completed: "2022-01-25T12:07:43.303Z",
@@ -99,7 +99,7 @@ describe("evolveJobFinish", () => {
             last_time_job_completed_successfully: "2022-01-25T12:06:43.303Z",
             total_failures: 0,
             total_successes: 1,
-            average_job_in_seconds: 240,
+            average_job_length_in_seconds: 240,
             total_jobs: 1,
             jobs_currently_running: 1
         }
@@ -114,7 +114,7 @@ describe("evolveJobFinish", () => {
             project_id: "myproject",
             total_successes: 1,
             total_failures: 1,
-            average_job_in_seconds: 180,
+            average_job_length_in_seconds: 180,
             total_jobs: 2,
             last_time_job_completed_successfully: "2022-01-25T12:06:43.303Z",
             last_time_job_completed: "2022-01-25T12:07:43.303Z",

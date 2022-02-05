@@ -36,12 +36,12 @@ export const GET_PROJECTS_BY_NAME = gql`
 
 export const GET_JOBS_BY_PROJECT = gql`
   query GetJobsByProject(
-     $project_name: String!
      $company: String!
+     $project_id: String!
      $nextToken: String
      $limit: Int
   ) {
-    getJobsByProject(project_name: $project_name, company: $company, nextToken: $nextToken, limit: $limit) {
+    getJobsByProject(company: $company, project_id: $project_id, nextToken: $nextToken, limit: $limit) {
         nextToken
         items{
           id

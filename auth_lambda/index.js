@@ -32,7 +32,7 @@ exports.authUser = async (event, context) => {
                     {
                         "Action": "execute-api:Invoke",
                         "Effect": "Allow",
-                        "Resource": event.methodArn
+                        "Resource": "*" //event.methodArn
                     }
                 ]
             },

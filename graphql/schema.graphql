@@ -92,7 +92,7 @@ type Mutation {
     @aws_api_key @aws_oidc
 
     updateJob(
-        id: ID!, 
+        id: String!, 
         last_time_job_completed: String, 
         last_time_job_completed_successfully: String,
         total_successes: Int!,
@@ -104,7 +104,7 @@ type Mutation {
     @aws_api_key @aws_oidc
 
     updateJobRun(
-        id: ID!, 
+        id: String!, 
         job_status: JobStatusEnum!,
         end_time: AWSDateTime
     ): JobRun!

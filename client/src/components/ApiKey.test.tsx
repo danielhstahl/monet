@@ -5,39 +5,28 @@ import { CREATE_API_KEY } from "../graphql/mutations"
 import { GET_PROJECTS } from '../graphql/queries';
 
 describe('ApiDisplay', () => {
-    test('calls create api key on first load', async () => {
-        let createApiKey = jest.fn()
-        const getUser = () => Promise.resolve("user")
+    test('shows api key if not loading', async () => {
         const data = {
             addApiKey: {
                 api_key: "api key"
             }
         }
         render(<ApiDisplay
-            project_id={"123"}
             loading={false}
-            createApiKey={createApiKey}
-            getUser={getUser}
             data={data}
         />
         )
         const apikey = await screen.findByText(/api key/i);
         expect(apikey).toBeInTheDocument();
-        expect(createApiKey.mock.calls.length).toEqual(1)
     })
-    test('calls create api key once even if other parameters change on first load', () => {
-        let createApiKey = jest.fn()
-        const getUser = () => Promise.resolve("user")
+    test('spins when loading', () => {
         const data = {
             addApiKey: {
                 api_key: "api key"
             }
         }
         const { container } = render(<ApiDisplay
-            project_id={"123"}
             loading={true}
-            createApiKey={createApiKey}
-            getUser={getUser}
             data={data}
         />
         )

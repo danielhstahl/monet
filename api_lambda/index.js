@@ -1,7 +1,15 @@
 // Load the AWS SDK for Node.js
 const AWS = require('aws-sdk')
 global.fetch = require('node-fetch')
-const { createJob, createProject, startJob, finishJob, getJobRun, getJobs } = require('./logic/api_lambdas')
+const {
+    createJob,
+    createProject,
+    startJob,
+    finishJob,
+    getJobRun,
+    getJobs
+} = require('./logic/api_lambdas')
+
 
 const AWSAppSyncClient = require("aws-appsync").default;
 const { AUTH_TYPE } = require("aws-appsync");

@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react"
+import { useState } from "react"
 import SelectProject from "./SelectProject"
 import { CREATE_API_KEY } from "../graphql/mutations"
 import { Button, Modal, Spin } from "antd"
@@ -14,28 +14,13 @@ type ApiKeyType = {
 type Data = {
     addApiKey: ApiKeyType
 }
-type ApiProps = {
-    user_id: string | undefined
-    project_id: string
-}
-type Variables = {
-    variables: ApiProps
-}
 
 type DisplayProps = {
-    project_id: string | null,
     loading: boolean,
-    createApiKey: (arg0: Variables) => void,
-    getUser: () => Promise<string | undefined>,
     data: Data
 }
-export const ApiDisplay = ({ project_id, loading, data, createApiKey, getUser }: DisplayProps) => {
-    useEffect(() => {
-        project_id && getUser().then(user_id => {
-            createApiKey({ variables: { user_id, project_id } })
-        })
-    }, [project_id, getUser, createApiKey])
-    return loading ? <Spin /> : <h3>{data?.addApiKey?.api_key}</h3>
+export const ApiDisplay = ({ loading, data }: DisplayProps) => {
+    return loading || !data ? <Spin /> : <h3>{data?.addApiKey?.api_key}</h3>
 }
 
 const ApiKey = ({ company, getUser }: Props) => {
@@ -43,9 +28,15 @@ const ApiKey = ({ company, getUser }: Props) => {
     const [visible, setVisible] = useState(false)
     const [createApiKey, { loading, data }] = useMutation(CREATE_API_KEY)
     const close = () => setVisible(false)
+    const onClick = () => {
+        setVisible(true)
+        getUser().then(user_id => {
+            createApiKey({ variables: { user_id, project_id: projectId } })
+        })
+    }
     return <>
         <SelectProject setProject={setProjectId} company={company} />
-        {projectId && <Button type="primary" onClick={() => setVisible(true)}>
+        {projectId && <Button type="primary" onClick={onClick}>
             Generate new API key and overwrite previous.
         </Button>}
         <Modal
@@ -55,11 +46,8 @@ const ApiKey = ({ company, getUser }: Props) => {
             onCancel={close}
         >
             <ApiDisplay
-                createApiKey={createApiKey}
-                project_id={projectId}
                 loading={loading}
                 data={data}
-                getUser={getUser}
             />
         </Modal>
     </>
