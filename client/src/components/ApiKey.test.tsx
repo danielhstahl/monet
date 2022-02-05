@@ -69,9 +69,11 @@ describe('ApiKey', () => {
         ];
         render(
             <MockedProvider mocks={mocks}>
-                <ApiKey company="mycompany" getUser={getUser} />
+                <ApiKey restEndpoint='mytestendpoint' company="mycompany" getUser={getUser} />
             </MockedProvider>
         )
+        const endpoint = screen.getByText("REST endpoint: mytestendpoint");
+        expect(endpoint).toBeInTheDocument();
 
 
     })
