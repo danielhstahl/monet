@@ -48,7 +48,7 @@ const createJob = (client, dynamoClient, { body, pathParameters }) => {
                 total_jobs: project.total_jobs + 1
             }
         ))
-    ])
+    ]).then(([result]) => result)
 }
 
 
@@ -137,7 +137,7 @@ const _getJobByProject = (dynamoClient, company, project_id) => {
         KeyConditionExpression: 'project_id = :project_id and company = :company',
         ExpressionAttributeValues: { ':project_id': project_id, ':company': company },
         IndexName: "company_index"
-    }).promise().then(data.Items)
+    }).promise().then(data => data.Items)
 }
 
 

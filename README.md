@@ -37,12 +37,12 @@ Create a job in that project:
 Response:
 
 `
-{"id":"cc86975e-ad1e-498d-a0bb-926e055e12f1","job_name":"myjobname","company":"mytestcompany","project_id":"c7c22d8f-6af7-473b-9dda-8cea5592ae16","created_date":"2022-01-28T19:16:20.312Z","__typename":"Job"}
+[{"id":"e9457dc1-95d9-4092-a26e-f0ec77a311b9","job_name":"myjobname","company":"mytestcompany","project_id":"39ec7114-ba0e-4888-9318-b811311b7a2b","created_date":"2022-02-05T00:43:01.085Z","__typename":"Job"},{"id":"39ec7114-ba0e-4888-9318-b811311b7a2b","project_name":"mytestname","company":"mytestcompany","created_date":"2022-02-04T22:19:18.164Z","total_jobs":1,"__typename":"Project"}]
 `
 
 Get jobs from that project:
 
-`curl https://rp4et8g4d8.execute-api.us-east-1.amazonaws.com/dev/project/c7c22d8f-6af7-473b-9dda-8cea5592ae16/job  -H "Content-Type: application/json" -H "Authorization: $API_KEY"`
+`curl https://rp4et8g4d8.execute-api.us-east-1.amazonaws.com/dev/project/39ec7114-ba0e-4888-9318-b811311b7a2b/job  -H "Content-Type: application/json" -H "Authorization: $API_KEY"`
 
 Start a job run:
 
