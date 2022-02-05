@@ -21,32 +21,32 @@ To actually create:
 
 `export API_KEY=12345`
 
-`curl -X POST https://rp4et8g4d8.execute-api.us-east-1.amazonaws.com/dev/project/create -d '{"name":"mytestname", "company":"mytestcompany"}' -H "Content-Type: application/json" -H "Authorization: $API_KEY"`
+`curl -X POST https://rp4et8g4d8.execute-api.us-east-1.amazonaws.com/dev/project/create -d '{"name":"mytestname", "company":"0oa3rhm4iuHrIwZba5d7"}' -H "Content-Type: application/json" -H "Authorization: $API_KEY"`
 
 ## Example
 
 Response from create project:
 
-`{"id":"39ec7114-ba0e-4888-9318-b811311b7a2b","project_name":"mytestname","company":"mytestcompany","created_date":"2022-02-04T22:19:18.164Z","__typename":"Project"}`
+`{"id":"10cc2a0e-6822-404d-976b-6287aedb1621","project_name":"mytestname","company":"0oa3rhm4iuHrIwZba5d7","created_date":"2022-02-05T01:40:30.573Z","__typename":"Project"}`
 
 
 Create a job in that project:
 
-`curl -X POST https://rp4et8g4d8.execute-api.us-east-1.amazonaws.com/dev/project/39ec7114-ba0e-4888-9318-b811311b7a2b/job/create -d '{"name":"myjobname", "company":"mytestcompany"}' -H "Content-Type: application/json" -H "Authorization: $API_KEY"`
+`curl -X POST https://rp4et8g4d8.execute-api.us-east-1.amazonaws.com/dev/project/10cc2a0e-6822-404d-976b-6287aedb1621/job/create -d '{"name":"myjobname", "company":"0oa3rhm4iuHrIwZba5d7"}' -H "Content-Type: application/json" -H "Authorization: $API_KEY"`
 
 Response:
 
 `
-[{"id":"e9457dc1-95d9-4092-a26e-f0ec77a311b9","job_name":"myjobname","company":"mytestcompany","project_id":"39ec7114-ba0e-4888-9318-b811311b7a2b","created_date":"2022-02-05T00:43:01.085Z","__typename":"Job"},{"id":"39ec7114-ba0e-4888-9318-b811311b7a2b","project_name":"mytestname","company":"mytestcompany","created_date":"2022-02-04T22:19:18.164Z","total_jobs":1,"__typename":"Project"}]
+{"id":"5eb8b677-a56c-4996-92ea-0f8a77502630","job_name":"myjobname","company":"0oa3rhm4iuHrIwZba5d7","project_id":"10cc2a0e-6822-404d-976b-6287aedb1621","created_date":"2022-02-05T01:47:01.525Z","__typename":"Job"}
 `
 
 Get jobs from that project:
 
-`curl https://rp4et8g4d8.execute-api.us-east-1.amazonaws.com/dev/project/39ec7114-ba0e-4888-9318-b811311b7a2b/job  -H "Content-Type: application/json" -H "Authorization: $API_KEY"`
+`curl https://rp4et8g4d8.execute-api.us-east-1.amazonaws.com/dev/project/10cc2a0e-6822-404d-976b-6287aedb1621/job  -H "Content-Type: application/json" -H "Authorization: $API_KEY"`
 
 Start a job run:
 
-`curl -X POST  https://rp4et8g4d8.execute-api.us-east-1.amazonaws.com/dev/job/cc86975e-ad1e-498d-a0bb-926e055e12f1/start  -H "Content-Type: application/json" -H "Authorization: $API_KEY"`
+`curl -X POST  https://rp4et8g4d8.execute-api.us-east-1.amazonaws.com/dev/job/5eb8b677-a56c-4996-92ea-0f8a77502630/start  -H "Content-Type: application/json" -H "Authorization: $API_KEY"`
 
 Response:
 
