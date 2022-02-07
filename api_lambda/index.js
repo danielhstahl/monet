@@ -29,16 +29,15 @@ const makeAppSyncClient = () => {
         url: process.env.GRAPHQL_API_ENDPOINT,
         region: AWS.config.region,
         auth: {
-            type: AUTH_TYPE.API_KEY,
-            apiKey: process.env.GRAPHQL_API_KEY
-            //credentials: AWS.config.credentials
+            type: AUTH_TYPE.AWS_IAM,
+            credentials: AWS.config.credentials
         },
         disableOffline: true
     });
     return appSyncClient
 }
 const handleError = error => {
-    console.error(error)
+    console.error(JSON.stringify(error))
     return {
         statusCode: 500,
         headers: {
