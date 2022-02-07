@@ -3,7 +3,7 @@ enum JobStatusEnum {
   IN_PROGRESS
   SUCCESS
 }
-type Project @aws_api_key @aws_oidc {
+type Project @aws_iam @aws_oidc {
     id: ID!
     project_name: String!
     company: String!
@@ -11,16 +11,16 @@ type Project @aws_api_key @aws_oidc {
     total_jobs: Int!
 }
 
-type ApiKey @aws_api_key @aws_oidc {
+type ApiKey @aws_iam @aws_oidc {
     api_key: String!
 }
 
-type PaginatedProject @aws_api_key @aws_oidc {
+type PaginatedProject @aws_iam @aws_oidc {
     nextToken: String
     items: [Project!]!
 }
 
-type Job @aws_api_key @aws_oidc {
+type Job @aws_iam @aws_oidc {
     id: ID!
     job_name: String!
     project_id: String! 
@@ -34,12 +34,12 @@ type Job @aws_api_key @aws_oidc {
     total_jobs: Int!
     created_date: AWSDateTime!
 }
-type PaginatedJob @aws_api_key @aws_oidc {
+type PaginatedJob @aws_iam @aws_oidc {
     nextToken: String 
     items: [Job!]!
 }
 
-type JobRun @aws_api_key @aws_oidc { # idea, use last "n" jobs to create histogram
+type JobRun @aws_iam @aws_oidc { # idea, use last "n" jobs to create histogram
     id: ID!
     job_id: String!
     start_time: AWSDateTime!
@@ -47,7 +47,7 @@ type JobRun @aws_api_key @aws_oidc { # idea, use last "n" jobs to create histogr
     job_status: JobStatusEnum!
 }
 
-type PaginatedJobRun @aws_api_key @aws_oidc {
+type PaginatedJobRun @aws_iam @aws_oidc {
     nextToken: String 
     items: [JobRun!]!
 }
@@ -55,41 +55,41 @@ type PaginatedJobRun @aws_api_key @aws_oidc {
 
 type Query {
     getProjects(company: String!, nextToken: String, limit: Int): PaginatedProject!
-    @aws_api_key @aws_oidc
+    @aws_iam @aws_oidc
 
     getProjectsByName(project_name: String!): Project!
-    @aws_api_key @aws_oidc
+    @aws_iam @aws_oidc
 
     getJobsByProject(company: String!, project_id: String!, nextToken: String, limit: Int): PaginatedJob!
-    @aws_api_key @aws_oidc
+    @aws_iam @aws_oidc
 
     getJobs(company: String!, nextToken: String, limit: Int): PaginatedJob!
-    @aws_api_key @aws_oidc
+    @aws_iam @aws_oidc
 
     getJobRuns(job_id: String!, nextToken: String, limit: Int): PaginatedJobRun!
-    @aws_api_key @aws_oidc
+    @aws_iam @aws_oidc
 
     getLastNJobRuns(job_id: String!, n: Int!): JobRun!
-    @aws_api_key @aws_oidc
+    @aws_iam @aws_oidc
 }
 
 
 
 type Mutation {
     addApiKey(user_id: String!, project_id: String!): ApiKey!
-    @aws_api_key @aws_oidc
+    @aws_iam @aws_oidc
 
     addProject(project_name: String!, company: String!): Project!
-    @aws_api_key @aws_oidc
+    @aws_iam @aws_oidc
 
     updateProject(id: String!, total_jobs: Int!): Project!
-    @aws_api_key @aws_oidc
+    @aws_iam @aws_oidc
 
     addJob(job_name: String!, company: String!, project_id: String!): Job!
-    @aws_api_key @aws_oidc
+    @aws_iam @aws_oidc
 
     addJobRun(job_id: String!, job_status: JobStatusEnum!, start_time: AWSDateTime!): JobRun!
-    @aws_api_key @aws_oidc
+    @aws_iam @aws_oidc
 
     updateJob(
         id: String!, 
@@ -101,32 +101,32 @@ type Mutation {
         average_job_length_in_seconds: Float
         total_jobs: Int!
     ): Job!
-    @aws_api_key @aws_oidc
+    @aws_iam @aws_oidc
 
     updateJobRun(
         id: String!, 
         job_status: JobStatusEnum!,
         end_time: AWSDateTime
     ): JobRun!
-    @aws_api_key @aws_oidc
+    @aws_iam @aws_oidc
 }
 
 type Subscription {
     addedProjects(company: String!): Project
     @aws_subscribe(mutations: ["addProject", "updateProject"])
-    @aws_api_key @aws_oidc
+    @aws_iam @aws_oidc
     
     addedJob(company: String!): Job
     @aws_subscribe(mutations: ["addJob", "updateJob"])
-    @aws_api_key @aws_oidc
+    @aws_iam @aws_oidc
 
     addedJobByProject(company: String!, project_id: String!): Job
     @aws_subscribe(mutations: ["addJob", "updateJob"])
-    @aws_api_key @aws_oidc
+    @aws_iam @aws_oidc
 
     addedJobRuns(job_id: String!): JobRun 
     @aws_subscribe(mutations: ["addJobRun", "updateJobRun"])
-    @aws_api_key @aws_oidc
+    @aws_iam @aws_oidc
 }
 
 schema {

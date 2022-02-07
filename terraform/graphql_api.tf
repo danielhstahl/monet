@@ -2,7 +2,7 @@
 # GraphQL 
 
 resource "aws_appsync_graphql_api" "coordinator" {
-  authentication_type = "API_KEY"
+  authentication_type = "AWS_IAM"
   additional_authentication_provider {
     authentication_type = "OPENID_CONNECT"
     openid_connect_config {
@@ -17,13 +17,6 @@ resource "aws_appsync_graphql_api" "coordinator" {
     field_log_level          = "ERROR"
   }
 }
-
-# create the API Key to authenticate against graphql
-# this is required by the REST Lambdas to access graphql
-resource "aws_appsync_api_key" "appsync_api_key" {
-  api_id = aws_appsync_graphql_api.coordinator.id
-}
-
 
 resource "aws_appsync_datasource" "apikey" {
   api_id           = aws_appsync_graphql_api.coordinator.id

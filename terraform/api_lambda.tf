@@ -30,7 +30,6 @@ resource "aws_lambda_function" "create_project" {
   environment {
     variables = {
       GRAPHQL_API_ENDPOINT = aws_appsync_graphql_api.coordinator.uris["GRAPHQL"]
-      GRAPHQL_API_KEY      = aws_appsync_api_key.appsync_api_key.key
     }
   }
 }
@@ -56,7 +55,6 @@ resource "aws_lambda_function" "create_job" {
   environment {
     variables = {
       GRAPHQL_API_ENDPOINT = aws_appsync_graphql_api.coordinator.uris["GRAPHQL"]
-      GRAPHQL_API_KEY      = aws_appsync_api_key.appsync_api_key.key
       PROJECT_TABLE_NAME   = aws_dynamodb_table.project.name
     }
   }
@@ -109,7 +107,6 @@ resource "aws_lambda_function" "start_job" {
     variables = {
       JOB_TABLE_NAME       = aws_dynamodb_table.job.name
       GRAPHQL_API_ENDPOINT = aws_appsync_graphql_api.coordinator.uris["GRAPHQL"]
-      GRAPHQL_API_KEY      = aws_appsync_api_key.appsync_api_key.key
     }
   }
 }
@@ -137,7 +134,6 @@ resource "aws_lambda_function" "finish_job" {
       JOB_TABLE_NAME       = aws_dynamodb_table.job.name
       JOB_RUN_TABLE_NAME   = aws_dynamodb_table.job_run.name
       GRAPHQL_API_ENDPOINT = aws_appsync_graphql_api.coordinator.uris["GRAPHQL"]
-      GRAPHQL_API_KEY      = aws_appsync_api_key.appsync_api_key.key
     }
   }
 }
@@ -199,7 +195,8 @@ data "aws_iam_policy_document" "api_lambda_to_graphql_policy" {
       "appsync:Delete*"
     ]
     resources = [
-      aws_appsync_graphql_api.coordinator.arn
+      aws_appsync_graphql_api.coordinator.arn,
+      "${aws_appsync_graphql_api.coordinator.arn}/*",
     ]
   }
 }

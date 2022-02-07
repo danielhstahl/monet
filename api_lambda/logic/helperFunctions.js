@@ -9,7 +9,6 @@ const executeMutation = async (client, mutation, operationName, variables) => {
         variables,
         fetchPolicy: "no-cache"
     });
-    console.log(response)
     return parseResults(operationName, response.data)
 
 }
