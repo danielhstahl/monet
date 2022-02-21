@@ -5,11 +5,12 @@ import { MockedProvider } from '@apollo/client/testing';
 
 describe('Metrics', () => {
     test('renders', () => {
-        render(<MemoryRouter>
-            <MockedProvider>
-                <Metrics
-                    company="mycompany"
-                /></MockedProvider></MemoryRouter>
+        render(
+            <MemoryRouter>
+                <MockedProvider>
+                    <Metrics company="mycompany"/>
+                </MockedProvider>
+            </MemoryRouter>
         )
     })
 })
