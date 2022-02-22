@@ -28,7 +28,7 @@ const CreateProject = ({ company, createProject, loading }: Props) => {
         <Form.Item
             label="Project Name"
             name="Project-Name"
-            rules={[{ required: true, message: 'Please input your username!' }]}
+            rules={[{ required: true, message: 'Please enter a project name' }]}
         >
             <Input 
                 placeholder='Project name'
