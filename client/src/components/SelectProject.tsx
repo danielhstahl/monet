@@ -23,6 +23,7 @@ const SelectProject = ({ company, setProject }: Props) => {
         loading={loading}
         onChange={setProject}
         defaultValue='currentProjects'
+        style={{ width: 400 }}
     >
         <Option value="currentProjects" disabled>Select from current projects</Option>
         {data && data.getProjects.items.map(({ id, project_name }: Project) => <Option key={id} value={id}>{project_name}</Option>)}
