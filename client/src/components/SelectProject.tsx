@@ -21,7 +21,6 @@ const SelectProject = ({ company, setProject }: Props) => {
 
     return <Select
         showSearch
-        style={{ width: 200 }}
         loading={loading}
         onChange={setProject}
         defaultValue='currentProjects'

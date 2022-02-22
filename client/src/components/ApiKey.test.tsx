@@ -4,7 +4,7 @@ import { MockedProvider } from '@apollo/client/testing';
 import { CREATE_API_KEY } from "../graphql/mutations"
 import { GET_PROJECTS } from '../graphql/queries';
 
-describe('ApiDisplay', () => {
+describe('ApiDisplay', () => { 
     test('shows api key if not loading', async () => {
         const data = {
             addApiKey: {
