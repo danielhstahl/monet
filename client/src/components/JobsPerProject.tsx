@@ -56,13 +56,15 @@ const JobsTable = ({ company, project_id, limit, nextToken, setNextToken }: Prop
     const { loading, data } = useQuery(GET_JOBS_BY_PROJECT, { variables: { company, project_id, limit, nextToken } });
     const onChange = () => setNextToken(data?.getJobsByProject?.nextToken)
     console.log(data)
-    return <><Table
-        loading={loading}
-        dataSource={data?.getJobsByProject?.items}
-        columns={columns}
-        pagination={false}
-    />
-        {data?.getJobsByProject?.nextToken && <Button onClick={onChange}>Next</Button>}</>
+    return <>
+        <Table
+            loading={loading}
+            dataSource={data?.getJobsByProject?.items}
+            columns={columns}
+            pagination={false}
+        />
+        {data?.getJobsByProject?.nextToken && <Button onClick={onChange}>Next</Button>}
+    </>
 }
 
 

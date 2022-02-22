@@ -35,4 +35,16 @@
 .site-layout .site-layout-background {
     background: #fff;
 }
-  
+
+/* todo: figure out why created class names for tables are not traversing up to this style sheet */
+.ant-table-content {
+    width: 100%;
+    overflow-x: scroll;
+}
+.ant-table-content table {
+    padding: 1rem 0 1rem 0;
+}
+.ant-table-row, .ant-table-thead {
+    font-size: .8rem;
+    white-space: nowrap;
+}
