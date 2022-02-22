@@ -1,7 +1,6 @@
 import { Select } from 'antd';
 import { GET_PROJECTS } from '../graphql/queries';
 import { useQuery } from "@apollo/client";
-import { render } from '@testing-library/react';
 
 const { Option } = Select;
 
