@@ -25,6 +25,7 @@ type Job @aws_iam @aws_oidc {
     job_name: String!
     project_id: String! 
     company: String!
+    url_to_job_page: String
     last_time_job_completed: String
     last_time_job_completed_successfully: String
     total_successes: Int! 

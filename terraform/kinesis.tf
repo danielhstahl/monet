@@ -206,10 +206,13 @@ resource "aws_kinesis_firehose_delivery_stream" "persist_job_events" {
 
 resource "aws_s3_bucket" "kinesis_firehose_stream_bucket" {
   bucket        = "jobcoordinator-${var.stage}-firehose"
-  acl           = "private"
   force_destroy = true
 }
 
+resource "aws_s3_bucket_acl" "kinesis_firehose_stream_bucket" {
+  bucket = aws_s3_bucket.kinesis_firehose_stream_bucket.id
+  acl    = "private"
+}
 
 ## IAM
 data "aws_iam_policy_document" "kinesis_firehose_stream_assume_role" {

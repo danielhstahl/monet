@@ -28,7 +28,7 @@ export const LogInButtonWithAuth = ({ isAuthenticated, signOut, className }: Pro
         navigate(LOGIN)
     }
     return <Button
-        type="primary"
+        type="default"
         className={className}
         onClick={onClick}
         icon={isAuthenticated ? <LogoutOutlined /> : <LoginOutlined />}

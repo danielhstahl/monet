@@ -10,16 +10,17 @@ type FormValues = {
 }
 
 type LoginProp = {
-    handleSubmit: (obj0: FormValues) => void
+    handleSubmit: (obj0: FormValues) => Promise<void>
 }
 const margin = {
     marginTop: "20%"
 }
 const LoginForm = ({ handleSubmit }: LoginProp) => {
     const [loading, setLoading] = useState(false)
+    const [loginError, setLoginError] = useState<undefined | string>(undefined)
     const onFinish = (values: FormValues) => {
         setLoading(true)
-        handleSubmit(values)
+        handleSubmit(values).catch(err => setLoginError(err.message)).finally(() => setLoading(false))
     }
     return <Form
         name="basic"
@@ -48,7 +49,11 @@ const LoginForm = ({ handleSubmit }: LoginProp) => {
             <Input.Password />
         </Form.Item>
 
-        <Form.Item wrapperCol={{ offset: 8, span: 8 }}>
+        <Form.Item
+            wrapperCol={{ offset: 8, span: 8 }}
+            validateStatus={loginError && "error"}
+            help={loginError}
+        >
             <Button type="primary" htmlType="submit" loading={loading}>
                 Submit
             </Button>
@@ -59,15 +64,13 @@ const LoginForm = ({ handleSubmit }: LoginProp) => {
 const Login = ({ from }: { from?: string }) => {
     const { oktaAuth, authState } = useOktaAuth();
     const [sessionToken, setSessionToken] = useState<undefined | string>(undefined);
-
     const handleSubmit = ({ username, password }: FormValues) => {
-        oktaAuth.signInWithCredentials({ username, password })
+        return oktaAuth.signInWithCredentials({ username, password })
             .then((res) => {
                 const sessionToken = res.sessionToken;
                 setSessionToken(sessionToken);
                 oktaAuth.signInWithRedirect({ sessionToken });
             })
-            .catch((err: Error) => console.log('Found an error', err));
     };
     if (sessionToken) {
         return null;
