@@ -48,6 +48,7 @@ export const GET_JOBS_BY_PROJECT = gql`
           job_name 
           project_id 
           company
+          url_to_job_page
           last_time_job_completed
           last_time_job_completed_successfully
           total_successes
@@ -74,6 +75,7 @@ export const GET_JOBS = gql`
           job_name 
           project_id 
           company
+          url_to_job_page
           last_time_job_completed
           last_time_job_completed_successfully
           total_successes
