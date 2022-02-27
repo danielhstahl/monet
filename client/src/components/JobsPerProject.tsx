@@ -15,6 +15,11 @@ const columns = [
         key: "job_name"
     },
     {
+        title: "Job url",
+        dataIndex: "url_to_job_page",
+        key: "url_to_job_page",
+    },
+    {
         title: "Successes",
         dataIndex: "total_successes",
         key: "total_successes",
@@ -55,9 +60,9 @@ type Props = {
 const JobsTable = ({ company, project_id, limit, nextToken, setNextToken }: Props) => {
     const { loading, data } = useQuery(GET_JOBS_BY_PROJECT, { variables: { company, project_id, limit, nextToken } });
     const onChange = () => setNextToken(data?.getJobsByProject?.nextToken)
-    console.log(data)
     return <>
         <Table
+            rowKey="id"
             loading={loading}
             dataSource={data?.getJobsByProject?.items}
             columns={columns}
