@@ -30,15 +30,17 @@ const createJob = /* GraphQL */ `
     $job_name: String!
     $company: String! 
     $project_id: String!
+    $url_to_job_page: String
   ) {
     addJob(
-      job_name: $job_name, company: $company, project_id: $project_id
+      job_name: $job_name, company: $company, project_id: $project_id, url_to_job_page: $url_to_job_page
     ) {
       id
       job_name
       company
       project_id
       created_date
+      url_to_job_page
     }
   }
 `;

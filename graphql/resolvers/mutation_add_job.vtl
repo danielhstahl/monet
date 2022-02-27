@@ -8,6 +8,7 @@
     "job_name":  $util.dynamodb.toDynamoDBJson($ctx.arguments.job_name),
     "company":  $util.dynamodb.toDynamoDBJson($ctx.arguments.company),
     "project_id":  $util.dynamodb.toDynamoDBJson($ctx.arguments.project_id),
+    "url_to_job_page":  $util.dynamodb.toDynamoDBJson($ctx.arguments.url_to_job_page),
     "total_successes": $util.dynamodb.toDynamoDBJson(0),
     "total_failures": $util.dynamodb.toDynamoDBJson(0),
     "jobs_currently_running": $util.dynamodb.toDynamoDBJson(0),
