@@ -4,7 +4,7 @@ import { MockedProvider } from '@apollo/client/testing';
 import { CREATE_API_KEY } from "../graphql/mutations"
 import { GET_PROJECTS } from '../graphql/queries';
 
-describe('ApiDisplay', () => { 
+describe('ApiDisplay', () => {
     test('shows api key if not loading', async () => {
         const data = {
             addApiKey: {
@@ -14,9 +14,12 @@ describe('ApiDisplay', () => {
         render(<ApiDisplay
             loading={false}
             data={data}
+            projectId={"someid"}
+            company={"somecompany"}
+            restEndpoint={"someendpoint"}
         />
         )
-        const apikey = await screen.findByText(/api key/i);
+        const apikey = await screen.findByText(/API Key: api key/i);
         expect(apikey).toBeInTheDocument();
     })
     test('spins when loading', () => {
@@ -28,6 +31,9 @@ describe('ApiDisplay', () => {
         const { container } = render(<ApiDisplay
             loading={true}
             data={data}
+            projectId={"someid"}
+            company={"somecompany"}
+            restEndpoint={"someendpoint"}
         />
         )
         expect(container.getElementsByClassName('ant-spin').length).toBe(1)
@@ -69,7 +75,7 @@ describe('ApiKey', () => {
         ];
         render(
             <MockedProvider mocks={mocks}>
-                <ApiKey restEndpoint='mytestendpoint' company="mycompany" getUser={getUser} />
+                <ApiKey restEndpoint='mytestendpoint' company="mycompany" getUser={getUser} projectId="someproject" setProjectId={(projectId: string | null) => { }} />
             </MockedProvider>
         )
         const endpoint = screen.getByText("REST endpoint: mytestendpoint");

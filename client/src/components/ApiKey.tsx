@@ -7,7 +7,9 @@ import { useMutation } from "@apollo/client";
 type Props = {
     company: string,
     restEndpoint: string,
-    getUser: () => Promise<string | undefined>
+    getUser: () => Promise<string | undefined>,
+    projectId: string | null,
+    setProjectId: (projectId: string | null) => void
 }
 type ApiKeyType = {
     api_key: string
@@ -18,14 +20,51 @@ type Data = {
 
 type DisplayProps = {
     loading: boolean,
-    data: Data
+    data: Data,
+    restEndpoint: string,
+    projectId: string | null,
+    company: string,
+
 }
-export const ApiDisplay = ({ loading, data }: DisplayProps) => {
-    return loading || !data ? <Spin /> : <h3>{data?.addApiKey?.api_key}</h3>
+export const ApiDisplay = ({ loading, projectId, company, data, restEndpoint }: DisplayProps) => {
+    return loading || !data ? <Spin /> : <>
+        <h3>API Key: {data?.addApiKey?.api_key}</h3>
+        <h3>
+            Create a new job reference
+        </h3>
+        <code>
+            export API_KEY={data?.addApiKey?.api_key}
+        </code>
+        <br />
+        <code>
+            export BASE_URL={restEndpoint}
+        </code>
+        <br />
+        <code>
+            export PROJECT_ID={projectId}
+        </code>
+        <br />
+        <code>
+            curl -X POST $BASE_URL/project/$PROJECT_ID/job/create -d {`'{"name": "myjobname", "company": "`}{company}{`"}'`} -H "Content-Type: application/json" -H "Authorization: $API_KEY"
+        </code>
+        <h3>
+            Start a job run
+        </h3>
+        <p>Use the job id returned from the previous curl command to export the JOB_ID environmental variable</p>
+        <code>
+            curl -X POST  $BASE_URL/job/$JOB_ID/start  -H "Content-Type: application/json" -H "Authorization: $API_KEY"
+        </code>
+        <h3>
+            Finish a job run
+        </h3>
+        <p>Use the job run id returned from the previous curl command to export the JOB_RUN_ID environmental variable</p>
+        <code>
+            curl -X POST  $BASE_URL/job/$JOB_ID/run/$JOB_RUN_ID/finish -d {`'{"job_status": "SUCCESS"}'`}  -H "Content-Type: application/json" -H "Authorization: $API_KEY"
+        </code>
+    </>
 }
 
-const ApiKey = ({ company, restEndpoint, getUser }: Props) => {
-    const [projectId, setProjectId] = useState<string | null>(null)
+const ApiKey = ({ company, restEndpoint, getUser, projectId, setProjectId }: Props) => {
     const [visible, setVisible] = useState(false)
     const [createApiKey, { loading, data }] = useMutation(CREATE_API_KEY)
     const close = () => setVisible(false)
@@ -37,7 +76,7 @@ const ApiKey = ({ company, restEndpoint, getUser }: Props) => {
     }
     return <>
         <p>REST endpoint: {restEndpoint}</p>
-        <SelectProject setProject={setProjectId} company={company} />
+        <SelectProject projectId={projectId} setProject={setProjectId} company={company} />
         {projectId && <Button type="primary" onClick={onClick}>
             Generate new API key and overwrite previous.
         </Button>}
@@ -46,9 +85,13 @@ const ApiKey = ({ company, restEndpoint, getUser }: Props) => {
             visible={visible}
             onOk={close}
             onCancel={close}
+            width="70%"
         >
             <ApiDisplay
                 loading={loading}
+                projectId={projectId}
+                company={company}
+                restEndpoint={restEndpoint}
                 data={data}
             />
         </Modal>
