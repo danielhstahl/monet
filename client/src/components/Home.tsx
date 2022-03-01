@@ -1,7 +1,7 @@
 import { Link, Outlet, useLocation } from 'react-router-dom';
 import React, { useState } from "react"
 import { Layout, Menu } from 'antd';
-import { HOME, API_KEY, METRICS } from '../constants/routes';
+import { HOME, API_KEY, METRICS, API_DOCS } from '../constants/routes';
 
 import "./Home.css"
 import {
@@ -9,7 +9,8 @@ import {
     MenuFoldOutlined,
     UserOutlined,
     VideoCameraOutlined,
-    UploadOutlined
+    UploadOutlined,
+    CodeOutlined
 } from '@ant-design/icons';
 
 const { Header, Sider, Content } = Layout;
@@ -33,6 +34,9 @@ const Home = ({ loginElement }: Props) => {
                     </Menu.Item>
                     <Menu.Item key={API_KEY} icon={<UploadOutlined />}>
                         <Link to={API_KEY}>Api Key</Link>
+                    </Menu.Item>
+                    <Menu.Item key={API_DOCS} icon={<CodeOutlined />}>
+                        <Link to={API_DOCS}>Api Docs</Link>
                     </Menu.Item>
                 </Menu>
             </Sider>

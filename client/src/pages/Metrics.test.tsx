@@ -8,7 +8,7 @@ describe('Metrics', () => {
         render(
             <MemoryRouter>
                 <MockedProvider>
-                    <Metrics company="mycompany"/>
+                    <Metrics company="mycompany" projectId="someproject" setProjectId={(projectId: string | null) => { }} />
                 </MockedProvider>
             </MemoryRouter>
         )

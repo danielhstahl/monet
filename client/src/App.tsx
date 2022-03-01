@@ -9,10 +9,13 @@ import { OktaAuth, toRelativeUrl } from '@okta/okta-auth-js';
 import Login from './components/Login';
 import ApolloWrapper from './components/ApolloWrapper';
 import Metrics from './pages/Metrics';
+import HomeIndex from './pages/HomeIndex';
 import RequireAuth from './components/RequireAuth'
-import { LOGIN, REDIRECT_URL, HOME, API_KEY, METRICS } from './constants/routes';
+import { LOGIN, REDIRECT_URL, HOME, API_KEY, METRICS, API_DOCS } from './constants/routes';
 import { stripPath } from './utils/route_utils'
 import { getOktaUser } from './utils/okta_utils'
+import { useState } from 'react';
+import Swagger from './pages/Swagger';
 const issuer = process.env.REACT_APP_OKTA_ISSUER
 const restEndpoint = process.env.REACT_APP_REST_ENDPOINT || ""
 //since there should be a 1-1 between client id and company, FOR NOW we will us this as the company
@@ -36,19 +39,21 @@ const AppWithBrowser = () => {
   const restoreOriginalUri = async (_: any, originalUri: string) => {
     navigate(toRelativeUrl(originalUri || HOME, pathname), { replace: true });
   };
+  const [projectId, setProjectId] = useState<string | null>(null)
   return (
     <Security oktaAuth={oktaAuth} restoreOriginalUri={restoreOriginalUri} >
       <Routes>
         <Route path={REDIRECT_URL} element={<LoginCallback />} />
         <Route path={LOGIN} element={<Login />} />
         <Route path={HOME} element={<Home loginElement={<LogInButton />} />}>
-          <Route index element={<p>hello world</p>} />
+          <Route index element={<HomeIndex />} />
           <Route element={<RequireAuth />}>
             <Route element={<ApolloWrapper />}>
-              <Route path={stripPath(METRICS)} element={<Metrics company={clientId} />} />
-              <Route path={stripPath(API_KEY)} element={<ApiKey restEndpoint={restEndpoint} company={clientId} getUser={getUser} />} />
+              <Route path={stripPath(METRICS)} element={<Metrics company={clientId} projectId={projectId} setProjectId={setProjectId} />} />
+              <Route path={stripPath(API_KEY)} element={<ApiKey restEndpoint={restEndpoint} company={clientId} getUser={getUser} projectId={projectId} setProjectId={setProjectId} />} />
             </Route>
           </Route>
+          <Route path={stripPath(API_DOCS)} element={<Swagger restEndpoint={restEndpoint} />} />
         </Route>
       </Routes>
     </Security >

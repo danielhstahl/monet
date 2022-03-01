@@ -6,6 +6,7 @@ const { Option } = Select;
 
 type Props = {
     company: string,
+    projectId: string | null,
     setProject: (project_id: string) => void
 }
 
@@ -14,7 +15,7 @@ type Project = {
     project_name: string
 }
 
-const SelectProject = ({ company, setProject }: Props) => {
+const SelectProject = ({ company, projectId, setProject }: Props) => {
     const limit = 999 //appsync has a hard max at 999 I believe, it will be a while before we get to that point :)
     const { loading, data } = useQuery(GET_PROJECTS, { variables: { company, limit }, pollInterval: 500 });
 
@@ -22,7 +23,7 @@ const SelectProject = ({ company, setProject }: Props) => {
         showSearch
         loading={loading}
         onChange={setProject}
-        defaultValue='currentProjects'
+        defaultValue={projectId || 'currentProjects'}
         style={{ width: 400 }}
     >
         <Option value="currentProjects" disabled>Select from current projects</Option>

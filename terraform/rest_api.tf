@@ -1,6 +1,6 @@
 # API Gateway
 data "template_file" "swagger" {
-  template = file("../swagger.yml")
+  template = file("../client/src/swagger.yaml")
   vars = {
     region             = var.region
     arn_create_project = aws_lambda_function.create_project.arn
