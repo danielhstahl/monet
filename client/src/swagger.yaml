@@ -255,7 +255,6 @@ paths:
             type: object
             required:
               - job_status
-            type: object
             parameters:
               job_status:
                 type: string
