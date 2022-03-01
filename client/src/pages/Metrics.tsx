@@ -6,21 +6,23 @@ import { useMutation } from "@apollo/client";
 import CreateProject from "../components/CreateProject";
 
 type Props = {
-    company: string
+    company: string,
+    projectId: string | null,
+    setProjectId: (projectId: string | null) => void
 }
-const Metrics = ({ company }: Props) => {
-    const [projectId, setProjectId] = useState<string | null>(null)
+const Metrics = ({ company, projectId, setProjectId }: Props) => {
     const [createProject, { loading }] = useMutation(CREATE_PROJECT)
     return <>
         <CreateProject company={company} createProject={createProject} loading={loading} />
-        
+
         <hr />
-        
-        <SelectProject  
-            company={company} 
-            setProject={setProjectId} 
+
+        <SelectProject
+            projectId={projectId}
+            company={company}
+            setProject={setProjectId}
         />
-        
+
         {projectId && <JobsPerProject company={company} project_id={projectId} />}
     </>
 
