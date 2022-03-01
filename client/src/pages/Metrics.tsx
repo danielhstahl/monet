@@ -1,4 +1,3 @@
-import { useState } from "react"
 import JobsPerProject from "../components/JobsPerProject"
 import SelectProject from "../components/SelectProject"
 import { CREATE_PROJECT } from '../graphql/mutations';
