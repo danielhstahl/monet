@@ -19,7 +19,7 @@ describe('ApiDisplay', () => {
             restEndpoint={"someendpoint"}
         />
         )
-        const apikey = await screen.findByText(/api key/i);
+        const apikey = await screen.findByText(/API Key: api key/i);
         expect(apikey).toBeInTheDocument();
     })
     test('spins when loading', () => {
