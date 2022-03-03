@@ -2,7 +2,7 @@
   "name": "client",
   "version": "0.1.0",
   "private": true,
-  "homepage": "https://danielhstahl.github.io/job-coordinator",
+  "homepage": "https://danielhstahl.github.io/monet",
   "dependencies": {
     "@apollo/client": "^3.5.8",
     "@okta/okta-auth-js": "^6.0.0",
