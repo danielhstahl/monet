@@ -114,8 +114,10 @@ resource "aws_dynamodb_table" "user" {
 
 
 resource "aws_kinesis_stream" "persist_project" {
-  name        = "persist_project_${var.stage}"
-  shard_count = 1
+  name = "persist_project_${var.stage}"
+  stream_mode_details {
+    stream_mode = "ON_DEMAND"
+  }
 }
 
 resource "aws_dynamodb_kinesis_streaming_destination" "project" {
@@ -124,8 +126,10 @@ resource "aws_dynamodb_kinesis_streaming_destination" "project" {
 }
 
 resource "aws_kinesis_stream" "persist_job" {
-  name        = "persist_job_${var.stage}"
-  shard_count = 1
+  name = "persist_job_${var.stage}"
+  stream_mode_details {
+    stream_mode = "ON_DEMAND"
+  }
 }
 
 resource "aws_dynamodb_kinesis_streaming_destination" "job" {
@@ -134,8 +138,10 @@ resource "aws_dynamodb_kinesis_streaming_destination" "job" {
 }
 
 resource "aws_kinesis_stream" "persist_job_run" {
-  name        = "persist_job_run_${var.stage}"
-  shard_count = 1
+  name = "persist_job_run_${var.stage}"
+  stream_mode_details {
+    stream_mode = "ON_DEMAND"
+  }
 }
 
 resource "aws_dynamodb_kinesis_streaming_destination" "job_run" {
