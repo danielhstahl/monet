@@ -20,7 +20,7 @@ const issuer = process.env.REACT_APP_OKTA_ISSUER
 const restEndpoint = process.env.REACT_APP_REST_ENDPOINT || ""
 //since there should be a 1-1 between client id and company, FOR NOW we will us this as the company
 const clientId = process.env.REACT_APP_OKTA_ID || ""
-const BASE_NAME = process.env.NODE_ENV === "production" ? "/job-coordinator" : ""
+const BASE_NAME = "/monet"
 const App = () => {
   return <BrowserRouter basename={BASE_NAME}><AppWithBrowser /></BrowserRouter>
 }
