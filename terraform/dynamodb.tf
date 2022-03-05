@@ -112,7 +112,7 @@ resource "aws_dynamodb_table" "user" {
   }
 }
 
-
+/*
 resource "aws_kinesis_stream" "persist_project" {
   name = "persist_project_${var.stage}"
   stream_mode_details {
@@ -148,6 +148,7 @@ resource "aws_dynamodb_kinesis_streaming_destination" "job_run" {
   stream_arn = aws_kinesis_stream.persist_job_run.arn
   table_name = aws_dynamodb_table.job_run.name
 }
+*/
 
 
 ## IAM

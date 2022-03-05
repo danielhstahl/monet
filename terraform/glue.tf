@@ -1,4 +1,4 @@
-
+/*
 resource "aws_glue_catalog_database" "glue_catalog_database" {
   name = "jobcoordinate_${var.stage}"
 }
@@ -198,3 +198,4 @@ resource "aws_glue_catalog_table" "job_run_events_table" {
 
   }
 }
+*/
