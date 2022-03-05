@@ -1,7 +1,7 @@
 
 ### Firehose
 
-
+/*
 resource "aws_kinesis_firehose_delivery_stream" "persist_projects" {
   name        = "persist_projects_${var.stage}"
   destination = "extended_s3"
@@ -320,3 +320,5 @@ resource "aws_iam_role_policy" "kinesis_firehose_access_glue_policy" {
   role   = aws_iam_role.kinesis_firehose_stream_role.name
   policy = data.aws_iam_policy_document.kinesis_firehose_access_glue_assume_policy.json
 }
+
+*/
